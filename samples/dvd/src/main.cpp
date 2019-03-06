@@ -39,41 +39,46 @@ int main(void) {
 	DVDCore& core = DVDCore::getInstance();
 	core.registerQuitEventCallback([](SDL_QuitEvent&) {
 		LOG_I("Exiting gracefully");
+		SDL_Quit();
 		exit(EXIT_SUCCESS);
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::DOWN, [](SDL_KeyboardEvent&) {
-		LOG_D("W key pressed");
+//		LOG_D("W key pressed");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::DOWN, [](SDL_KeyboardEvent&) {
-		LOG_D("A key pressed");
+//		LOG_D("A key pressed");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::DOWN, [](SDL_KeyboardEvent&) {
-		LOG_D("S key pressed");
+//		LOG_D("S key pressed");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::DOWN, [](SDL_KeyboardEvent&) {
-		LOG_D("D key pressed");
+//		LOG_D("D key pressed");
+	});
+	core.registerKeyboardEventCallback(SDL_SCANCODE_R, KeyEventType::DOWN, [&core](SDL_KeyboardEvent&) {
+//		LOG_D("R key pressed");
+		core.reset();
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_F, KeyEventType::DOWN, [&core](SDL_KeyboardEvent&) {
-		LOG_D("F key pressed");
+//		LOG_D("F key pressed");
 		core.toggleFPS();
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_E, KeyEventType::DOWN, [](SDL_KeyboardEvent&) {
-		LOG_D("E key pressed");
+//		LOG_D("E key pressed");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_F11, KeyEventType::DOWN, [&core](SDL_KeyboardEvent&) {
-		LOG_D("F11 key pressed");
+//		LOG_D("F11 key pressed");
 		core.toggleFullscreen();
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_B, KeyEventType::DOWN, [&core](SDL_KeyboardEvent&) {
-		LOG_D("B key pressed");
+//		LOG_D("B key pressed");
 		core.toggleFPSCap();
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_V, KeyEventType::DOWN, [&core](SDL_KeyboardEvent&) {
-		LOG_D("V key pressed");
+//		LOG_D("V key pressed");
 		core.toggleVSync();
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_Q, KeyEventType::DOWN, [](SDL_KeyboardEvent&) {
-		LOG_D("Q key pressed");
+//		LOG_D("Q key pressed");
 		LOG_I("Exiting gracefully");
 		SDL_Quit();
 		exit(EXIT_SUCCESS);
@@ -83,35 +88,37 @@ int main(void) {
 	});
 
 	core.registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::UP, [](SDL_KeyboardEvent&) {
-		LOG_D("W key released");
+//		LOG_D("W key released");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::UP, [](SDL_KeyboardEvent&) {
-		LOG_D("A key released");
+//		LOG_D("A key released");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::UP, [](SDL_KeyboardEvent&) {
-		LOG_D("S key released");
+//		LOG_D("S key released");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::UP, [](SDL_KeyboardEvent&) {
-		LOG_D("D key released");
+//		LOG_D("D key released");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_E, KeyEventType::UP, [](SDL_KeyboardEvent&) {
-		LOG_D("E key released");
+//		LOG_D("E key released");
 	});
 
-	core.registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, []() {
-		LOG_D("W key being held");
+	core.registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [&core]() {
+//		LOG_D("W key being held");
+		core.modifySpeed(0.005);
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, []() {
-		LOG_D("A key being held");
+//		LOG_D("A key being held");
 	});
-	core.registerKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, []() {
-		LOG_D("S key being held");
+	core.registerKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [&core]() {
+//		LOG_D("S key being held");
+		core.modifySpeed(-0.005);
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, []() {
-		LOG_D("D key being held");
+//		LOG_D("D key being held");
 	});
 	core.registerKeyboardEventCallback(SDL_SCANCODE_E, KeyEventType::HELD, []() {
-		LOG_D("E key being held");
+//		LOG_D("E key being held");
 	});
 
 	core.registerMouseButtonEventCallback(SDL_BUTTON_LEFT, ButtonEventType::DOWN, [](SDL_MouseButtonEvent&, ivec2 pos) {
@@ -137,54 +144,54 @@ int main(void) {
 	core.registerWindowEventCallback([](SDL_WindowEvent& ev) {
 		switch(ev.event) {
 			case SDL_WINDOWEVENT_SHOWN:
-				LOG_D("Window has been shown");
+//				LOG_D("Window has been shown");
 				break;
 			case SDL_WINDOWEVENT_HIDDEN:
-				LOG_D("Window has been hidden");
+//				LOG_D("Window has been hidden");
 				break;
 			case SDL_WINDOWEVENT_EXPOSED:
-				LOG_D("Window has been exposed and should be redrawn");
+//				LOG_D("Window has been exposed and should be redrawn");
 				break;
 			case SDL_WINDOWEVENT_MOVED:
-				LOG_D("Window has been moved to " << ivec2(ev.data1, ev.data2));
+//				LOG_D("Window has been moved to " << ivec2(ev.data1, ev.data2));
 				break;
 			case SDL_WINDOWEVENT_RESIZED:
-				LOG_D("Window has been resized to " << ev.data1 << " by " << ev.data2 << " pixels");
+//				LOG_D("Window has been resized to " << ev.data1 << " by " << ev.data2 << " pixels");
 				glViewport(0, 0, ev.data1, ev.data2);
 				DVDCore::getInstance().setScale(glm::dvec2(ev.data1/1920.0, ev.data2/1080.0));
 				break;
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
-				LOG_D("Window size has been changed");
+//				LOG_D("Window size has been changed");
 				break;
 			case SDL_WINDOWEVENT_MINIMIZED:
-				LOG_D("Window has been minimized");
+//				LOG_D("Window has been minimized");
 				break;
 			case SDL_WINDOWEVENT_MAXIMIZED:
-				LOG_D("Window has been maximized");
+//				LOG_D("Window has been maximized");
 				break;
 			case SDL_WINDOWEVENT_RESTORED:
-				LOG_D("Window has been restored to it's original size and shape");
+//				LOG_D("Window has been restored to it's original size and shape");
 				break;
 			case SDL_WINDOWEVENT_ENTER:
-				LOG_D("Window has gained mouse focus");
+//				LOG_D("Window has gained mouse focus");
 				break;
 			case SDL_WINDOWEVENT_LEAVE:
-				LOG_D("Window has lost mouse focus");
+//				LOG_D("Window has lost mouse focus");
 				break;
 			case SDL_WINDOWEVENT_FOCUS_GAINED:
-				LOG_D("Window has gained keyboard focus");
+//				LOG_D("Window has gained keyboard focus");
 				break;
 			case SDL_WINDOWEVENT_FOCUS_LOST:
-				LOG_D("Window has lost keyboard focus");
+//				LOG_D("Window has lost keyboard focus");
 				break;
 			case SDL_WINDOWEVENT_CLOSE:
-				LOG_D("Window manager is requesting that the window be closed");
+//				LOG_D("Window manager is requesting that the window be closed");
 				break;
 			case SDL_WINDOWEVENT_TAKE_FOCUS:
-				LOG_D("Window is being offered focus");
+//				LOG_D("Window is being offered focus");
 				break;
 			case SDL_WINDOWEVENT_HIT_TEST:
-				LOG_D("Window had a hit test that wasn't SDL_HITTEST_NORMAL");
+//				LOG_D("Window had a hit test that wasn't SDL_HITTEST_NORMAL");
 				break;
 		}
 	});

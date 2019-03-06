@@ -44,8 +44,6 @@
 
 using namespace GameEngine;
 
-void RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
-
 void DVDCore::setup() {
 	/* SDL-related initialising functions */
 	SDL_Init(SDL_INIT_VIDEO);
@@ -68,9 +66,6 @@ void DVDCore::setup() {
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	SDL_GL_CreateContext(window);
 	enableVSync();
-	//	LOG_I("Vendor = " << glGetString(GL_VENDOR));
-//	LOG_I("Renderer = " << glGetString(GL_RENDERER));
-//	LOG_I("Version = " << glGetString(GL_VERSION));
 
 	/* Extension wrangler initialising */
 	glewExperimental = GL_TRUE;
@@ -272,7 +267,7 @@ void DVDCore::renderLogo() {
 	transform = glm::scale(transform, glm::vec3(0.5 / scale.x, 0.5 / scale.y, 0.5));
 
 	glm::vec2 pos = glm::vec2(translate_vec.x, translate_vec.y);
-	if(std::abs(pos.x - ((scale.x - 0.235)/scale.x)) < length(delta_vec * glm::vec3(1.0f / (scale.x * fps * 4.0), 1.0f / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
+	if(std::abs(pos.x - ((scale.x - 0.235)/scale.x)) < length(delta_vec * glm::vec3(speed / (scale.x * fps * 4.0f), speed / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
 
 		delta_vec = glm::normalize(glm::reflect(delta_vec, glm::vec3(1.0, 0.0, 0.0)
 				+ glm::ballRand(0.05f)) * glm::vec3(1.0f, 1.0f, 0.0f));
@@ -280,27 +275,27 @@ void DVDCore::renderLogo() {
 		logo_color = glm::abs(glm::sphericalRand(1.0f));
 	}
 
-	if(std::abs(pos.y - ((scale.y - 0.115)/scale.y)) < length(delta_vec * glm::vec3(1.0f / (scale.x * fps * 4.0), 1.0f / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
+	if(std::abs(pos.y - ((scale.y - 0.115)/scale.y)) < length(delta_vec * glm::vec3(speed / (scale.x * fps * 4.0f), speed / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
 
 		delta_vec = glm::normalize(glm::reflect(delta_vec, glm::vec3(0.0, 1.0, 0.0)
 				+ glm::ballRand(0.05f)) * glm::vec3(1.0f, 1.0f, 0.0f));
 
 		logo_color = glm::abs(glm::sphericalRand(1.0f));
 	}
-	if(std::abs(pos.x + ((scale.x - 0.235)/scale.x)) < length(delta_vec * glm::vec3(1.0f / (scale.x * fps * 4.0), 1.0f / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
+	if(std::abs(pos.x + ((scale.x - 0.235)/scale.x)) < length(delta_vec * glm::vec3(speed / (scale.x * fps * 4.0f), speed / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
 
 		delta_vec = glm::normalize(glm::reflect(delta_vec, glm::vec3(1.0, 0.0, 0.0)
 				+ glm::ballRand(0.05f)) * glm::vec3(1.0f, 1.0f, 0.0f));
 		logo_color = glm::abs(glm::sphericalRand(1.0f));
 	}
-	if(std::abs(pos.y + ((scale.y - 0.115)/scale.y)) < length(delta_vec * glm::vec3(1.0f / (scale.x * fps * 4.0), 1.0f / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
+	if(std::abs(pos.y + ((scale.y - 0.115)/scale.y)) < length(delta_vec * glm::vec3(speed / (scale.x * fps * 4.0f), speed / (scale.y * fps * 4.0f), 0.0f)) * 0.5) {
 
 		delta_vec = glm::normalize(glm::reflect(delta_vec, glm::vec3(0.0, 1.0, 0.0)
 				+ glm::ballRand(0.05f)) * glm::vec3(1.0f, 1.0f, 0.0f));
 
 		logo_color = glm::abs(glm::sphericalRand(1.0f));
 	}
-	translate_vec += delta_vec * glm::vec3(1.0f / (scale.x * fps * 4.0), 1.0f / (scale.y * fps * 4.0), 0.0f);
+	translate_vec += delta_vec * glm::vec3(speed / (scale.x * fps * 4.0f), speed / (scale.y * fps * 4.0f), 0.0f);
 	glUniform3fv(glGetUniformLocation(program->getPH(), "color"), 1, (float*)glm::value_ptr(logo_color));
 
 	// get matrix's uniform location and set matrix
@@ -356,11 +351,6 @@ void DVDCore::renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, 
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void insert(int value)
-{
-
 }
 
 void DVDCore::tick() {

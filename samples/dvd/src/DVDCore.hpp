@@ -43,7 +43,7 @@ class DVDCore : public GameEngine::GameCore {
 	public:
 		void setScale(glm::dvec2 _scale) {
 			scale = _scale;
-			LOG_D("Scale set to " << scale);
+//			LOG_D("Scale set to " << scale);
 		}
 		void setShowFPS(bool enable = false) {
 			FPS_shown = enable;
@@ -106,6 +106,18 @@ class DVDCore : public GameEngine::GameCore {
 		bool isVSyncEnabled() {
 			return vsync_enabled;
 		}
+
+		void setSpeed(double _speed = 1.0) {
+			speed = _speed;
+		}
+		void modifySpeed(double delta = 0.0) {
+			if(speed + delta > 0) {
+				speed += delta;
+			}
+		}
+		void reset() {
+			translate_vec = glm::vec3(0.5, -0.5, 0.0);
+		}
 	protected:
 		virtual void setup();
 		virtual void tick();
@@ -148,6 +160,7 @@ class DVDCore : public GameEngine::GameCore {
 		glm::vec3 translate_vec = glm::vec3(0.5, -0.5, 0.0);
 		glm::vec3 delta_vec = glm::normalize(glm::vec3(1.0, 0.75, 0.0));
 		glm::dvec2 scale = glm::dvec2(1.0,1.0);
+		double speed = 1.0;
 
 		std::map<GLchar, Character> Characters;
 
