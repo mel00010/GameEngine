@@ -1,5 +1,5 @@
 /******************************************************************************
- * main.cpp
+ * TextRenderer.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,17 +17,50 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_TEXTRENDERER_HPP_
+#define SRC_TEXTRENDERER_HPP_
 
-#include "DVDCore.hpp"
+#include "GL.hpp"
+#include "Program.hpp"
 
-#include <Log.hpp>
+#include <glm/glm.hpp>
+#include <GL/glew.h>
 
-using namespace GameEngine;
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
-int main(void) {
-	DVDCore& core = DVDCore::getInstance();
+#include <SDL2/SDL.h>
 
-	core.runLoop();
 
-	return EXIT_SUCCESS;
-}
+#include <map>
+
+namespace GameEngine {
+
+class TextRenderer {
+	public:
+		TextRenderer();
+		void init(SDL_Window* window);
+		void renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+
+	protected:
+		struct Character {
+			GLuint		TextureID;  // ID handle of the glyph texture
+			glm::ivec2	Size;       // Size of glyph
+			glm::ivec2	Bearing;    // Offset from baseline to left/top of glyph
+			FT_Pos		Advance;    // Offset to advance to next glyph
+		};
+
+		std::map<GLchar, Character> characters;
+		GL gl;
+		SDL_Window* window;
+		ProgramRef p = nullptr;
+
+		bool valid;
+};
+
+} /* namespace GameEngine */
+
+
+
+
+#endif /* SRC_TEXTRENDERER_HPP_ */

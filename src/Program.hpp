@@ -55,6 +55,8 @@ class Program {
 		GLuint getPH();
 		std::vector<AttributeRef>& getAttributes();
 
+		void useProgram();
+
 		void setUniformBool(const std::string &name, bool value) const;
 		void setUniformInt(const std::string &name, int value) const;
 		void setUniformFloat(const std::string &name, float value) const;

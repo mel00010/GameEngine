@@ -28,7 +28,9 @@ namespace GameEngine {
 
 class Texture {
 	public:
-		bool loadTexture(Resource resource_id);
+		GLuint loadTexture(Resource resource_id);
+
+	public:
 		GLuint texture;
 };
 

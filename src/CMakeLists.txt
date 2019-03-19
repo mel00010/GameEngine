@@ -3,18 +3,22 @@ target_sources(GameEngine
 	PRIVATE
 		Attribute.cpp
 		CallbackRegistration.cpp
+		Camera.cpp
 		GameCore.cpp
 		Program.cpp
 		Shader.cpp
+		TextRenderer.cpp
 		Texture.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/Attribute.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Camera.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/GameCore.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Main_Loop.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/GL.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Model.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Program.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Shader.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/TextRenderer.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Texture.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Triangle.hpp
 )
 
 target_link_libraries(GameEngine

@@ -18,14 +18,14 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "DVDCore.hpp"
+#include "CameraTestCore.hpp"
 
 #include <Log.hpp>
 
 using namespace GameEngine;
 
 int main(void) {
-	DVDCore& core = DVDCore::getInstance();
+	CameraTestCore& core = CameraTestCore::getInstance();
 
 	core.runLoop();
 

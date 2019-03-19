@@ -38,12 +38,29 @@ class Resource {
 
 namespace GameEngine {
 
-Shader::Shader(Resource resource, ShaderType _type) :
+Shader::Shader(std::string _source, ShaderType _type) :
+		source(_source),
 		type(_type),
-		file_path(resource.file_path),
 		shader(glCreateShader(static_cast<GLenum>(_type))),
 		valid(false) {
+
+}
+
+Shader::Shader(Resource resource, ShaderType _type) :
+		type(_type),
+		shader(glCreateShader(static_cast<GLenum>(_type))),
+		valid(false) {
+	std::string file_location;
 	char *base_path = SDL_GetBasePath();
+	if (base_path) {
+		file_location = base_path;
+	} else {
+		file_location = SDL_strdup("./");
+	}
+	file_location+=resource.file_path;
+	std::ifstream file(file_location);
+	source = std::string((std::istreambuf_iterator<char>(file)),
+			std::istreambuf_iterator<char>());
 }
 Shader::~Shader() {
 	if(isValid()) {
@@ -56,17 +73,7 @@ bool Shader::init() {
 	if(isValid()) {
 		return isValid();
 	}
-	std::string file_location;
-	char *base_path = SDL_GetBasePath();
-	if (base_path) {
-		file_location = base_path;
-	} else {
-		file_location = SDL_strdup("./");
-	}
-	file_location+=file_path;
-	std::ifstream file(file_location);
-	std::string source((std::istreambuf_iterator<char>(file)),
-			std::istreambuf_iterator<char>());
+
 	const char* c_str = source.c_str();
 	glShaderSource(shader, 1, &c_str, NULL);
 	glCompileShader(shader);

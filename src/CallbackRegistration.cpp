@@ -88,13 +88,13 @@ bool GameCore::registerTextInputEventCallback(std::function<void(SDL_TextInputEv
 }
 
 bool GameCore::registerMouseMotionEventCallback(
-		std::function<void(SDL_MouseMotionEvent&, ivec2 /* pos */, ivec2 /* delta */)> callback) {
+		std::function<void(SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 /* delta */)> callback) {
 	m_move_callbacks.push_back(callback);
 	return true;
 }
 bool GameCore::registerMouseButtonEventCallback(uint8_t button,
 		ButtonEventType type,
-		std::function<void(SDL_MouseButtonEvent&, ivec2 /* pos */)> callback) {
+		std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)> callback) {
 	if(type == ButtonEventType::DOWN) {
 		m_button_down_callbacks[button].push_back(callback);
 	}
@@ -111,7 +111,11 @@ bool GameCore::registerMouseButtonEventCallback(uint8_t button,
 	}
 	return true;
 }
-bool GameCore::registerMouseWheelEventCallback(std::function<void(SDL_MouseWheelEvent&, ivec2 /* delta */)> callback) {
+bool GameCore::registerImmediateMouseWheelEventCallback(std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)> callback) {
+	m_immediate_wheel_callbacks.push_back(callback);
+	return true;
+}
+bool GameCore::registerMouseWheelEventCallback(std::function<void(glm::ivec2 /* delta */)> callback) {
 	m_wheel_callbacks.push_back(callback);
 	return true;
 }
@@ -382,6 +386,33 @@ bool GameCore::registerGenericEventCallback(
 		std::function<void(SDL_Event&)> callback) {
 	event_callbacks.push_back(std::make_pair(event_matcher, callback));
 	return true;
+}
+
+bool GameCore::registerTimeoutCallback(std::string identifier, size_t ms, std::function<void(void)> callback, bool repeat) {
+	for(auto& i : timeout_callbacks) {
+		if(i.identifier == identifier) {
+			return false;
+		}
+	}
+
+	timeout_callbacks.emplace_back(TimeoutCallback {
+		identifier,
+		SDL_GetTicks(),
+		ms,
+		repeat,
+		callback,
+	});
+	return true;
+}
+
+bool GameCore::unregisterTimeoutCallback(std::string identifier) {
+	for (auto i = timeout_callbacks.begin(); i != timeout_callbacks.end(); i++) {
+		if(i->identifier == identifier) {
+			timeout_callbacks.erase(i);
+			return true;
+		}
+	}
+	return false;
 }
 
 } /* namespace GameEngine */

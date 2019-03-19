@@ -1,13 +1,13 @@
 #version 450
 
-layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
+layout (location = 0) in vec2 pos;
+layout (location = 1) in vec2 tex;
 
-out vec4 ourColor;
 out vec2 TexCoord;
-  
+
 uniform mat4 projection;
 
 void main() {
-	gl_Position = projection * vec4(vertex.xy, 0.0f, 1.0f);
-	TexCoord = vertex.zw;
+	gl_Position = projection * vec4(pos, 0.0f, 1.0f);
+	TexCoord = tex;
 }

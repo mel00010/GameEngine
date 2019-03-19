@@ -38,7 +38,6 @@ Program::~Program() {
 
 }
 bool Program::init() {
-
 	program = glCreateProgram();
 	return true;
 }
@@ -95,6 +94,10 @@ GLuint Program::getPH() {
 
 std::vector<AttributeRef>& Program::getAttributes() {
 	return attributes;
+}
+
+void Program::useProgram() {
+	glUseProgram(program);
 }
 
 void Program::setUniformBool(const std::string &name, bool value) const {

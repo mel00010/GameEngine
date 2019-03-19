@@ -1,5 +1,5 @@
 /******************************************************************************
- * main.cpp
+ * CameraTestCore.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,17 +17,43 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_
+#define SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_
 
-#include "DVDCore.hpp"
+#include <Camera.hpp>
+#include <GameCore.hpp>
+#include <Model.hpp>
 
-#include <Log.hpp>
 
 using namespace GameEngine;
 
-int main(void) {
-	DVDCore& core = DVDCore::getInstance();
+struct Vertex {
+		glm::vec3 pos;
+		glm::vec2 tex;
+		Vertex(glm::vec3 _pos, glm::vec2 _tex) : pos(_pos), tex(_tex) {}
+};
 
-	core.runLoop();
+class CameraTestCore : public GameEngine::GameCore {
+	public:
+		/* Make Singleton */
+		static CameraTestCore& getInstance() {
+			static CameraTestCore instance;
+			return instance;
+		}
 
-	return EXIT_SUCCESS;
-}
+	protected:
+		virtual void setup();
+		virtual void tick();
+		virtual void render();
+
+	protected:
+		glm::vec3 line_color = glm::vec3(1.0, 1.0, 0.0);
+		glm::vec3 cube_color = glm::vec3(1.0, 1.0, 1.0);
+
+		Camera camera;
+		Model<Vertex> cube;
+		Model<Vertex> grid;
+};
+
+
+#endif /* SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_ */

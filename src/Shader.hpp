@@ -62,6 +62,7 @@ inline std::ostream& operator<<(std::ostream& os, ShaderType type) {
 class Shader {
 	public:
 		Shader(Resource resource, ShaderType type);
+		Shader(std::string source, ShaderType type);
 		~Shader();
 		bool init();
 
@@ -70,8 +71,8 @@ class Shader {
 		ShaderType getShaderType();
 		GLuint getShaderHandle();
 	private:
+		std::string source;
 		ShaderType type;
-		std::string file_path;
 		GLuint shader;
 		bool valid;
 };

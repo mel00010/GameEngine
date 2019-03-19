@@ -30,48 +30,312 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include <algorithm>
+#include <functional>
+#include <numeric>
+
 namespace GameEngine {
 
+GameCore::GameCore() : ms_per_tick(50) {
+
+}
+
 void GameCore::runLoop() {
+	preSetup();
 	setup();
-	LOG_D("Finished setup");
+	postSetup();
+
 	loop();
+}
+
+void GameCore::preSetup() {
+	registerTimeoutCallback("tick", ms_per_tick, [this]() {
+		preTick();
+		tick();
+		postTick();
+	}, true);
+	registerTimeoutCallback("render", 0, [this]() {
+		preRender();
+		render();
+		postRender();
+	}, true);
+	registerQuitEventCallback([](SDL_QuitEvent&) {
+		LOG_I("Exiting gracefully");
+		SDL_Quit();
+		exit(EXIT_SUCCESS);
+	});
+	registerWindowEventCallback([](SDL_WindowEvent& ev) {
+		switch(ev.event) {
+			case SDL_WINDOWEVENT_RESIZED:
+				glViewport(0, 0, ev.data1, ev.data2);
+		}
+	});
+
+	registerCallbacks();
+
+	initSDL();
+	initGL();
+}
+void GameCore::registerCallbacks() {
+	registerKeyboardEventCallback(SDL_SCANCODE_Q,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { quit(); });
+	registerKeyboardEventCallback(SDL_SCANCODE_F,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleFPS(); });
+	registerKeyboardEventCallback(SDL_SCANCODE_F11, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleFullscreen(); });
+	registerKeyboardEventCallback(SDL_SCANCODE_B,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleFPSCap(); });
+	registerKeyboardEventCallback(SDL_SCANCODE_V,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleVSync(); });
+	registerKeyboardEventCallback(SDL_SCANCODE_E,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleCursor(); });
+}
+
+void GameCore::postSetup() {
+
+}
+
+void GameCore::preTick() {
+
+}
+
+void GameCore::postTick() {
+	calculateFPS();
+	dispatchCallbacks();
+}
+
+void GameCore::preRender() {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	frames_rendered++;
+	total_frames_rendered++;
+}
+void GameCore::postRender() {
+	renderFPS();
+	SDL_GL_SwapWindow(window);
 }
 
 void GameCore::loop() {
 	for(;;) {
-		render();
-		curr_time = SDL_GetTicks();
-		if(curr_time > prev_time + ms_per_tick) {
-			prev_time = curr_time;
-			tick();
+		std::list<std::string> remove_list;
+		for (auto& i : timeout_callbacks) {
+			size_t curr_time = SDL_GetTicks();
+			if(curr_time > i.start_time + i.ms) {
+				i.callback();
+				if(i.repeat) {
+					i.start_time = curr_time;
+				} else {
+					remove_list.push_back(i.identifier);
+				}
+			}
+		}
+		for (auto& i : remove_list) {
+			unregisterTimeoutCallback(i);
 		}
 	}
+}
+
+void GameCore::initSDL() {
+	/* SDL-related initialising functions */
+	SDL_Init(SDL_INIT_VIDEO);
+	int flags = IMG_INIT_JPG | IMG_INIT_PNG;
+	if( !( IMG_Init( flags ) & flags ) ) {
+		LOG_F( "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() );
+		throw EXIT_FAILURE;
+	}
+
+	// Request an OpenGL 4.5 context (should be core)
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+
+	// Also request a depth buffer
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	window = SDL_CreateWindow("DVD",
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		1920, 1080,
+		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	SDL_GL_CreateContext(window);
+	enableVSync();
+}
+
+void GameCore::initGL() {
+	/* Extension wrangler initialising */
+	glewExperimental = GL_TRUE;
+	GLenum glew_status = glewInit();
+	if (glew_status != GLEW_OK) {
+		LOG_F("Error: glewInit: " << glewGetErrorString(glew_status));
+		throw EXIT_FAILURE;
+	}
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	text.init(window);
 }
 
 SDL_Window* GameCore::getWindow() {
 	return window;
 }
 
-GameCore::GameCore() : ms_per_tick(50) {}
+void GameCore::setFullscreen(bool enable) {
+	int should_be_zero = SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(window), &native);
+
+	if(should_be_zero != 0) {
+		// In case of error...
+		LOG_E("Could not get display mode for video display #"<< SDL_GetWindowDisplayIndex(window) <<": " << SDL_GetError());
+		throw EXIT_FAILURE;
+	} else {
+		// On success, print the current display mode.
+		LOG_D("Display #" << SDL_GetWindowDisplayIndex(window) <<": native display mode is " << native.w << "x" << native.h << "px @ " << native.refresh_rate << "hz.");
+	}
+	isScreenFullscreen = enable;
+	if(isScreenFullscreen) {
+		current = native;
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+		SDL_SetWindowDisplayMode(window, &current);
+	} else {
+		current = native;
+		SDL_SetWindowFullscreen(window, 0);
+	}
+}
 
 bool GameCore::isCursorDisabled() {
 	return cursor_disabled;
 }
 void GameCore::disableCursor(bool disabled) {
 	cursor_disabled = disabled;
+	if(cursor_disabled) {
+		SDL_ShowCursor(SDL_DISABLE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+	} else {
+		SDL_ShowCursor(SDL_ENABLE);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+	}
 }
 bool GameCore::toggleCursor() {
 	if(cursor_disabled) {
 		cursor_disabled = false;
 		SDL_ShowCursor(SDL_ENABLE);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
 	} else {
 		cursor_disabled = true;
 		SDL_ShowCursor(SDL_DISABLE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 	return cursor_disabled;
 }
 
+void GameCore::dispatchCallbacks() {
+	SDL_Event ev;
+	while (SDL_PollEvent(&ev)) {
+		switch(ev.type) {
+			case SDL_WINDOWEVENT:
+				for(auto& i: window_event_callbacks) {
+					i(ev.window);
+				}
+				break;
+			case SDL_KEYDOWN:
+				if(ev.key.repeat != 0) {
+					break;
+				}
+				key_status[ev.key.keysym.scancode] = true;
+				for(auto& i: key_down_callbacks[ev.key.keysym.scancode]) {
+					i(ev.key);
+				}
+				break;
+			case SDL_KEYUP:
+				key_status[ev.key.keysym.scancode] = false;
+				for(auto& i: key_up_callbacks[ev.key.keysym.scancode]) {
+					i(ev.key);
+				}
+				break;
+			case SDL_MOUSEMOTION:
+				for(auto& i: m_move_callbacks) {
+					i(ev.motion, glm::ivec2(ev.motion.x, ev.motion.y), glm::ivec2(ev.motion.xrel, ev.motion.yrel));
+				}
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				mouse_buttons_status[ev.button.button] = true;
+				for(auto& i: m_button_down_callbacks[ev.button.button]) {
+					i(ev.button, glm::ivec2(ev.button.x, ev.button.y));
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouse_buttons_status[ev.button.button] = false;
+				for(auto& i: m_button_up_callbacks[ev.button.button]) {
+					i(ev.button, glm::ivec2(ev.button.x, ev.button.y));
+				}
+				break;
+			case SDL_MOUSEWHEEL:
+				mouse_wheel_status += glm::ivec2(ev.wheel.x, ev.wheel.y);
+				for(auto& i: m_immediate_wheel_callbacks) {
+					i(ev.wheel, glm::ivec2(ev.wheel.x, ev.wheel.y));
+				}
+				break;
+		}
+		for(auto& callback_pair : event_callbacks) {
+			if(callback_pair.first(ev)) {
+				callback_pair.second(ev);
+			}
+		}
+	}
+	if(mouse_wheel_status != glm::ivec2(0, 0)) {
+		for(auto& callback : m_wheel_callbacks) {
+			callback(mouse_wheel_status);
+		}
+		mouse_wheel_status = glm::ivec2(0, 0);
+	}
 
+	for(size_t i = 0; i < key_held_callbacks.size(); i++) {
+		if(key_status[i]) {
+			for(auto& callback : key_held_callbacks[i]) {
+				callback();
+			}
+		}
+	}
+	for(size_t i = 0; i < m_button_held_callbacks.size(); i++) {
+		if(mouse_buttons_status[i]) {
+			for(auto& callback : m_button_held_callbacks[i]) {
+				callback();
+			}
+		}
+	}
+}
+
+void GameCore::calculateFPS() {
+	static size_t tick_counter(0);
+	static size_t pos(0);
+	static std::array<double, 20> fps_avg_array({0});
+
+	tick_counter++;
+
+	fps = static_cast<double>(frames_rendered) * static_cast<double>(ticks_per_second);
+	fps_avg = std::accumulate(fps_avg_array.begin(), fps_avg_array.end(), 0) / 20;
+
+	fps_avg_array[pos] = fps;
+	if (pos >= 19) {
+		pos = 0;
+	} else {
+		pos++;
+	}
+	if(tick_counter > ticks_per_second/10) {
+		tick_counter = 0;
+		std::stringstream ss;
+		ss << std::fixed << std::setprecision(0) << fps_avg;
+		fps_to_render = ss.str();
+	}
+
+	frames_rendered = 0;
+}
+
+void GameCore::renderFPS() {
+	glm::vec3 text_color = glm::vec3(1.0, 1.0, 1.0);
+
+	if(fps_shown) {
+		int x;
+		int y;
+		SDL_GetWindowSize(window, &x, &y);
+		text.renderText(fps_to_render, x-80, y-50, 1.0f, text_color);
+	}
+}
 
 } /* namespace GameEngine */
