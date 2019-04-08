@@ -1,5 +1,5 @@
 /******************************************************************************
- * Attribute.cpp
+ * Primitive.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,49 +17,29 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_PRIMITIVE_HPP_
+#define SRC_PRIMITIVE_HPP_
 
-#include "Attribute.hpp"
-
-#include <Log.hpp>
+#include <GL/glew.h>
 
 namespace GameEngine {
 
-Attribute::Attribute(std::string _name)
-		: name(_name), location(-1), valid(false) {
-}
-
-bool Attribute::init(ProgramRef program) {
-	if(isValid()) {
-		return isValid();
-	}
-	location = glGetAttribLocation(program->getProgramHandle(), name.c_str());
-	if(location < 0) {
-		LOG_E("glGetAttribLocation(program, "<< name << ") returned " << location << "!  Could not bind attribute!");
-		valid = false;
-		return valid;
-	}
-	GLenum err;
-	if((err = glGetError()) != GL_NO_ERROR) {
-		if(err == GL_INVALID_OPERATION) {
-			LOG_E("glGetAttribLocation(program, "<< name << ") generated error GL_INVALID_OPERATION!  program is not a valid program object!");
-			valid = false;
-			return valid;
-		}
-	}
-	valid = true;
-	return valid;
-}
-
-bool Attribute::isValid() {
-	return valid;
-}
-std::string Attribute::getName() {
-	return name;
-}
-GLint Attribute::getLocation() {
-	return location;
-}
+enum class Primitive : GLenum {
+	POINTS = GL_POINTS,
+	LINES = GL_LINES,
+	LINE_STRIP = GL_LINE_STRIP,
+	LINE_LOOP = GL_LINE_LOOP,
+	TRIANGLES = GL_TRIANGLES,
+	TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
+	TRIANGLE_FAN = GL_TRIANGLE_FAN,
+	QUADS = GL_QUADS,
+	QUAD_STRIP = GL_QUAD_STRIP,
+	PATCHES = GL_PATCHES
+};
 
 } /* namespace GameEngine */
 
 
+
+
+#endif /* SRC_PRIMITIVE_HPP_ */

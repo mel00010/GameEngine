@@ -24,14 +24,8 @@
 
 #include <GameCore.hpp>
 
-class DVDCore : public GameEngine::GameCore {
-	public:
-		/* Make Singleton */
-		static DVDCore& getInstance() {
-			static DVDCore instance;
-			return instance;
-		}
 
+class DVDCore : public GameEngine::GameCore<DVDCore> {
 	public:
 		void setScale(glm::dvec2 scale) {
 			for(auto& i : dvds) {
@@ -62,10 +56,11 @@ class DVDCore : public GameEngine::GameCore {
 				dvds.pop_back();
 			}
 		}
-	protected:
-		virtual void setup();
-		virtual void tick();
-		virtual void render();
+	public:
+		void setup();
+		void tick();
+		void render();
+		void registerCallbacks();
 	protected:
 		std::list<DVD> dvds;
 

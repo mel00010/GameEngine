@@ -2,11 +2,12 @@ add_library(GameEngine STATIC "")
 target_sources(GameEngine
 	PRIVATE
 		Attribute.cpp
-		CallbackRegistration.cpp
 		Camera.cpp
-		GameCore.cpp
+		Mesh.cpp
+		Model.cpp
 		Program.cpp
 		Shader.cpp
+		Singleton.cpp
 		TextRenderer.cpp
 		Texture.cpp
 	PUBLIC
@@ -14,11 +15,15 @@ target_sources(GameEngine
 		${CMAKE_CURRENT_SOURCE_DIR}/Camera.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/GameCore.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/GL.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Mesh.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Model.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Program.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Shader.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Singleton.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TextRenderer.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Texture.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Vertex.hpp
+		
 )
 
 target_link_libraries(GameEngine

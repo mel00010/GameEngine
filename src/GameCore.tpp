@@ -1,5 +1,5 @@
 /******************************************************************************
- * GameCore.cpp
+ * GameCore.tpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -18,9 +18,11 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "GameCore.hpp"
+#ifndef SRC_GAMECORE_TPP_
+#define SRC_GAMECORE_TPP_
 
 #include "Attribute.hpp"
+#include "GameCore.hpp"
 #include "Shader.hpp"
 
 #include <Log.hpp>
@@ -39,27 +41,27 @@
 
 namespace GameEngine {
 
-GameCore::GameCore() : ms_per_tick(50) {
+template <typename Derived> GameCoreBase<Derived>::GameCoreBase() : ms_per_tick(50) {
 
 }
 
-void GameCore::runLoop() {
+template <typename Derived> void GameCoreBase<Derived>::runLoop() {
 	preSetup();
-	setup();
+	derived().setup();
 	postSetup();
 
 	loop();
 }
 
-void GameCore::preSetup() {
+template <typename Derived> void GameCoreBase<Derived>::preSetup() {
 	registerTimeoutCallback("tick", ms_per_tick, [this]() {
 		preTick();
-		tick();
+		derived().tick();
 		postTick();
 	}, true);
 	registerTimeoutCallback("render", 0, [this]() {
 		preRender();
-		render();
+		derived().render();
 		postRender();
 	}, true);
 	registerQuitEventCallback([](SDL_QuitEvent&) {
@@ -74,12 +76,13 @@ void GameCore::preSetup() {
 		}
 	});
 
-	registerCallbacks();
+	derived().registerCallbacks();
+	registerDefaultCallbacks();
 
 	initSDL();
 	initGL();
 }
-void GameCore::registerCallbacks() {
+template <typename Derived> void GameCoreBase<Derived>::registerDefaultCallbacks() {
 	registerKeyboardEventCallback(SDL_SCANCODE_Q,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { quit(); });
 	registerKeyboardEventCallback(SDL_SCANCODE_F,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleFPS(); });
 	registerKeyboardEventCallback(SDL_SCANCODE_F11, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleFullscreen(); });
@@ -88,31 +91,31 @@ void GameCore::registerCallbacks() {
 	registerKeyboardEventCallback(SDL_SCANCODE_E,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleCursor(); });
 }
 
-void GameCore::postSetup() {
+template <typename Derived> void GameCoreBase<Derived>::postSetup() {
 
 }
 
-void GameCore::preTick() {
+template <typename Derived> void GameCoreBase<Derived>::preTick() {
 
 }
 
-void GameCore::postTick() {
+template <typename Derived> void GameCoreBase<Derived>::postTick() {
 	calculateFPS();
 	dispatchCallbacks();
 }
 
-void GameCore::preRender() {
+template <typename Derived> void GameCoreBase<Derived>::preRender() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	frames_rendered++;
 	total_frames_rendered++;
 }
-void GameCore::postRender() {
+template <typename Derived> void GameCoreBase<Derived>::postRender() {
 	renderFPS();
 	SDL_GL_SwapWindow(window);
 }
 
-void GameCore::loop() {
+template <typename Derived> void GameCoreBase<Derived>::loop() {
 	for(;;) {
 		std::list<std::string> remove_list;
 		for (auto& i : timeout_callbacks) {
@@ -132,7 +135,7 @@ void GameCore::loop() {
 	}
 }
 
-void GameCore::initSDL() {
+template <typename Derived> void GameCoreBase<Derived>::initSDL() {
 	/* SDL-related initialising functions */
 	SDL_Init(SDL_INIT_VIDEO);
 	int flags = IMG_INIT_JPG | IMG_INIT_PNG;
@@ -157,7 +160,7 @@ void GameCore::initSDL() {
 	enableVSync();
 }
 
-void GameCore::initGL() {
+template <typename Derived> void GameCoreBase<Derived>::initGL() {
 	/* Extension wrangler initialising */
 	glewExperimental = GL_TRUE;
 	GLenum glew_status = glewInit();
@@ -172,11 +175,11 @@ void GameCore::initGL() {
 	text.init(window);
 }
 
-SDL_Window* GameCore::getWindow() {
+template <typename Derived> SDL_Window* GameCoreBase<Derived>::getWindow() {
 	return window;
 }
 
-void GameCore::setFullscreen(bool enable) {
+template <typename Derived> void GameCoreBase<Derived>::setFullscreen(bool enable) {
 	int should_be_zero = SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(window), &native);
 
 	if(should_be_zero != 0) {
@@ -198,10 +201,10 @@ void GameCore::setFullscreen(bool enable) {
 	}
 }
 
-bool GameCore::isCursorDisabled() {
+template <typename Derived> bool GameCoreBase<Derived>::isCursorDisabled() {
 	return cursor_disabled;
 }
-void GameCore::disableCursor(bool disabled) {
+template <typename Derived> void GameCoreBase<Derived>::disableCursor(bool disabled) {
 	cursor_disabled = disabled;
 	if(cursor_disabled) {
 		SDL_ShowCursor(SDL_DISABLE);
@@ -211,7 +214,7 @@ void GameCore::disableCursor(bool disabled) {
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
 }
-bool GameCore::toggleCursor() {
+template <typename Derived> bool GameCoreBase<Derived>::toggleCursor() {
 	if(cursor_disabled) {
 		cursor_disabled = false;
 		SDL_ShowCursor(SDL_ENABLE);
@@ -224,7 +227,7 @@ bool GameCore::toggleCursor() {
 	return cursor_disabled;
 }
 
-void GameCore::dispatchCallbacks() {
+template <typename Derived> void GameCoreBase<Derived>::dispatchCallbacks() {
 	SDL_Event ev;
 	while (SDL_PollEvent(&ev)) {
 		switch(ev.type) {
@@ -301,7 +304,7 @@ void GameCore::dispatchCallbacks() {
 	}
 }
 
-void GameCore::calculateFPS() {
+template <typename Derived> void GameCoreBase<Derived>::calculateFPS() {
 	static size_t tick_counter(0);
 	static size_t pos(0);
 	static std::array<double, 20> fps_avg_array({0});
@@ -327,7 +330,7 @@ void GameCore::calculateFPS() {
 	frames_rendered = 0;
 }
 
-void GameCore::renderFPS() {
+template <typename Derived> void GameCoreBase<Derived>::renderFPS() {
 	glm::vec3 text_color = glm::vec3(1.0, 1.0, 1.0);
 
 	if(fps_shown) {
@@ -339,3 +342,6 @@ void GameCore::renderFPS() {
 }
 
 } /* namespace GameEngine */
+
+#endif /* SRC_GAMECORE_TPP_ */
+

@@ -21,38 +21,25 @@
 #define SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_
 
 #include <Camera.hpp>
-#include <GameCore.hpp>
 #include <Model.hpp>
+#include <GameCore.hpp>
 
 
 using namespace GameEngine;
 
-struct Vertex {
-		glm::vec3 pos;
-		glm::vec2 tex;
-		Vertex(glm::vec3 _pos, glm::vec2 _tex) : pos(_pos), tex(_tex) {}
-};
-
-class CameraTestCore : public GameEngine::GameCore {
+class CameraTestCore : public GameEngine::GameCore<CameraTestCore> {
 	public:
-		/* Make Singleton */
-		static CameraTestCore& getInstance() {
-			static CameraTestCore instance;
-			return instance;
-		}
-
-	protected:
-		virtual void setup();
-		virtual void tick();
-		virtual void render();
-
+		void setup();
+		void tick();
+		void render();
+		void registerCallbacks();
 	protected:
 		glm::vec3 line_color = glm::vec3(1.0, 1.0, 0.0);
 		glm::vec3 cube_color = glm::vec3(1.0, 1.0, 1.0);
 
 		Camera camera;
-		Model<Vertex> cube;
-		Model<Vertex> grid;
+		Model cube;
+		Model grid;
 };
 
 

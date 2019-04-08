@@ -52,6 +52,7 @@ cmake_policy(SET CMP0072 NEW)
 set(OpenGL_GL_PREFERENCE "GLVND")
 
 include(GetLogger)
+include(GetAssimp)
 
 
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)

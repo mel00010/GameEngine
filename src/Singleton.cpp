@@ -1,5 +1,5 @@
 /******************************************************************************
- * Model.hpp
+ * Singleton.cpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,47 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_MODEL_HPP_
-#define SRC_MODEL_HPP_
 
-#define GLM_ENABLE_EXPERIMENTAL
+#include "Singleton.hpp"
 
-#include "GL.hpp"
-#include "Mesh.hpp"
-#include "Primitive.hpp"
-#include "Program.hpp"
-#include "Texture.hpp"
-#include "Vertex.hpp"
-
-#include <GL/glew.h>
-#include <glm/gtx/euler_angles.hpp>
-
-#include <vector>
-
-
-namespace GameEngine {
-
-class Model {
-	public:
-		Model() {};
-		Model(Mesh _mesh) : mesh(_mesh) {}
-
-		void init(Mesh _mesh) {
-			mesh = _mesh;
-		}
-	public:
-		void rotate(glm::vec3 delta);
-		void move(glm::vec3 delta);
-		void scale(double scale);
-
-		void draw(ProgramRef prog);
-
-	public:
-		glm::mat4 model = glm::mat4(1.0f);
-	protected:
-		Mesh mesh;
-};
-
-} /* namespace GameEngine */
-
-#endif /* SRC_MODEL_HPP_ */

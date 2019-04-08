@@ -57,18 +57,18 @@ class Program {
 
 		void useProgram();
 
-		void setUniformBool(const std::string &name, bool value) const;
-		void setUniformInt(const std::string &name, int value) const;
-		void setUniformFloat(const std::string &name, float value) const;
-		void setUniformVec2(const std::string &name, const glm::vec2 &value) const;
-		void setUniformVec2(const std::string &name, float x, float y) const;
-		void setUniformVec3(const std::string &name, const glm::vec3 &value) const;
-		void setUniformVec3(const std::string &name, float x, float y, float z) const;
-		void setUniformVec4(const std::string &name, const glm::vec4 &value) const;
-		void setUniformVec4(const std::string &name, float x, float y, float z, float w) const;
-		void setUniformMat2(const std::string &name, const glm::mat2 &mat) const;
-		void setUniformMat3(const std::string &name, const glm::mat3 &mat) const;
-		void setUniformMat4(const std::string &name, const glm::mat4 &mat) const;
+		void setBool(const std::string &name, bool value) const;
+		void setInt(const std::string &name, int value) const;
+		void setFloat(const std::string &name, float value) const;
+		void setVec2(const std::string &name, const glm::vec2 &value) const;
+		void setVec2(const std::string &name, float x, float y) const;
+		void setVec3(const std::string &name, const glm::vec3 &value) const;
+		void setVec3(const std::string &name, float x, float y, float z) const;
+		void setVec4(const std::string &name, const glm::vec4 &value) const;
+		void setVec4(const std::string &name, float x, float y, float z, float w) const;
+		void setMat2(const std::string &name, const glm::mat2 &mat) const;
+		void setMat3(const std::string &name, const glm::mat3 &mat) const;
+		void setMat4(const std::string &name, const glm::mat4 &mat) const;
 	private:
 		GLuint program;
 		bool valid;

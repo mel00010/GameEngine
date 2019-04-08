@@ -1,5 +1,5 @@
 /******************************************************************************
- * CallbackRegistration.cpp
+ * CallbackRegistration.tpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -18,11 +18,14 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifndef SRC_CALLBACKREGISTRATION_TPP_
+#define SRC_CALLBACKREGISTRATION_TPP_
+
 #include "GameCore.hpp"
 
 namespace GameEngine {
 
-bool GameCore::registerQuitEventCallback(std::function<void(SDL_QuitEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerQuitEventCallback(std::function<void(SDL_QuitEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_QUIT) {
 			return true;
@@ -36,12 +39,12 @@ bool GameCore::registerQuitEventCallback(std::function<void(SDL_QuitEvent&)> cal
 	return true;
 }
 
-bool GameCore::registerWindowEventCallback(std::function<void(SDL_WindowEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerWindowEventCallback(std::function<void(SDL_WindowEvent&)> callback) {
 	window_event_callbacks.push_back(callback);
 	return true;
 }
 
-bool GameCore::registerKeyboardEventCallback(SDL_Scancode key,
+template <typename Derived> bool GameCoreBase<Derived>::registerKeyboardEventCallback(SDL_Scancode key,
 				KeyEventType type,
 				std::function<void(SDL_KeyboardEvent&)> callback) {
 	if(type == KeyEventType::DOWN) {
@@ -52,7 +55,7 @@ bool GameCore::registerKeyboardEventCallback(SDL_Scancode key,
 	}
 	return true;
 }
-bool GameCore::registerKeyboardEventCallback(SDL_Scancode key,
+template <typename Derived> bool GameCoreBase<Derived>::registerKeyboardEventCallback(SDL_Scancode key,
 				KeyEventType type,
 				std::function<void(void)> callback) {
 	if(type == KeyEventType::HELD) {
@@ -60,7 +63,7 @@ bool GameCore::registerKeyboardEventCallback(SDL_Scancode key,
 	}
 	return true;
 }
-bool GameCore::registerTextEditingEventCallback(std::function<void(SDL_TextEditingEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerTextEditingEventCallback(std::function<void(SDL_TextEditingEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_TEXTEDITING) {
 			return true;
@@ -73,7 +76,7 @@ bool GameCore::registerTextEditingEventCallback(std::function<void(SDL_TextEditi
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerTextInputEventCallback(std::function<void(SDL_TextInputEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerTextInputEventCallback(std::function<void(SDL_TextInputEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_TEXTINPUT) {
 			return true;
@@ -87,12 +90,12 @@ bool GameCore::registerTextInputEventCallback(std::function<void(SDL_TextInputEv
 	return true;
 }
 
-bool GameCore::registerMouseMotionEventCallback(
+template <typename Derived> bool GameCoreBase<Derived>::registerMouseMotionEventCallback(
 		std::function<void(SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 /* delta */)> callback) {
 	m_move_callbacks.push_back(callback);
 	return true;
 }
-bool GameCore::registerMouseButtonEventCallback(uint8_t button,
+template <typename Derived> bool GameCoreBase<Derived>::registerMouseButtonEventCallback(uint8_t button,
 		ButtonEventType type,
 		std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)> callback) {
 	if(type == ButtonEventType::DOWN) {
@@ -103,7 +106,7 @@ bool GameCore::registerMouseButtonEventCallback(uint8_t button,
 	}
 	return true;
 }
-bool GameCore::registerMouseButtonEventCallback(uint8_t button,
+template <typename Derived> bool GameCoreBase<Derived>::registerMouseButtonEventCallback(uint8_t button,
 		ButtonEventType type,
 		std::function<void(void)> callback) {
 	if(type == ButtonEventType::HELD) {
@@ -111,16 +114,16 @@ bool GameCore::registerMouseButtonEventCallback(uint8_t button,
 	}
 	return true;
 }
-bool GameCore::registerImmediateMouseWheelEventCallback(std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerImmediateMouseWheelEventCallback(std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)> callback) {
 	m_immediate_wheel_callbacks.push_back(callback);
 	return true;
 }
-bool GameCore::registerMouseWheelEventCallback(std::function<void(glm::ivec2 /* delta */)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerMouseWheelEventCallback(std::function<void(glm::ivec2 /* delta */)> callback) {
 	m_wheel_callbacks.push_back(callback);
 	return true;
 }
 
-bool GameCore::registerJoyAxisEventCallback(std::function<void(SDL_JoyAxisEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerJoyAxisEventCallback(std::function<void(SDL_JoyAxisEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_JOYAXISMOTION) {
 			return true;
@@ -133,7 +136,7 @@ bool GameCore::registerJoyAxisEventCallback(std::function<void(SDL_JoyAxisEvent&
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerJoyBallEventCallback(	std::function<void(SDL_JoyBallEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerJoyBallEventCallback(	std::function<void(SDL_JoyBallEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_JOYBALLMOTION) {
 			return true;
@@ -146,7 +149,7 @@ bool GameCore::registerJoyBallEventCallback(	std::function<void(SDL_JoyBallEvent
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerJoyHatEventCallback(std::function<void(SDL_JoyHatEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerJoyHatEventCallback(std::function<void(SDL_JoyHatEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_JOYHATMOTION) {
 			return true;
@@ -159,7 +162,7 @@ bool GameCore::registerJoyHatEventCallback(std::function<void(SDL_JoyHatEvent&)>
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerJoyButtonEventCallback(
+template <typename Derived> bool GameCoreBase<Derived>::registerJoyButtonEventCallback(
 		uint8_t button,
 		ButtonEventType type,
 		std::function<void(SDL_JoyButtonEvent&)> callback) {
@@ -192,7 +195,7 @@ bool GameCore::registerJoyButtonEventCallback(
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerJoyDeviceAddedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerJoyDeviceAddedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_JOYDEVICEADDED) {
 			return true;
@@ -205,7 +208,7 @@ bool GameCore::registerJoyDeviceAddedEventCallback(std::function<void(SDL_JoyDev
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerJoyDeviceRemovedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerJoyDeviceRemovedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_JOYDEVICEREMOVED) {
 			return true;
@@ -219,7 +222,7 @@ bool GameCore::registerJoyDeviceRemovedEventCallback(std::function<void(SDL_JoyD
 	return true;
 }
 
-bool GameCore::registerControllerAxisEventCallback(std::function<void(SDL_ControllerAxisEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerControllerAxisEventCallback(std::function<void(SDL_ControllerAxisEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_CONTROLLERAXISMOTION) {
 			return true;
@@ -232,7 +235,7 @@ bool GameCore::registerControllerAxisEventCallback(std::function<void(SDL_Contro
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerControllerButtonEventCallback(
+template <typename Derived> bool GameCoreBase<Derived>::registerControllerButtonEventCallback(
 		SDL_GameControllerButton button,
 		ButtonEventType type,
 		std::function<void(SDL_ControllerButtonEvent&)> callback) {
@@ -265,7 +268,7 @@ bool GameCore::registerControllerButtonEventCallback(
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerControllerDeviceAddedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerControllerDeviceAddedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_CONTROLLERDEVICEADDED) {
 			return true;
@@ -278,7 +281,7 @@ bool GameCore::registerControllerDeviceAddedEventCallback(std::function<void(SDL
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerControllerDeviceRemovedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerControllerDeviceRemovedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_CONTROLLERDEVICEREMOVED) {
 			return true;
@@ -291,7 +294,7 @@ bool GameCore::registerControllerDeviceRemovedEventCallback(std::function<void(S
 	registerGenericEventCallback(matcher, caller);
 	return true;
 }
-bool GameCore::registerControllerDeviceRemappedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerControllerDeviceRemappedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_CONTROLLERDEVICEREMAPPED) {
 			return true;
@@ -305,7 +308,7 @@ bool GameCore::registerControllerDeviceRemappedEventCallback(std::function<void(
 	return true;
 }
 
-bool GameCore::registerFingerEventCallback(std::function<void(SDL_TouchFingerEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerFingerEventCallback(std::function<void(SDL_TouchFingerEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(		ev.type == SDL_FINGERMOTION ||
 				ev.type == SDL_FINGERDOWN ||
@@ -321,7 +324,7 @@ bool GameCore::registerFingerEventCallback(std::function<void(SDL_TouchFingerEve
 	return true;
 }
 
-bool GameCore::registerDollarGestureEventCallback(std::function<void(SDL_DollarGestureEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerDollarGestureEventCallback(std::function<void(SDL_DollarGestureEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(		ev.type == SDL_DOLLARGESTURE ||
 				ev.type == SDL_DOLLARRECORD) {
@@ -336,7 +339,7 @@ bool GameCore::registerDollarGestureEventCallback(std::function<void(SDL_DollarG
 	return true;
 }
 
-bool GameCore::registerMultiGestureEventCallback(std::function<void(SDL_MultiGestureEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerMultiGestureEventCallback(std::function<void(SDL_MultiGestureEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_MULTIGESTURE) {
 			return true;
@@ -350,7 +353,7 @@ bool GameCore::registerMultiGestureEventCallback(std::function<void(SDL_MultiGes
 	return true;
 }
 
-bool GameCore::registerDropEventCallback(std::function<void(SDL_DropEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerDropEventCallback(std::function<void(SDL_DropEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(		ev.type == SDL_DROPFILE ||
 				ev.type == SDL_DROPTEXT ||
@@ -367,7 +370,7 @@ bool GameCore::registerDropEventCallback(std::function<void(SDL_DropEvent&)> cal
 	return true;
 }
 
-bool GameCore::registerAudioDeviceEventCallback(std::function<void(SDL_AudioDeviceEvent&)> callback) {
+template <typename Derived> bool GameCoreBase<Derived>::registerAudioDeviceEventCallback(std::function<void(SDL_AudioDeviceEvent&)> callback) {
 	auto matcher = [](SDL_Event& ev) -> bool {
 		if(ev.type == SDL_AUDIODEVICEADDED || ev.type == SDL_AUDIODEVICEREMOVED) {
 			return true;
@@ -381,14 +384,14 @@ bool GameCore::registerAudioDeviceEventCallback(std::function<void(SDL_AudioDevi
 	return true;
 }
 
-bool GameCore::registerGenericEventCallback(
+template <typename Derived> bool GameCoreBase<Derived>::registerGenericEventCallback(
 		std::function<bool(SDL_Event&)> event_matcher,
 		std::function<void(SDL_Event&)> callback) {
 	event_callbacks.push_back(std::make_pair(event_matcher, callback));
 	return true;
 }
 
-bool GameCore::registerTimeoutCallback(std::string identifier, size_t ms, std::function<void(void)> callback, bool repeat) {
+template <typename Derived> bool GameCoreBase<Derived>::registerTimeoutCallback(std::string identifier, size_t ms, std::function<void(void)> callback, bool repeat) {
 	for(auto& i : timeout_callbacks) {
 		if(i.identifier == identifier) {
 			return false;
@@ -405,7 +408,7 @@ bool GameCore::registerTimeoutCallback(std::string identifier, size_t ms, std::f
 	return true;
 }
 
-bool GameCore::unregisterTimeoutCallback(std::string identifier) {
+template <typename Derived> bool GameCoreBase<Derived>::unregisterTimeoutCallback(std::string identifier) {
 	for (auto i = timeout_callbacks.begin(); i != timeout_callbacks.end(); i++) {
 		if(i->identifier == identifier) {
 			timeout_callbacks.erase(i);
@@ -417,4 +420,5 @@ bool GameCore::unregisterTimeoutCallback(std::string identifier) {
 
 } /* namespace GameEngine */
 
+#endif /* SRC_CALLBACKREGISTRATION_TPP_ */
 

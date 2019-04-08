@@ -22,8 +22,10 @@
 
 #include "GL.hpp"
 #include "Program.hpp"
+#include "Singleton.hpp"
 #include "TextRenderer.hpp"
 #include "Texture.hpp"
+
 
 #include <array>
 #include <functional>
@@ -58,22 +60,20 @@ class TimeoutCallback {
 		std::function<void(void)> callback;
 };
 
-class GameCore {
-	public:
-		/* Make Singleton */
-		GameCore(GameCore const&) = delete;
-		void operator=(GameCore const&) = delete;
+template <class Derived> class GameCore;
 
+template <typename Derived>
+class GameCoreBase {
 	public:
 		bool registerQuitEventCallback(std::function<void(SDL_QuitEvent&)> callback);
 
 		bool registerWindowEventCallback(std::function<void(SDL_WindowEvent&)> callback);
 
 		bool registerKeyboardEventCallback(SDL_Scancode key,
-						KeyEventType type,
+						::GameEngine::KeyEventType type,
 						std::function<void(SDL_KeyboardEvent&)> callback);
 		bool registerKeyboardEventCallback(SDL_Scancode key,
-						KeyEventType type,
+						::GameEngine::KeyEventType type,
 						std::function<void(void)> callback);
 		bool registerTextEditingEventCallback(std::function<void(SDL_TextEditingEvent&)> callback);
 		bool registerTextInputEventCallback(std::function<void(SDL_TextInputEvent&)> callback);
@@ -135,10 +135,7 @@ class GameCore {
 		void runLoop();
 
 	protected:
-		virtual void setup() = 0;
-		virtual void tick() = 0;
-		virtual void render() = 0;
-		virtual void registerCallbacks();
+		void registerDefaultCallbacks();
 
 	protected:
 		void preSetup();
@@ -158,8 +155,7 @@ class GameCore {
 		void initGL();
 		void initFreeType();
 
-		GameCore();
-
+		GameCoreBase();
 	public:
 		void setShowFPS(bool enable = false) { fps_shown = enable; }
 		bool isFPSShown() { return fps_shown; }
@@ -185,7 +181,7 @@ class GameCore {
 
 			registerTimeoutCallback("render", 1000/fps_cap, [this]() {
 				preRender();
-				render();
+				derived().render();
 				postRender();
 			}, true);
 		}
@@ -205,7 +201,7 @@ class GameCore {
 
 			registerTimeoutCallback("render", ms, [this]() {
 				preRender();
-				render();
+				derived().render();
 				postRender();
 			}, true);
 		}
@@ -226,6 +222,17 @@ class GameCore {
 			sdlevent.type = SDL_QUIT;
 			SDL_PushEvent(&sdlevent);
 		}
+
+
+	public:
+		/**** Convenience method for CRTP ****/
+		Derived& derived() {
+			return *static_cast<Derived*>(this);
+		}
+		using SubClass_T = Derived;
+		friend Singleton<GameCoreBase<Derived>>;
+		friend GameCore<Derived>;
+
 	protected:
 		GL gl;
 		ProgramRef p;
@@ -294,10 +301,15 @@ class GameCore {
 
 		std::list<std::pair<std::function<bool(SDL_Event&)>, std::function<void(SDL_Event&)>>> event_callbacks;
 };
+template <class Derived>
+class GameCore : public GameCoreBase<Derived>, public Singleton<Derived> {};
 
 } /* namespace GameEngine */
+//template <typename Derived> std::shared_ptr<Derived> GameEngine::GameCore<Derived>::_instance;
 
 
 
+#include "GameCore.tpp"
+#include "CallbackRegistration.tpp"
 
 #endif /* SRC_GAMECORE_HPP_ */

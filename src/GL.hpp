@@ -40,8 +40,8 @@ class GL {
 		}
 		void allocate(size_t vertex_size, size_t index_size, const GLvoid* verticies = nullptr, const GLvoid* indicies = nullptr) {
 			bind();
-			glBufferData(GL_ARRAY_BUFFER, vertex_size, verticies, GL_DYNAMIC_DRAW);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, indicies, GL_DYNAMIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertex_size, verticies, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, indicies, GL_STATIC_DRAW);
 		}
 		void addVertexPointer(size_t id, size_t vec_size, size_t type, size_t stride, size_t offset) {
 			bind();
@@ -52,10 +52,6 @@ class GL {
 		GLuint VAO;
 		GLuint VBO;
 		GLuint EBO;
-
-//		std::vector<Vertex> vao_buffer;
-//		std::vector<Vertex> vbo_buffer;
-//		std::vector<size_t> ebo_buffer;
 };
 
 } /* namespace GameEngine */

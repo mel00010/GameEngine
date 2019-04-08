@@ -21,10 +21,12 @@
 #define SRC_SHADER_HPP_
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 #include <memory>
 #include <ostream>
 #include <string>
+
 
 enum class ResourceID : size_t;
 enum class ResourceType : size_t;

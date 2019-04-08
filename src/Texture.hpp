@@ -26,12 +26,20 @@ class Resource;
 
 namespace GameEngine {
 
+enum TextureType {
+	DIFFUSE,
+	SPECULAR
+};
+
 class Texture {
 	public:
+		Texture() : id(-1), type(TextureType::DIFFUSE) {};
+		Texture(Resource resource_id);
 		GLuint loadTexture(Resource resource_id);
 
 	public:
-		GLuint texture;
+		GLuint id;
+		TextureType type;
 };
 
 } /* namespace GameEngine */

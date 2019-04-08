@@ -22,8 +22,6 @@
 
 #include "DVDCore.hpp"
 
-#include <GameCore.hpp>
-
 #include <Attribute.hpp>
 #include <Shader.hpp>
 
@@ -44,12 +42,12 @@
 #include <algorithm>
 #include <functional>
 
+#include <GameCore.hpp>
+
 using namespace GameEngine;
 
-void DVDCore::setup() {
-	setSpeed(2.0f);
-
-	registerKeyboardEventCallback(SDL_SCANCODE_R,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { reset(); });
+void DVDCore::registerCallbacks() {
+	registerKeyboardEventCallback(SDL_SCANCODE_R,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { this->reset(); });
 	registerKeyboardEventCallback(SDL_SCANCODE_A,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { addDVD(); });
 	registerKeyboardEventCallback(SDL_SCANCODE_D,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { removeDVD(); });
 	registerKeyboardEventCallback(SDL_SCANCODE_PAGEUP,		KeyEventType::HELD, [this]() { scroll_factor *= 1.0 + (0.0525/scroll_factor); });
@@ -72,6 +70,12 @@ void DVDCore::setup() {
 		}
 	});
 
+}
+
+void DVDCore::setup() {
+	setSpeed(2.0f);
+
+
 	p = std::make_shared<Program>();
 	p->init();
 	ShaderRef vertex_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], ShaderType::VERTEX);
@@ -83,7 +87,7 @@ void DVDCore::setup() {
 	p->link();
 
 	/* When all init functions run without errors,
-	   the glsl_program can initialise the resources */
+	   the glsl_program can initialize the resources */
 	if (!p->isValid()) {
 		throw EXIT_FAILURE;
 	}

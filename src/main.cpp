@@ -21,7 +21,7 @@
 #include "Triangle.hpp"
 
 #include "Attribute.hpp"
-#include "GameCore.hpp"
+#include "GameCoreBase.hpp"
 #include "Program.hpp"
 #include "Shader.hpp"
 #include "Window.hpp"

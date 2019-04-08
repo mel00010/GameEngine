@@ -1,5 +1,5 @@
 /******************************************************************************
- * Render.hpp
+ * Mesh.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,20 +17,49 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_RENDER_HPP_
-#define SRC_RENDER_HPP_
+#ifndef SRC_MESH_HPP_
+#define SRC_MESH_HPP_
 
+#define GLM_ENABLE_EXPERIMENTAL
+
+#include "GL.hpp"
+#include "Primitive.hpp"
 #include "Program.hpp"
+#include "Texture.hpp"
+#include "Vertex.hpp"
 
-#include <SDL2/SDL.h>
+#include <glm/gtx/euler_angles.hpp>
+#include <GL/glew.h>
+#include <vector>
+
 
 namespace GameEngine {
 
-void render(SDL_Window* window, ProgramRef program);
+class Mesh {
+	public:
+		Mesh() {}
+		Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures,
+				const Primitive mode, bool indices_enabled);
+		void draw(ProgramRef prog);
+
+	protected:
+		void setupMesh();
+
+	public:
+		/*  Mesh Data  */
+		std::vector<Vertex> vertices;
+		std::vector<GLuint> indices;
+		std::vector<Texture> textures;
+
+	protected:
+		GL gl;
+		Primitive mode = Primitive::TRIANGLES;
+		bool indices_enabled = true;
+};
 
 } /* namespace GameEngine */
 
 
 
 
-#endif /* SRC_RENDER_HPP_ */
+#endif /* SRC_MESH_HPP_ */

@@ -31,134 +31,7 @@
 
 using namespace GameEngine;
 
-void CameraTestCore::setup() {
-	p = std::make_shared<Program>();
-	p->init();
-	ShaderRef vertex_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], ShaderType::VERTEX);
-	ShaderRef fragment_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::FRAGMENT_SHADER)], ShaderType::FRAGMENT);
-	vertex_shader->init();
-	fragment_shader->init();
-	p->attachShader(vertex_shader);
-	p->attachShader(fragment_shader);
-	p->link();
-
-	/* When all init functions run without errors,
-	   the glsl_program can initialise the resources */
-	if (!p->isValid()) {
-		throw EXIT_FAILURE;
-	}
-	p->useProgram();
-
-	gl.init();
-	gl.bind();
-	gl.allocate(sizeof(Vertex) * 36, sizeof(Vertex) * 36);
-	// vertex
-	gl.addVertexPointer(0, 3, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, pos));
-	gl.addVertexPointer(1, 2, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex));
-
-
-
-	cube.init(Primitive::TRIANGLES, Texture().loadTexture(Resources[static_cast<size_t>(ResourceID::WALL)]));
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 0.0f))); // 0
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec2(1.0f, 0.0f))); // 1
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec2(1.0f, 1.0f))); // 2
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec2(1.0f, 1.0f))); // 3
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 4
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 0.0f))); // 5
-
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec2(0.0f, 0.0f))); // 6
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 7
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 1.0f))); // 8
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 1.0f))); // 9
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec2(0.0f, 1.0f))); // 10
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec2(0.0f, 0.0f))); // 11
-
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 12
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec2(1.0f, 1.0f))); // 13
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 14
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 15
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec2(0.0f, 0.0f))); // 16
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 17
-
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 18
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec2(1.0f, 1.0f))); // 19
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 20
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 21
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec2(0.0f, 0.0f))); // 22
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 23
-
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 24
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec2(1.0f, 1.0f))); // 25
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 26
-	cube.addVertex(Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 27
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec2(0.0f, 0.0f))); // 28
-	cube.addVertex(Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 29
-
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 30
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec2(1.0f, 1.0f))); // 31
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 32
-	cube.addVertex(Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec2(1.0f, 0.0f))); // 33
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec2(0.0f, 0.0f))); // 34
-	cube.addVertex(Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec2(0.0f, 1.0f))); // 35
-
-	cube.move(glm::vec3(0.0, 0.5, 0.0));
-	cube.scale(0.25);
-	cube.finalize();
-	camera.init(window, p);
-
-	unsigned char* data;
-	// Allocate the needed space.
-	int width;
-	int height;
-	width = height = 128;
-
-	data = new unsigned char[width * height * sizeof(unsigned char)];
-
-	for(int i = 0; i < (int)(width * height * sizeof(unsigned char)); i++)
-	{
-		data[i] = 255;
-	}
-
-	// Generate white OpenGL texture.
-	GLuint whiteTextureID;
-	glGenTextures(1, &whiteTextureID);
-	glBindTexture(GL_TEXTURE_2D, whiteTextureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-	glLineWidth(3);
-
-	grid.init(Primitive::LINES, whiteTextureID);
-
-	int w;
-	int h;
-	SDL_GetWindowSize(window, &w, &h);
-
-	float x = 0;
-	float y = 0;
-	for (size_t j = 0; j < 250; j++) {
-		x = 0;
-		for (size_t i = 0; i < 250; i++) {
-			grid.addVertex(Vertex(glm::vec3(-12.5 + x, -12.5 + y, 0.0), glm::vec2(1.0, 0.0)));
-			grid.addVertex(Vertex(glm::vec3(-10.0 + x, -12.5 + y, 0.0), glm::vec2(1.0, 0.0)));
-
-			grid.addVertex(Vertex(glm::vec3(-10.0 + x, -12.5 + y, 0.0), glm::vec2(1.0, 0.0)));
-			grid.addVertex(Vertex(glm::vec3(-10.0 + x, -10.0 + y, 0.0), glm::vec2(1.0, 0.0)));
-
-			grid.addVertex(Vertex(glm::vec3(-10.0 + x, -10.0 + y, 0.0), glm::vec2(1.0, 0.0)));
-			grid.addVertex(Vertex(glm::vec3(-12.5 + x, -10.0 + y, 0.0), glm::vec2(1.0, 0.0)));
-
-			grid.addVertex(Vertex(glm::vec3(-12.5 + x, -10.0 + y, 0.0), glm::vec2(1.0, 0.0)));
-			grid.addVertex(Vertex(glm::vec3(-12.5 + x, -12.5 + y, 0.0), glm::vec2(1.0, 0.0)));
-			x += 0.1;
-		}
-		y += 0.1;
-	}
-	grid.finalize();
-	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
-
-
+void CameraTestCore::registerCallbacks() {
 	registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
 		glm::vec3 dir = camera.cameraFront;
 		dir.y = 0.0f;
@@ -214,6 +87,135 @@ void CameraTestCore::setup() {
 	}, true);
 }
 
+
+void CameraTestCore::setup() {
+	p = std::make_shared<Program>();
+	p->init();
+	ShaderRef vertex_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], ShaderType::VERTEX);
+	ShaderRef fragment_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::FRAGMENT_SHADER)], ShaderType::FRAGMENT);
+	vertex_shader->init();
+	fragment_shader->init();
+	p->attachShader(vertex_shader);
+	p->attachShader(fragment_shader);
+	p->link();
+
+	/* When all init functions run without errors,
+	   the glsl_program can initialise the resources */
+	if (!p->isValid()) {
+		throw EXIT_FAILURE;
+	}
+	p->useProgram();
+
+	Texture texture(Resources[static_cast<size_t>(ResourceID::WALL)]);
+
+	std::vector<Vertex> cube_vertices;
+	std::vector<GLuint> cube_indices;
+	std::vector<Texture> cube_textures;
+	cube_textures.push_back(texture);
+
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 0
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 1
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 2
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 3
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 4
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 5
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 6
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 7
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 8
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 9
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 10
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 11
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 12
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 13
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 14
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 15
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 16
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 17
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 18
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 19
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 20
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 21
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 22
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 23
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 24
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 25
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 26
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 27
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 28
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 29
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 30
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 31
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 32
+	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 33
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 34
+	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 35
+
+	cube.init(Mesh(cube_vertices, cube_indices, cube_textures, Primitive::TRIANGLES, false));
+
+	cube.move(glm::vec3(0.0, 0.5, 0.0));
+	cube.scale(0.25);
+	camera.init(window, p);
+
+	unsigned char* data;
+	// Allocate the needed space.
+	int width;
+	int height;
+	width = height = 128;
+
+	data = new unsigned char[width * height * sizeof(unsigned char)];
+
+	for(int i = 0; i < (int)(width * height * sizeof(unsigned char)); i++)
+	{
+		data[i] = 255;
+	}
+
+	// Generate white OpenGL texture.
+	Texture whiteTexture;
+	glGenTextures(1, &whiteTexture.id);
+	glBindTexture(GL_TEXTURE_2D, whiteTexture.id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+	glLineWidth(3);
+
+	std::vector<Vertex> grid_vertices;
+	std::vector<GLuint> grid_indices;
+	std::vector<Texture> grid_textures;
+	grid_textures.push_back(whiteTexture);
+
+	int w;
+	int h;
+	SDL_GetWindowSize(window, &w, &h);
+
+	float x = 0;
+	float y = 0;
+	for (size_t j = 0; j < 250; j++) {
+		x = 0;
+		for (size_t i = 0; i < 250; i++) {
+			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+
+			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+
+			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+
+			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
+			x += 0.1;
+		}
+		y += 0.1;
+	}
+
+	grid.init(Mesh(grid_vertices, grid_indices, grid_textures, Primitive::LINES, false));
+	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
+
+
+
+}
+
 void CameraTestCore::render() {
 	p->useProgram();
 	gl.bind();
@@ -221,11 +223,11 @@ void CameraTestCore::render() {
 	cube.rotate(glm::vec3(glm::radians(0.1f), glm::radians(0.2f), glm::radians(-0.3f)));
 
 	glUniform3fv(glGetUniformLocation(p->getPH(), "color"), 1, (float*)&cube_color[0]);
-	camera.drawModel(cube);
+	camera.drawModel(cube, p);
 
 
 	glUniform3fv(glGetUniformLocation(p->getPH(), "color"), 1, (float*)&line_color[0]);
-	camera.drawModel(grid);
+	camera.drawModel(grid, p);
 
 }
 

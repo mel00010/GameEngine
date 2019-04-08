@@ -1,5 +1,5 @@
 /******************************************************************************
- * Main_Loop.hpp
+ * Model.cpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,19 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_MAIN_LOOP_HPP_
-#define SRC_MAIN_LOOP_HPP_
 
-#include "Program.hpp"
-
-#include <SDL2/SDL.h>
+#include "Model.hpp"
 
 namespace GameEngine {
 
-void main_loop(SDL_Window* window, ProgramRef program);
+void Model::rotate(glm::vec3 delta) {
+	model *= glm::orientate4(delta);
+}
+void Model::move(glm::vec3 delta) {
+	model = glm::translate(model, delta);
+}
+void Model::scale(double scale) {
+	model = glm::scale(model, glm::vec3(scale, scale, scale));
+}
+
+
+void Model::draw(ProgramRef prog) {
+	mesh.draw(prog);
+}
 
 } /* namespace GameEngine */
-
-
-
-#endif /* SRC_MAIN_LOOP_HPP_ */

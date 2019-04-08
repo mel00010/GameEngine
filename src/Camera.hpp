@@ -22,6 +22,8 @@
 
 #include "Model.hpp"
 
+#include <Log.hpp>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -51,6 +53,7 @@ class Camera {
 		void rotateCamera(double _yaw, double _pitch) {
 			yaw += _yaw;
 			pitch += _pitch;
+//			LOG_D("_yaw = " << _yaw << " | _pitch = " << _pitch);
 
 			glm::vec3 direction;
 			direction.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
@@ -77,7 +80,7 @@ class Camera {
 			projection = glm::perspective(glm::radians(fov), static_cast<float>(x) / static_cast<float>(y), 0.1f, 100.0f);
 		}
 
-		template <typename Vertex> void drawModel(Model<Vertex>& model) {
+		void drawModel(Model& model, ProgramRef prog) {
 			// retrieve the matrix uniform locations
 			unsigned int modelLoc		= glGetUniformLocation(p->getPH(), "model");
 			unsigned int viewLoc		= glGetUniformLocation(p->getPH(), "view");
@@ -87,7 +90,7 @@ class Camera {
 			glUniformMatrix4fv(modelLoc,		1, GL_FALSE, &model.model[0][0]);
 			glUniformMatrix4fv(viewLoc, 		1, GL_FALSE, &view[0][0]);
 			glUniformMatrix4fv(projectionLoc,	1, GL_FALSE, &projection[0][0]);
-			model.draw();
+			model.draw(prog);
 		}
 
 		SDL_Window* window;
