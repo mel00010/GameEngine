@@ -45,18 +45,12 @@ enum class ShaderType : GLenum {
 };
 inline std::ostream& operator<<(std::ostream& os, ShaderType type) {
 	switch(type) {
-		case ShaderType::VERTEX:
-			return os << "ShaderType::VERTEX";
-		case ShaderType::TESS_CONTROL:
-			return os << "ShaderType::TESS_CONTROL";
-		case ShaderType::TESS_EVALUATION:
-			return os << "ShaderType::TESS_EVALUATION";
-		case ShaderType::GEOMETRY:
-			return os << "ShaderType::GEOMETRY";
-		case ShaderType::FRAGMENT:
-			return os << "ShaderType::FRAGMENT";
-		case ShaderType::COMPUTE:
-			return os << "ShaderType::COMPUTE";
+		case ShaderType::VERTEX: 			return os << "ShaderType::VERTEX";
+		case ShaderType::TESS_CONTROL:		return os << "ShaderType::TESS_CONTROL";
+		case ShaderType::TESS_EVALUATION:	return os << "ShaderType::TESS_EVALUATION";
+		case ShaderType::GEOMETRY:			return os << "ShaderType::GEOMETRY";
+		case ShaderType::FRAGMENT:			return os << "ShaderType::FRAGMENT";
+		case ShaderType::COMPUTE:			return os << "ShaderType::COMPUTE";
 	}
 	return os;
 }

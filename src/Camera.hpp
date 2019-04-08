@@ -53,7 +53,6 @@ class Camera {
 		void rotateCamera(double _yaw, double _pitch) {
 			yaw += _yaw;
 			pitch += _pitch;
-//			LOG_D("_yaw = " << _yaw << " | _pitch = " << _pitch);
 
 			glm::vec3 direction;
 			direction.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
@@ -74,8 +73,7 @@ class Camera {
 			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		}
 		void updateProjection() {
-			int x;
-			int y;
+			int x, y;
 			SDL_GetWindowSize(window, &x, &y);
 			projection = glm::perspective(glm::radians(fov), static_cast<float>(x) / static_cast<float>(y), 0.1f, 100.0f);
 		}

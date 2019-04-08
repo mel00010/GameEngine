@@ -69,9 +69,7 @@ void TextRenderer::init(SDL_Window* _window) {
 
 	/* When all init functions run without errors,
 	   the glsl_program can initialise the resources */
-	if (!p->isValid()) {
-		throw EXIT_FAILURE;
-	}
+	if (!p->isValid()) { throw EXIT_FAILURE; }
 	p->useProgram();
 	window = _window;
 
@@ -132,7 +130,6 @@ void TextRenderer::init(SDL_Window* _window) {
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	FT_Done_Face(face);
@@ -146,20 +143,15 @@ void TextRenderer::init(SDL_Window* _window) {
 	gl.addVertexPointer(0, 2, GL_FLOAT, sizeof(GLfloat) * 4, 0);
 	gl.addVertexPointer(1, 2, GL_FLOAT, sizeof(GLfloat) * 4, sizeof(GLfloat) * 2);
 
-
 	valid = true;
 }
 
 void TextRenderer::renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
-	if(!valid) {
-		return;
-	}
+	if(!valid) { return; }
 	p->useProgram();
 	gl.bind();
 
-
-	int width;
-	int height;
+	int width, height;
 	SDL_GetWindowSize(window, &width, &height);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
 	glUniformMatrix4fv(glGetUniformLocation(p->getPH(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));

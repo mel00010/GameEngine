@@ -2,12 +2,10 @@ add_library(GameEngine STATIC "")
 target_sources(GameEngine
 	PRIVATE
 		Attribute.cpp
-		Camera.cpp
 		Mesh.cpp
 		Model.cpp
 		Program.cpp
 		Shader.cpp
-		Singleton.cpp
 		TextRenderer.cpp
 		Texture.cpp
 	PUBLIC

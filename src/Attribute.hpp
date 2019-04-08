@@ -29,18 +29,15 @@ namespace GameEngine {
 class Attribute {
 	public:
 		Attribute(std::string name);
-
-	public:
 		bool init(ProgramRef program);
 
-		bool isValid();
-		std::string getName();
-		GLint getLocation();
+		bool 		isValid();
+		std::string	getName();
+		GLint		getLocation();
 
-
-		std::string name;
-		GLint location;
-		bool valid;
+		std::string	name;
+		GLint		location;
+		bool		valid;
 };
 
 using AttributeRef = std::shared_ptr<Attribute>;

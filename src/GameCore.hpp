@@ -305,9 +305,6 @@ template <class Derived>
 class GameCore : public GameCoreBase<Derived>, public Singleton<Derived> {};
 
 } /* namespace GameEngine */
-//template <typename Derived> std::shared_ptr<Derived> GameEngine::GameCore<Derived>::_instance;
-
-
 
 #include "GameCore.tpp"
 #include "CallbackRegistration.tpp"

@@ -23,42 +23,24 @@
 #include <type_traits>
 
 template<class> struct sfinae_true: std::true_type {};
-
 namespace detail {
-	template<class T> constexpr static auto parent_test(int)  -> sfinae_true<typename T::SubClass_T>;
-	template<class>   constexpr static auto parent_test(long) -> std::false_type;
+	template<class T> constexpr static auto subclass_test(int)  -> sfinae_true<typename T::SubClass_T>;
+	template<class>   constexpr static auto subclass_test(long) -> std::false_type;
 } /* namespace detail */
-
-
-template<class T> struct has_derived: decltype(detail::parent_test<T>(0)){};;
+template<class T> struct has_subclass: decltype(detail::subclass_test<T>(0)){};;
 
 template <class SC, typename Enable = void> class Singleton;
-template <class SC>																					// primary
-class Singleton<SC, typename std::enable_if_t<!has_derived<SC>::value>> {
-	public:
-		static_assert(has_derived<SC>() == false, "fail primary");
+template <class SC> struct Singleton<SC, typename std::enable_if_t<!has_subclass<SC>::value>> {
 		friend SC;
-		/** Singleton creation function */
-		static inline SC& getInstance() {
-			static SC sc;
-			return sc;
-		}
+		static 		  SC& getInstance() { static SC sc; return sc; }
 		static inline SC& instance() { return getInstance(); }
 };
 
-template <class SC>																					// Has Subclass
-class Singleton<SC, typename std::enable_if_t<has_derived<SC>::value>> {
-	public:
-		static_assert(has_derived<SC>() == true, "fail derived");
-		using s_class_t = typename SC::SubClass_T;
+template <class SC> struct Singleton<SC, typename std::enable_if_t<has_subclass<SC>::value>> {
 		friend SC;
-		friend s_class_t;
-
-		/** Singleton creation function */
-		static inline s_class_t& getInstance() {
-			static SC sc;
-			return sc.derived();
-		}
-		static inline s_class_t& instance() { return getInstance(); }
+		friend typename SC::SubClass_T;
+		static 		  typename SC::SubClass_T& getInstance() { static SC sc; return sc.derived(); }
+		static inline typename SC::SubClass_T& instance() { return getInstance(); }
 };
+
 #endif /* SRC_SINGLETON_HPP_ */

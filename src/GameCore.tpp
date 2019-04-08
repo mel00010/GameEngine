@@ -41,9 +41,7 @@
 
 namespace GameEngine {
 
-template <typename Derived> GameCoreBase<Derived>::GameCoreBase() : ms_per_tick(50) {
-
-}
+template <typename Derived> GameCoreBase<Derived>::GameCoreBase() : ms_per_tick(50) { }
 
 template <typename Derived> void GameCoreBase<Derived>::runLoop() {
 	preSetup();
@@ -76,8 +74,8 @@ template <typename Derived> void GameCoreBase<Derived>::preSetup() {
 		}
 	});
 
-	derived().registerCallbacks();
 	registerDefaultCallbacks();
+	derived().registerCallbacks();
 
 	initSDL();
 	initGL();
@@ -91,19 +89,12 @@ template <typename Derived> void GameCoreBase<Derived>::registerDefaultCallbacks
 	registerKeyboardEventCallback(SDL_SCANCODE_E,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleCursor(); });
 }
 
-template <typename Derived> void GameCoreBase<Derived>::postSetup() {
-
-}
-
-template <typename Derived> void GameCoreBase<Derived>::preTick() {
-
-}
-
+template <typename Derived> void GameCoreBase<Derived>::postSetup() { }
+template <typename Derived> void GameCoreBase<Derived>::preTick() { }
 template <typename Derived> void GameCoreBase<Derived>::postTick() {
 	calculateFPS();
 	dispatchCallbacks();
 }
-
 template <typename Derived> void GameCoreBase<Derived>::preRender() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -175,14 +166,10 @@ template <typename Derived> void GameCoreBase<Derived>::initGL() {
 	text.init(window);
 }
 
-template <typename Derived> SDL_Window* GameCoreBase<Derived>::getWindow() {
-	return window;
-}
+template <typename Derived> SDL_Window* GameCoreBase<Derived>::getWindow() { return window; }
 
 template <typename Derived> void GameCoreBase<Derived>::setFullscreen(bool enable) {
-	int should_be_zero = SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(window), &native);
-
-	if(should_be_zero != 0) {
+	if(SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(window), &native) != 0) {
 		// In case of error...
 		LOG_E("Could not get display mode for video display #"<< SDL_GetWindowDisplayIndex(window) <<": " << SDL_GetError());
 		throw EXIT_FAILURE;
@@ -201,9 +188,7 @@ template <typename Derived> void GameCoreBase<Derived>::setFullscreen(bool enabl
 	}
 }
 
-template <typename Derived> bool GameCoreBase<Derived>::isCursorDisabled() {
-	return cursor_disabled;
-}
+template <typename Derived> bool GameCoreBase<Derived>::isCursorDisabled() { return cursor_disabled; }
 template <typename Derived> void GameCoreBase<Derived>::disableCursor(bool disabled) {
 	cursor_disabled = disabled;
 	if(cursor_disabled) {
@@ -315,18 +300,18 @@ template <typename Derived> void GameCoreBase<Derived>::calculateFPS() {
 	fps_avg = std::accumulate(fps_avg_array.begin(), fps_avg_array.end(), 0) / 20;
 
 	fps_avg_array[pos] = fps;
-	if (pos >= 19) {
+	if( pos >= 19) {
 		pos = 0;
 	} else {
 		pos++;
 	}
+
 	if(tick_counter > ticks_per_second/10) {
 		tick_counter = 0;
 		std::stringstream ss;
 		ss << std::fixed << std::setprecision(0) << fps_avg;
 		fps_to_render = ss.str();
 	}
-
 	frames_rendered = 0;
 }
 
@@ -334,8 +319,7 @@ template <typename Derived> void GameCoreBase<Derived>::renderFPS() {
 	glm::vec3 text_color = glm::vec3(1.0, 1.0, 1.0);
 
 	if(fps_shown) {
-		int x;
-		int y;
+		int x, y;
 		SDL_GetWindowSize(window, &x, &y);
 		text.renderText(fps_to_render, x-80, y-50, 1.0f, text_color);
 	}

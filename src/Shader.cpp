@@ -39,40 +39,29 @@ class Resource {
 namespace GameEngine {
 
 Shader::Shader(std::string _source, ShaderType _type) :
-		source(_source),
-		type(_type),
-		shader(glCreateShader(static_cast<GLenum>(_type))),
-		valid(false) {
-
-}
+		source(_source), type(_type),
+		shader(glCreateShader(static_cast<GLenum>(_type))), valid(false) {}
 
 Shader::Shader(Resource resource, ShaderType _type) :
-		type(_type),
-		shader(glCreateShader(static_cast<GLenum>(_type))),
+		type(_type), shader(glCreateShader(static_cast<GLenum>(_type))),
 		valid(false) {
 	std::string file_location;
 	char *base_path = SDL_GetBasePath();
-	if (base_path) {
-		file_location = base_path;
-	} else {
-		file_location = SDL_strdup("./");
-	}
+	if (base_path) {	file_location = base_path; }
+	else {				file_location = SDL_strdup("./"); }
+
 	file_location+=resource.file_path;
 	std::ifstream file(file_location);
 	source = std::string((std::istreambuf_iterator<char>(file)),
-			std::istreambuf_iterator<char>());
+			 std::istreambuf_iterator<char>());
 }
 Shader::~Shader() {
-	if(isValid()) {
-		glDeleteShader(shader);
-	}
+	if(isValid()) { glDeleteShader(shader); }
 	valid = false;
 }
 
 bool Shader::init() {
-	if(isValid()) {
-		return isValid();
-	}
+	if(isValid()) { return isValid(); }
 
 	const char* c_str = source.c_str();
 	glShaderSource(shader, 1, &c_str, NULL);
@@ -91,23 +80,14 @@ bool Shader::init() {
 		LOG_E(log_contents);
 		LOG_E("Shading language version = " << glGetString(GL_SHADING_LANGUAGE_VERSION));
 		glDeleteShader(shader);
-		valid = false;
-		return valid;
+		return (valid = false);
 	}
-	valid = true;
-	return valid;
+	return (valid = true);
 }
 
-bool Shader::isValid() const {
-	return valid;
-}
-
-ShaderType Shader::getShaderType() {
-	return type;
-}
-GLuint Shader::getShaderHandle() {
-	return shader;
-}
+bool Shader::isValid() const {			return valid; }
+ShaderType Shader::getShaderType() {	return type; }
+GLuint Shader::getShaderHandle() {		return shader; }
 
 } /* namespace GameEngine */
 

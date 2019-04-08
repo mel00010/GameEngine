@@ -42,9 +42,7 @@ class Model {
 		Model() {};
 		Model(Mesh _mesh) : mesh(_mesh) {}
 
-		void init(Mesh _mesh) {
-			mesh = _mesh;
-		}
+		void init(Mesh _mesh) { mesh = _mesh; }
 	public:
 		void rotate(glm::vec3 delta);
 		void move(glm::vec3 delta);

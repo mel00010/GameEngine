@@ -24,41 +24,29 @@
 
 namespace GameEngine {
 
-Attribute::Attribute(std::string _name)
-		: name(_name), location(-1), valid(false) {
-}
+Attribute::Attribute(std::string _name) : name(_name), location(-1), valid(false) { }
 
 bool Attribute::init(ProgramRef program) {
 	if(isValid()) {
 		return isValid();
 	}
-	location = glGetAttribLocation(program->getProgramHandle(), name.c_str());
-	if(location < 0) {
+
+	if( (location = glGetAttribLocation(program->getProgramHandle(), name.c_str()) ) < 0) {
 		LOG_E("glGetAttribLocation(program, "<< name << ") returned " << location << "!  Could not bind attribute!");
-		valid = false;
-		return valid;
+		return (valid = false);
 	}
+
 	GLenum err;
-	if((err = glGetError()) != GL_NO_ERROR) {
-		if(err == GL_INVALID_OPERATION) {
-			LOG_E("glGetAttribLocation(program, "<< name << ") generated error GL_INVALID_OPERATION!  program is not a valid program object!");
-			valid = false;
-			return valid;
-		}
+	if((err = glGetError()) != GL_NO_ERROR && err == GL_INVALID_OPERATION) {
+		LOG_E("glGetAttribLocation(program, "<< name << ") generated error GL_INVALID_OPERATION!  program is not a valid program object!");
+		return (valid = false);
 	}
-	valid = true;
-	return valid;
+	return (valid = true);
 }
 
-bool Attribute::isValid() {
-	return valid;
-}
-std::string Attribute::getName() {
-	return name;
-}
-GLint Attribute::getLocation() {
-	return location;
-}
+bool Attribute::isValid() 			{ return valid;	}
+std::string Attribute::getName()	{ return name;		}
+GLint Attribute::getLocation()		{ return location;	}
 
 } /* namespace GameEngine */
 

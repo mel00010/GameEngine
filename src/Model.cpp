@@ -32,7 +32,6 @@ void Model::scale(double scale) {
 	model = glm::scale(model, glm::vec3(scale, scale, scale));
 }
 
-
 void Model::draw(ProgramRef prog) {
 	mesh.draw(prog);
 }

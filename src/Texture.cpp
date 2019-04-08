@@ -59,22 +59,11 @@ enum Color {
 		ALPHA = 3
 };
 
-
-bool isRed(Color color) {
-	return (color == RED);
-}
-bool isGreen(Color color) {
-	return (color == GREEN);
-}
-bool isBlue(Color color) {
-	return (color == BLUE);
-}
-bool isAlpha(Color color) {
-	return (color == ALPHA);
-}
-bool isEmpty(Color color) {
-	return (color == EMPTY);
-}
+bool isRed(Color color) {	return (color == RED);   }
+bool isGreen(Color color) {	return (color == GREEN); }
+bool isBlue(Color color) {	return (color == BLUE);  }
+bool isAlpha(Color color) {	return (color == ALPHA); }
+bool isEmpty(Color color) {	return (color == EMPTY); }
 
 GLFormat determinePixelFormat(SDL_PixelFormat* format) {
 	GLFormat f;
@@ -101,81 +90,31 @@ GLFormat determinePixelFormat(SDL_PixelFormat* format) {
 	if(format->Amask & 0x00FF0000) { bytes[2] = ALPHA; }
 	if(format->Amask & 0xFF000000) { bytes[3] = ALPHA; }
 
-//	for(size_t i = 0; i < 4 ; i++) {
-//		switch(bytes[i]) {
-//			case EMPTY:
-//				LOG_D("bytes[" << i << "] = EMPTY");
-//				break;
-//			case RED:
-//				LOG_D("bytes[" << i << "] = RED" );
-//				break;
-//			case GREEN:
-//				LOG_D("bytes[" << i << "] = GREEN");
-//				break;
-//			case BLUE:
-//				LOG_D("bytes[" << i << "] = BLUE");
-//				break;
-//			case ALPHA:
-//				LOG_D("bytes[" << i << "] = ALPHA");
-//				break;
-//		}
-//	}
-
-	if(isRed(bytes[0]) && isGreen(bytes[1]) && isBlue(bytes[2])  && isAlpha(bytes[3])) {
-		f.e_format = GL_RGBA;
-		f.i_format = GL_RGBA;
-		return f;
+	if(     isRed(bytes[0])  && isGreen(bytes[1]) && isBlue(bytes[2])  && isAlpha(bytes[3])) { f.e_format = GL_RGBA; f.i_format = GL_RGBA; }
+	else if(isRed(bytes[0])  && isGreen(bytes[1]) && isBlue(bytes[2])  && isEmpty(bytes[3])) { f.e_format = GL_RGB;  f.i_format = GL_RGB;  }
+	else if(isBlue(bytes[0]) && isGreen(bytes[1]) && isRed(bytes[2])   && isAlpha(bytes[3])) { f.e_format = GL_BGRA; f.i_format = GL_RGBA; }
+	else if(isBlue(bytes[0]) && isGreen(bytes[1]) && isRed(bytes[2])   && isEmpty(bytes[3])) { f.e_format = GL_BGR;  f.i_format = GL_RGB;  }
+	else if(isRed(bytes[0])  && isGreen(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RG;   f.i_format = GL_RG;   }
+	else if(isRed(bytes[0])  && isEmpty(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RED;  f.i_format = GL_RED;  }
+	else {
+		LOG_F("Unsupported pixel format!");
+		throw EXIT_FAILURE;
 	}
-	if(isRed(bytes[0]) && isGreen(bytes[1]) && isBlue(bytes[2])  && isEmpty(bytes[3])) {
-		f.e_format = GL_RGB;
-		f.i_format = GL_RGB;
-		return f;
-	}
-	if(isBlue(bytes[0]) && isGreen(bytes[1]) && isRed(bytes[2])  && isAlpha(bytes[3])) {
-		f.e_format = GL_BGRA;
-		f.i_format = GL_RGBA;
-		return f;
-	}
-	if(isBlue(bytes[0]) && isGreen(bytes[1]) && isRed(bytes[2])  && isEmpty(bytes[3])) {
-		f.e_format = GL_BGR;
-		f.i_format = GL_RGB;
-		return f;
-	}
-
-	if(isRed(bytes[0]) && isGreen(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) {
-		f.e_format = GL_RG;
-		f.i_format = GL_RG;
-	}
-	if(isRed(bytes[0]) && isEmpty(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) {
-		f.e_format = GL_RED;
-		f.i_format = GL_RED;
-	}
-
-
-	LOG_F("Unsupported pixel format!");
-	throw EXIT_FAILURE;
+	return f;
 }
 
-Texture::Texture(Resource resource) {
-	loadTexture(resource);
-}
+Texture::Texture(Resource resource) { loadTexture(resource); }
 
 GLuint Texture::loadTexture(Resource resource) {
 	std::string file_location;
 	char *base_path = SDL_GetBasePath();
-	if (base_path) {
-		file_location = base_path;
-	} else {
-		file_location = SDL_strdup("./");
-	}
-	file_location+=resource.file_path;
-//	LOG_D("Loading texture at " << file_location);
+	if (base_path) { file_location = base_path;			}
+	else		   { file_location = SDL_strdup("./");	}
 
-	//New SDL surface
-	SDL_Surface *surface;
+	file_location += resource.file_path;
 
-	//Load the image
-	surface = IMG_Load(file_location.c_str());
+	//New SDL surface and load the image
+	SDL_Surface *surface = IMG_Load(file_location.c_str());
 
 	//Check if image data loaded ok
 	if(surface == 0) {
@@ -187,12 +126,9 @@ GLuint Texture::loadTexture(Resource resource) {
 	int width = surface->w;
 	int height = surface->h;
 
-	// Check that the image's width is a power of 2
-	if ( (width & (width - 1)) != 0 ) {
-		LOG_W("Non power-of-two texture loaded: " + file_location);
-	} else if ( (height & (height - 1)) != 0 ) { // Also check if the height is a power of 2
-		LOG_W("Non power-of-two texture loaded: " + file_location);
-	}
+	// Check that the image's dimensions are powers of 2
+	if ( (width & (width - 1)) != 0 ) { 		LOG_W("Non power-of-two texture loaded: " + file_location);	}
+	else if ( (height & (height - 1)) != 0 ) {	LOG_W("Non power-of-two texture loaded: " + file_location);	}
 
 	GLFormat f = determinePixelFormat(surface->format);
 
@@ -213,8 +149,5 @@ GLuint Texture::loadTexture(Resource resource) {
 	return id;
 }
 
-
-
 } /* namespace GameEngine */
-
 
