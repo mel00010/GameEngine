@@ -53,15 +53,15 @@ struct Vertex {
 
 	Vertex(glm::vec4 _pos, glm::vec4 _norm, glm::vec4 _tex) : position(_pos), normal(_norm), tex_coord0(_tex) {}
 	static void addVertexPointers(GL& gl) {
-		gl.addVertexPointer(0, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, position));
-		gl.addVertexPointer(1, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, normal));
-		gl.addVertexPointer(2, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, color));
-		gl.addVertexPointer(4, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, secondary_color));
-		gl.addVertexPointer(5, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, fog_coord));
-		gl.addVertexPointer(6, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tangent));
-		gl.addVertexPointer(7, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, bitangent));
-		gl.addVertexPointer(8, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord0));
-		gl.addVertexPointer(9, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord1));
+		gl.addVertexPointer(0,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, position));
+		gl.addVertexPointer(1,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, normal));
+		gl.addVertexPointer(2,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, color));
+		gl.addVertexPointer(4,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, secondary_color));
+		gl.addVertexPointer(5,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, fog_coord));
+		gl.addVertexPointer(6,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tangent));
+		gl.addVertexPointer(7,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, bitangent));
+		gl.addVertexPointer(8,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord0));
+		gl.addVertexPointer(9,  4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord1));
 		gl.addVertexPointer(10, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord2));
 		gl.addVertexPointer(11, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord3));
 		gl.addVertexPointer(12, 4, GL_FLOAT, sizeof(Vertex), offsetof(Vertex, tex_coord4));
