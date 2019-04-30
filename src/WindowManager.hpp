@@ -1,5 +1,5 @@
 /******************************************************************************
- * GameCore.tpp
+ * WindowManager.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,15 +17,51 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_WINDOWMANAGER_HPP_
+#define SRC_WINDOWMANAGER_HPP_
 
-#ifndef SRC_GAMECORE_TPP_
-#define SRC_GAMECORE_TPP_
-
-
+#include <glm/glm.hpp>
+#include <SDL2/SDL.h>
 
 namespace GameEngine {
 
+class WindowManager {
+	public:
+		SDL_Window* getWindow();
+		void setWindow(SDL_Window* p);
+
+		glm::ivec2 getWindowSize();
+		static glm::ivec2 getWindowSize(SDL_Window* p);
+
+		void setFullscreen(bool enable = false);
+		bool isFullscreen();
+		void toggleFullscreen();
+
+		void setVSyncEnabled(bool enable = false);
+		bool isVSyncEnabled();
+		void enableVSync();
+		void disableVSync();
+		void toggleVSync();
+
+		void quit();
+		bool isCursorDisabled();
+		void disableCursor(bool disabled = true);
+		bool toggleCursor();
+
+	private:
+		SDL_Window* window = nullptr;
+
+		bool cursor_disabled = false;
+		bool isScreenFullscreen = false;
+		bool vsync_enabled = false;
+
+		SDL_DisplayMode native;
+		SDL_DisplayMode current;
+};
+
 } /* namespace GameEngine */
 
-#endif /* SRC_GAMECORE_TPP_ */
 
+
+
+#endif /* SRC_WINDOWMANAGER_HPP_ */

@@ -24,6 +24,7 @@
 
 #include <GameCore.hpp>
 
+namespace DVD {
 
 class DVDCore : public GameEngine::GameCore<DVDCore> {
 	public:
@@ -69,6 +70,6 @@ class DVDCore : public GameEngine::GameCore<DVDCore> {
 		size_t prev_time = SDL_GetTicks();
 };
 
-
+} /* namespace DVD */
 
 #endif /* SAMPLES_DVD_SRC_DVDCORE_HPP_ */

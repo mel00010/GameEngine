@@ -20,14 +20,8 @@
 
 #include "DVDCore.hpp"
 
-#include <Log.hpp>
-
-using namespace GameEngine;
+using namespace DVD;
 
 int main(void) {
-	DVDCore& core = DVDCore::getInstance();
-
-	core.runLoop();
-
-	return EXIT_SUCCESS;
+	DVDCore::getInstance().runLoop();
 }

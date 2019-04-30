@@ -41,6 +41,7 @@ class TextRenderer {
 		TextRenderer();
 		void init(SDL_Window* window);
 		void renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+		void renderTextRelativeToTopRight(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 
 	protected:
 		struct Character {

@@ -19,8 +19,10 @@
  *****************************************************************************/
 
 #include "TextRenderer.hpp"
+
 #include "Program.hpp"
 #include "Shader.hpp"
+#include "WindowManager.hpp"
 
 #include <Log.hpp>
 
@@ -145,15 +147,18 @@ void TextRenderer::init(SDL_Window* _window) {
 
 	valid = true;
 }
+void TextRenderer::renderTextRelativeToTopRight(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
+	glm::ivec2 size = WindowManager::getWindowSize(window);
+	renderText(text, size.x - x, size.y - y, scale, color);
+}
 
 void TextRenderer::renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
 	if(!valid) { return; }
 	p->useProgram();
 	gl.bind();
 
-	int width, height;
-	SDL_GetWindowSize(window, &width, &height);
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
+	glm::ivec2 size = WindowManager::getWindowSize(window);
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(size.x), 0.0f, static_cast<GLfloat>(size.y));
 	glUniformMatrix4fv(glGetUniformLocation(p->getPH(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
 	// Activate corresponding render state

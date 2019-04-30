@@ -31,16 +31,6 @@
 #include <string>
 #include <sstream>
 
-
-enum class ResourceID : size_t;
-enum class ResourceType : size_t;
-class Resource {
-	public:
-		ResourceID id;
-		ResourceType type;
-		const char* file_path;
-};
-
 using InternalFormat = GLint;
 using Format = GLenum;
 
@@ -103,26 +93,31 @@ GLFormat determinePixelFormat(SDL_PixelFormat* format) {
 	return f;
 }
 
-Texture::Texture(Resource resource) { loadTexture(resource); }
+Texture::Texture(std::string resource) {
+	loadTexture(resource);
+}
 
-GLuint Texture::loadTexture(Resource resource) {
+GLuint Texture::loadTexture(std::string resource) {
 	std::string file_location;
 	char *base_path = SDL_GetBasePath();
-	if (base_path) { file_location = base_path;			}
-	else		   { file_location = SDL_strdup("./");	}
+	if (base_path) {
+		file_location = base_path;
+	} else {
+		file_location = SDL_strdup("./");
+	}
 
-	file_location += resource.file_path;
+	file_location += resource;
 
-	//New SDL surface and load the image
+	// New SDL surface and load the image
 	SDL_Surface *surface = IMG_Load(file_location.c_str());
 
-	//Check if image data loaded ok
+	// Check if image data loaded ok
 	if(surface == 0) {
-		LOG_E("surface == 0");
+		LOG_E("Error!  surface == 0");
 		throw EXIT_FAILURE;
 	}
 
-	//Get dimensions
+	// Get dimensions
 	int width = surface->w;
 	int height = surface->h;
 
@@ -134,7 +129,7 @@ GLuint Texture::loadTexture(Resource resource) {
 
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
+	// Set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -143,7 +138,7 @@ GLuint Texture::loadTexture(Resource resource) {
 	glTexImage2D(GL_TEXTURE_2D, 0, f.i_format, width, height, 0, f.e_format, GL_UNSIGNED_BYTE, surface->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	//Free SDL surface
+	// Free SDL surface
 	SDL_FreeSurface(surface);
 
 	return id;

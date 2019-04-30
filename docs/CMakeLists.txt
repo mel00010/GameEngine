@@ -1,4 +1,5 @@
 include(DoxygenTargets)
+set(EXTRA_SOURCE_DIRS ${PROJECT_SOURCE_DIR}/samples)
 configure_file(Doxyfile.in Doxyfile @ONLY)
 add_doxygen(${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 

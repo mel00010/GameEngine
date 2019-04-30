@@ -33,8 +33,10 @@
 
 using namespace GameEngine;
 
+namespace DVD {
+
 DVD::DVD(ProgramRef _p) : p(_p) {
-	dvd_texture = Texture().loadTexture(Resources[static_cast<size_t>(ResourceID::DVD)]);
+	dvd_texture = Texture().loadTexture(Resources[static_cast<size_t>(ResourceID::DVD)].file_path);
 	updateLogoColor();
 
 	p->useProgram();
@@ -143,3 +145,5 @@ void DVD::draw(double& fps) {
 	// render container
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
+
+} /* namespace DVD */

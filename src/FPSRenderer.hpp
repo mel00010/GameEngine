@@ -1,5 +1,5 @@
 /******************************************************************************
- * GameCore.tpp
+ * FPSRenderer.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,15 +17,48 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_FPSRENDERER_HPP_
+#define SRC_FPSRENDERER_HPP_
 
-#ifndef SRC_GAMECORE_TPP_
-#define SRC_GAMECORE_TPP_
-
+#include "TextRenderer.hpp"
 
 
 namespace GameEngine {
 
+class FPSRenderer {
+	public:
+		void renderFPS();
+		void calculateFPS();
+
+		void setShowFPS(bool enable = false);
+		bool isFPSShown();
+		void showFPS();
+		void hideFPS();
+		void toggleFPS();
+
+		void incrementFrameCount();
+	protected:
+		bool fps_shown = true;
+
+		TextRenderer text;
+
+		size_t frames_rendered = 0;
+		size_t total_frames_rendered = 0;
+
+		size_t ms_per_tick = 50;
+		double ticks_per_second = 1000/ms_per_tick;
+
+		double fps = 100;
+		double fps_avg = 100;
+		std::string fps_str = "100";
+
+		size_t prev_frame_time = 0;
+		size_t curr_frame_time = 0;
+};
+
 } /* namespace GameEngine */
 
-#endif /* SRC_GAMECORE_TPP_ */
 
+
+
+#endif /* SRC_FPSRENDERER_HPP_ */

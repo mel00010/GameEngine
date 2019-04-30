@@ -27,6 +27,8 @@
 
 using namespace GameEngine;
 
+namespace CameraTest {
+
 class CameraTestCore : public GameEngine::GameCore<CameraTestCore> {
 	public:
 		void setup();
@@ -42,5 +44,6 @@ class CameraTestCore : public GameEngine::GameCore<CameraTestCore> {
 		Model grid;
 };
 
+} /* namespace CameraTest */
 
 #endif /* SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_ */

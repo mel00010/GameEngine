@@ -20,14 +20,10 @@
 
 #include "CameraTestCore.hpp"
 
-#include <Log.hpp>
+using namespace CameraTest;
 
-using namespace GameEngine;
 
 int main(void) {
-	CameraTestCore& core = CameraTestCore::getInstance();
+	CameraTestCore::getInstance().runLoop();
 
-	core.runLoop();
-
-	return EXIT_SUCCESS;
 }

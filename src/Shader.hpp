@@ -20,18 +20,15 @@
 #ifndef SRC_SHADER_HPP_
 #define SRC_SHADER_HPP_
 
+#include "ResourceDefs.hpp"
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <SDL2/SDL.h>
 
 #include <memory>
 #include <ostream>
 #include <string>
-
-
-enum class ResourceID : size_t;
-enum class ResourceType : size_t;
-
-class Resource;
 
 namespace GameEngine {
 
@@ -57,7 +54,22 @@ inline std::ostream& operator<<(std::ostream& os, ShaderType type) {
 
 class Shader {
 	public:
-		Shader(Resource resource, ShaderType type);
+		template<Enum ResourceID> Shader(Resource<ResourceID> resource, ShaderType _type) :
+				type(_type), shader(glCreateShader(static_cast<GLenum>(_type))),
+				valid(false) {
+			std::string file_location;
+			char* base_path = SDL_GetBasePath();
+			if (base_path) {
+				file_location = base_path;
+			} else {
+				file_location = SDL_strdup("./");
+			}
+
+			file_location+=resource.file_path;
+			std::ifstream file(file_location);
+			source = std::string((std::istreambuf_iterator<char>(file)),
+					 std::istreambuf_iterator<char>());
+		}
 		Shader(std::string source, ShaderType type);
 		~Shader();
 		bool init();

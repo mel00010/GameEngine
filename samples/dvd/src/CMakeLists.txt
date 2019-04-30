@@ -27,7 +27,8 @@ target_link_libraries(DVD
 )
 include(ConfigureResources)
 
-target_resources(DVD ${CMAKE_CURRENT_BINARY_DIR}
+#				 Target 	Top Directory					Namespace
+target_resources(DVD		${CMAKE_CURRENT_BINARY_DIR}		DVD
 #	Path												ID				Type	
 	${CMAKE_CURRENT_SOURCE_DIR}/resources/vertex.glsl	VERTEX_SHADER	SHADER	
 	${CMAKE_CURRENT_SOURCE_DIR}/resources/fragment.glsl	FRAGMENT_SHADER	SHADER	

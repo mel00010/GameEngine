@@ -506,7 +506,7 @@ HIDE_IN_BODY_DOCS      = NO
 # will be excluded. Set it to YES to include the internal documentation.
 # The default value is: NO.
 
-INTERNAL_DOCS          = NO
+INTERNAL_DOCS          = @ENABLE_INTERNAL_DOCS@
 
 # If the CASE_SENSE_NAMES tag is set to NO then doxygen will only generate file
 # names in lower-case letters. If set to YES, upper-case letters are also
@@ -784,6 +784,7 @@ WARN_LOGFILE           =
 INPUT = @PROJECT_SOURCE_DIR@/src \
 		@PROJECT_SOURCE_DIR@/test \
 		@PROJECT_SOURCE_DIR@/README.md \
+		@EXTRA_SOURCE_DIRS@
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

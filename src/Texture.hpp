@@ -20,9 +20,10 @@
 #ifndef SRC_TEXTURE_HPP_
 #define SRC_TEXTURE_HPP_
 
-#include <GL/glew.h>
+#include "ResourceDefs.hpp"
 
-class Resource;
+#include <GL/glew.h>
+#include <string>
 
 namespace GameEngine {
 
@@ -34,8 +35,14 @@ enum TextureType {
 class Texture {
 	public:
 		Texture() : id(-1), type(TextureType::DIFFUSE) {};
-		Texture(Resource resource_id);
-		GLuint loadTexture(Resource resource_id);
+		Texture(const std::string resource_id);
+		template <Enum ResourceID> Texture(const Resource<ResourceID> resource) : id(-1), type(TextureType::DIFFUSE) {
+			loadTexture(resource);
+		}
+		template <Enum ResourceID> GLuint loadTexture(const Resource<ResourceID> resource_id) {
+			return loadTexture(resource_id.file_path);
+		}
+		GLuint loadTexture(const std::string resource_id);
 
 	public:
 		GLuint id;

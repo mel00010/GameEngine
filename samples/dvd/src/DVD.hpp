@@ -28,6 +28,8 @@
 
 using namespace GameEngine;
 
+namespace DVD {
+
 struct Vertex {
 		glm::vec2 pos;
 		glm::vec2 tex;
@@ -81,6 +83,7 @@ class DVD {
 		double speed = 1.0;
 };
 
+} /* namespace DVD */
 
 
 #endif /* SAMPLES_DVD_SRC_DVD_HPP_ */

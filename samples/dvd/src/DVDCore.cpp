@@ -46,6 +46,8 @@
 
 using namespace GameEngine;
 
+namespace DVD {
+
 void DVDCore::registerCallbacks() {
 	registerKeyboardEventCallback(SDL_SCANCODE_R,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { this->reset(); });
 	registerKeyboardEventCallback(SDL_SCANCODE_A,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { addDVD(); });
@@ -105,4 +107,6 @@ void DVDCore::render() {
 void DVDCore::tick() {
 
 }
+
+} /* namespace DVD */
 

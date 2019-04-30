@@ -24,8 +24,8 @@ target_link_libraries(CameraTest
 		CameraTest_Resources
 )
 include(ConfigureResources)
-
-target_resources(CameraTest ${CMAKE_CURRENT_BINARY_DIR}
+#				 Target			Top Directory				Namespace
+target_resources(CameraTest		${CMAKE_CURRENT_BINARY_DIR}	CameraTest
 #	Path												ID				Type	
 	${CMAKE_CURRENT_SOURCE_DIR}/resources/vertex.glsl	VERTEX_SHADER	SHADER
 	${CMAKE_CURRENT_SOURCE_DIR}/resources/fragment.glsl	FRAGMENT_SHADER	SHADER

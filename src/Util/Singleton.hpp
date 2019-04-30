@@ -20,27 +20,22 @@
 #ifndef SRC_SINGLETON_HPP_
 #define SRC_SINGLETON_HPP_
 
-#include <type_traits>
+#include <memory>
 
-template<class> struct sfinae_true: std::true_type {};
-namespace detail {
-	template<class T> constexpr static auto subclass_test(int)  -> sfinae_true<typename T::SubClass_T>;
-	template<class>   constexpr static auto subclass_test(long) -> std::false_type;
-} /* namespace detail */
-template<class T> struct has_subclass: decltype(detail::subclass_test<T>(0)){};;
-
-template <class SC, typename Enable = void> class Singleton;
-template <class SC> struct Singleton<SC, typename std::enable_if_t<!has_subclass<SC>::value>> {
-		friend SC;
-		static 		  SC& getInstance() { static SC sc; return sc; }
-		static inline SC& instance() { return getInstance(); }
-};
-
-template <class SC> struct Singleton<SC, typename std::enable_if_t<has_subclass<SC>::value>> {
-		friend SC;
-		friend typename SC::SubClass_T;
-		static 		  typename SC::SubClass_T& getInstance() { static SC sc; return sc.derived(); }
-		static inline typename SC::SubClass_T& instance() { return getInstance(); }
+template<class ActualClass> struct Singleton {
+	public:
+		static inline ActualClass& getInstance() {
+			static ActualClass obj;
+			return obj;
+		}
+		static inline ActualClass& instance() {
+			return getInstance();
+		}
+	protected:
+		Singleton(){}
+	private:
+		Singleton(Singleton const &);
+		Singleton& operator = (Singleton const &);
 };
 
 #endif /* SRC_SINGLETON_HPP_ */
