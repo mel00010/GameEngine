@@ -74,10 +74,18 @@ find_package(glm REQUIRED)
 find_file(SDL2_INCLUDE_DIR NAME SDL.h HINTS SDL2)
 find_package(SDL2 REQUIRED)
 add_library(SDL2 INTERFACE)
-PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image)
 target_link_libraries(SDL2 INTERFACE ${SDL2_LIBRARIES})
 target_include_directories(SDL2 INTERFACE ${SDL2_INCLUDE_DIRS})
 
+find_package(SDL2_image REQUIRED)
+add_library(SDL2_image INTERFACE)
+target_link_libraries(SDL2 INTERFACE ${SDL2_IMAGE_LIBRARIES} SDL2)
+target_include_directories(SDL2 INTERFACE ${SDL2_IMAGE_INCLUDE_DIRS})
+
+find_package(SDL2_mixer REQUIRED)
+add_library(SDL2_mixer INTERFACE)
+target_link_libraries(SDL2_mixer INTERFACE ${SDL2_MIXER_LIBRARIES} SDL2)
+target_include_directories(SDL2_mixer INTERFACE ${SDL2_MIXER_INCLUDE_DIRS})
 
 find_package(Freetype REQUIRED)
 

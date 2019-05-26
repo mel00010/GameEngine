@@ -21,30 +21,33 @@
 #define SRC_GAMECORE_HPP_
 
 #include "CallbackHandler.hpp"
-#include "FPSRenderer.hpp"
-#include "GL.hpp"
-#include "Program.hpp"
-#include "TextRenderer.hpp"
-#include "Texture.hpp"
-#include "WindowManager.hpp"
 
-#include "Util/Singleton.hpp"
+#include <2D/FPSRenderer.hpp>
+#include <2D/TextRenderer.hpp>
 
+#include <3D/Texture.hpp>
+
+#include <GL/GL.hpp>
+#include <GL/Program.hpp>
+#include <GL/WindowManager.hpp>
+
+#include <Util/Singleton.hpp>
+
+#include <glm/glm.hpp>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <array>
 #include <functional>
 #include <limits>
 #include <list>
 #include <map>
 
-#include <glm/glm.hpp>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
 
 
 namespace GameEngine {
 
-class GameCoreConcrete : public CallbackHandler, public WindowManager, public FPSRenderer {
+class GameCoreConcrete : public CallbackHandler, public GL::WindowManager, public _2D::FPSRenderer {
 	protected:
 		void preSetup();
 		void postSetup();
@@ -63,9 +66,12 @@ class GameCoreConcrete : public CallbackHandler, public WindowManager, public FP
 
 		void registerDefaultCallbacks();
 
+		void setProgramName(std::string name);
+
 	protected:
-		GL gl;
-		ProgramRef p;
+		std::string program_name;
+		GL::GL gl;
+		GL::ProgramRef p;
 };
 
 template <typename Derived> class GameCore : public GameCoreConcrete, public Singleton<Derived> {
@@ -81,6 +87,7 @@ template <typename Derived> class GameCore : public GameCoreConcrete, public Sin
 			return *static_cast<Derived*>(this);
 		}
 		void setup() {
+			setProgramName(derived().program_name);
 			registerTimeoutCallback("tick", ms_per_tick, [&]() { tick(); } , true);
 			registerTimeoutCallback("render", 0, [&]() { render(); }, true);
 

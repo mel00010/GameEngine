@@ -20,8 +20,8 @@
 
 #include "GameCore.hpp"
 
-#include "Attribute.hpp"
-#include "Shader.hpp"
+#include <GL/Attribute.hpp>
+#include <GL/Shader.hpp>
 
 #include <Log.hpp>
 
@@ -99,10 +99,20 @@ void GameCoreConcrete::loop() {
 
 void GameCoreConcrete::initSDL() {
 	/* SDL-related initialising functions */
-	SDL_Init(SDL_INIT_VIDEO);
-	int flags = IMG_INIT_JPG | IMG_INIT_PNG;
-	if( !( IMG_Init( flags ) & flags ) ) {
+	SDL_Init(SDL_INIT_EVERYTHING);
+	int image_flags = IMG_INIT_JPG
+					| IMG_INIT_PNG;
+	if( !( IMG_Init( image_flags ) & image_flags ) ) {
 		LOG_F( "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() );
+		throw EXIT_FAILURE;
+	}
+
+	int mixer_flags = MIX_INIT_FLAC
+					| MIX_INIT_MOD
+					| MIX_INIT_MP3
+					| MIX_INIT_OGG;
+	if( !( Mix_Init( mixer_flags ) & mixer_flags ) ) {
+		LOG_F( "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() );
 		throw EXIT_FAILURE;
 	}
 
@@ -114,7 +124,7 @@ void GameCoreConcrete::initSDL() {
 	// Also request a depth buffer
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	setWindow(SDL_CreateWindow("DVD",
+	setWindow(SDL_CreateWindow(program_name.c_str(),
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		1920, 1080,
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL));
@@ -130,13 +140,16 @@ void GameCoreConcrete::initGL() {
 		LOG_F("Error: glewInit: " << glewGetErrorString(glew_status));
 		throw EXIT_FAILURE;
 	}
-	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	text.init(getWindow());
 }
 
+void GameCoreConcrete::setProgramName(std::string name) {
+	program_name = name;
+}
 
 
 } /* namespace GameEngine */

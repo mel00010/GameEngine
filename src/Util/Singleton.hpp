@@ -20,8 +20,6 @@
 #ifndef SRC_SINGLETON_HPP_
 #define SRC_SINGLETON_HPP_
 
-#include <memory>
-
 template<class ActualClass> struct Singleton {
 	public:
 		static inline ActualClass& getInstance() {

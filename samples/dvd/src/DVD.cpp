@@ -21,7 +21,7 @@
 #include "DVD.hpp"
 
 #include <Log.hpp>
-#include <Texture.hpp>
+#include <3D/Texture.hpp>
 #include <Resources.hpp>
 
 #include <GL/glew.h>
@@ -35,8 +35,8 @@ using namespace GameEngine;
 
 namespace DVD {
 
-DVD::DVD(ProgramRef _p) : p(_p) {
-	dvd_texture = Texture().loadTexture(Resources[static_cast<size_t>(ResourceID::DVD)].file_path);
+DVD::DVD(GL::ProgramRef _p) : p(_p) {
+	dvd_texture = _3D::Texture(getResource(ResourceID::DVD)).id;
 	updateLogoColor();
 
 	p->useProgram();

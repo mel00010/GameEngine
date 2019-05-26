@@ -20,7 +20,7 @@
 #ifndef SAMPLES_DVD_SRC_DVD_HPP_
 #define SAMPLES_DVD_SRC_DVD_HPP_
 
-#include <GL.hpp>
+#include <GL/GL.hpp>
 #include <Log.hpp>
 
 #include <GL/glew.h>
@@ -38,7 +38,7 @@ struct Vertex {
 
 class DVD {
 	public:
-		DVD(ProgramRef p);
+		DVD(GL::ProgramRef p);
 		void draw(double& fps);
 
 		void setScale(glm::dvec2 _scale) {
@@ -69,8 +69,8 @@ class DVD {
 		void updateLogoColor();
 
 	protected:
-		ProgramRef p;
-		GL gl;
+		GL::ProgramRef p;
+		GL::GL gl;
 
 		glm::vec3 logo_color = glm::vec3(1.0, 1.0, 1.0);
 

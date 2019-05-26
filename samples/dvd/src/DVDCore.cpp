@@ -22,8 +22,8 @@
 
 #include "DVDCore.hpp"
 
-#include <Attribute.hpp>
-#include <Shader.hpp>
+#include <GL/Attribute.hpp>
+#include <GL/Shader.hpp>
 
 #include <Log.hpp>
 
@@ -78,10 +78,10 @@ void DVDCore::setup() {
 	setSpeed(2.0f);
 
 
-	p = std::make_shared<Program>();
+	p = std::make_shared<GL::Program>();
 	p->init();
-	ShaderRef vertex_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], ShaderType::VERTEX);
-	ShaderRef fragment_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::FRAGMENT_SHADER)], ShaderType::FRAGMENT);
+	GL::ShaderRef vertex_shader = std::make_shared<GL::Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], GL::ShaderType::VERTEX);
+	GL::ShaderRef fragment_shader = std::make_shared<GL::Shader>(Resources[static_cast<size_t>(ResourceID::FRAGMENT_SHADER)], GL::ShaderType::FRAGMENT);
 	vertex_shader->init();
 	fragment_shader->init();
 	p->attachShader(vertex_shader);

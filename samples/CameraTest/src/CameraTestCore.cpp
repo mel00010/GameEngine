@@ -21,10 +21,13 @@
 #include "CameraTestCore.hpp"
 
 #include <Log.hpp>
-#include <Model.hpp>
-#include <Program.hpp>
+
+#include <3D/Model.hpp>
+
+#include <GL/Program.hpp>
+#include <GL/Shader.hpp>
+
 #include <Resources.hpp>
-#include <Shader.hpp>
 
 #include <glm/glm.hpp>
 
@@ -32,10 +35,6 @@
 using namespace GameEngine;
 
 namespace CameraTest {
-
-void generateGrid() {
-
-}
 
 void CameraTestCore::registerCallbacks() {
 	registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
@@ -95,10 +94,10 @@ void CameraTestCore::registerCallbacks() {
 
 
 void CameraTestCore::setup() {
-	p = std::make_shared<Program>();
+	p = std::make_shared<GL::Program>();
 	p->init();
-	ShaderRef vertex_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], ShaderType::VERTEX);
-	ShaderRef fragment_shader = std::make_shared<Shader>(Resources[static_cast<size_t>(ResourceID::FRAGMENT_SHADER)], ShaderType::FRAGMENT);
+	GL::ShaderRef vertex_shader = std::make_shared<GL::Shader>(getResource(ResourceID::VERTEX_SHADER), GL::ShaderType::VERTEX);
+	GL::ShaderRef fragment_shader = std::make_shared<GL::Shader>(getResource(ResourceID::FRAGMENT_SHADER), GL::ShaderType::FRAGMENT);
 	vertex_shader->init();
 	fragment_shader->init();
 	p->attachShader(vertex_shader);
@@ -106,130 +105,40 @@ void CameraTestCore::setup() {
 	p->link();
 
 	/* When all init functions run without errors,
-	   the glsl_program can initialise the resources */
+	   the glsl_program can initialize the resources */
 	if (!p->isValid()) {
 		throw EXIT_FAILURE;
 	}
 	p->useProgram();
+	gl.bind();
 
-	Texture texture(getResource(ResourceID::WALL));
-
-	std::vector<Vertex> cube_vertices;
-	std::vector<GLuint> cube_indices;
-	std::vector<Texture> cube_textures;
-	cube_textures.push_back(texture);
-
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 00
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 01
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 02
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 03
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 04
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 05
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 06
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 07
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 08
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 09
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 10
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 11
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 12
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 13
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 14
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 15
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 16
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 17
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 18
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 19
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 20
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 21
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 22
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 23
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 24
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 25
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 26
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 27
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 28
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 29
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 30
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))); // 31
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 32
-	cube_vertices.push_back(Vertex(glm::vec4( 0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))); // 33
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))); // 34
-	cube_vertices.push_back(Vertex(glm::vec4(-0.5f,  0.5f, -0.5f, 1.0f),	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))); // 35
-
-	cube.init(Mesh(cube_vertices, cube_indices, cube_textures, Primitive::TRIANGLES, false));
-
+	cube = _3D::Model(getResource(ResourceID::CUBE));
 	cube.move(glm::vec3(0.0, 0.5, 0.0));
 	cube.scale(0.25);
-	camera.init(getWindow(), p);
 
-	unsigned char* data;
-	// Allocate the needed space.
-	int width;
-	int height;
-	width = height = 128;
+	nanosuit = _3D::Model(getResource(ResourceID::NANOSUIT));
+	nanosuit.move(glm::vec3(1.0, 0.0, 0.0));
+	nanosuit.scale(0.1);
 
-	data = new unsigned char[width * height * sizeof(unsigned char)];
-
-	for(int i = 0; i < (int)(width * height * sizeof(unsigned char)); i++) {
-		data[i] = 255;
-	}
-
-	// Generate white OpenGL texture.
-	Texture whiteTexture;
-	glGenTextures(1, &whiteTexture.id);
-	glBindTexture(GL_TEXTURE_2D, whiteTexture.id);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-	glLineWidth(3);
-
-	std::vector<Vertex> grid_vertices;
-	std::vector<GLuint> grid_indices;
-	std::vector<Texture> grid_textures;
-	grid_textures.push_back(whiteTexture);
-
-	float x = 0;
-	float y = 0;
-	for (size_t j = 0; j < 250; j++) {
-		x = 0;
-		for (size_t i = 0; i < 250; i++) {
-			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-
-			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-
-			grid_vertices.push_back(Vertex(glm::vec4(-10.0 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-
-			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -10.0 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-			grid_vertices.push_back(Vertex(glm::vec4(-12.5 + x, -12.5 + y, 0.0, 1.0), glm::vec4(0.0f, 1.0f, 0.0f, 1.0), glm::vec4(1.0, 0.0, 0.0, 1.0)));
-			x += 0.1;
-		}
-		y += 0.1;
-	}
-
-	grid.init(Mesh(grid_vertices, grid_indices, grid_textures, Primitive::LINES, false));
+	grid = _3D::Model(getResource(ResourceID::GRID));
 	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
 
-
-
+	camera.init(getWindow(), p);
 }
 
 void CameraTestCore::render() {
-	p->useProgram();
+	p->use();
 	gl.bind();
 
 	cube.rotate(glm::vec3(glm::radians(0.1f), glm::radians(0.2f), glm::radians(-0.3f)));
-
-	glUniform3fv(glGetUniformLocation(p->getPH(), "color"), 1, (float*)&cube_color[0]);
+	p->setVec3("color", cube_color);
 	camera.drawModel(cube, p);
 
-
-	glUniform3fv(glGetUniformLocation(p->getPH(), "color"), 1, (float*)&line_color[0]);
+	p->setVec3("color", line_color);
 	camera.drawModel(grid, p);
 
+	p->setVec3("color", nanosuit_color);
+	camera.drawModel(nanosuit, p);
 }
 
 void CameraTestCore::tick() {

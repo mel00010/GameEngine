@@ -20,10 +20,6 @@
 
 #include "CameraTestCore.hpp"
 
-using namespace CameraTest;
-
-
 int main(void) {
-	CameraTestCore::getInstance().runLoop();
-
+	CameraTest::CameraTestCore::getInstance().runLoop();
 }

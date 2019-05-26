@@ -28,6 +28,13 @@ namespace DVD {
 
 class DVDCore : public GameEngine::GameCore<DVDCore> {
 	public:
+		const std::string program_name = "DVD";
+		void setup();
+		void tick();
+		void render();
+		void registerCallbacks();
+
+	public:
 		void setScale(glm::dvec2 scale) {
 			for(auto& i : dvds) {
 				i.setScale(scale);
@@ -57,11 +64,7 @@ class DVDCore : public GameEngine::GameCore<DVDCore> {
 				dvds.pop_back();
 			}
 		}
-	public:
-		void setup();
-		void tick();
-		void render();
-		void registerCallbacks();
+
 	protected:
 		std::list<DVD> dvds;
 

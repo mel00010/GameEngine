@@ -20,9 +20,10 @@
 #ifndef SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_
 #define SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_
 
-#include <Camera.hpp>
-#include <Model.hpp>
+#include <3D/Camera.hpp>
+#include <3D/Model.hpp>
 #include <GameCore.hpp>
+#include <Resources.hpp>
 
 
 using namespace GameEngine;
@@ -31,17 +32,21 @@ namespace CameraTest {
 
 class CameraTestCore : public GameEngine::GameCore<CameraTestCore> {
 	public:
+		const std::string program_name = "CameraTest";
 		void setup();
 		void tick();
 		void render();
 		void registerCallbacks();
+
 	protected:
 		glm::vec3 line_color = glm::vec3(1.0, 1.0, 0.0);
 		glm::vec3 cube_color = glm::vec3(1.0, 1.0, 1.0);
+		glm::vec3 nanosuit_color = glm::vec3(1.0, 1.0, 1.0);
 
-		Camera camera;
-		Model cube;
-		Model grid;
+		_3D::Camera camera;
+		_3D::Model cube;
+		_3D::Model grid;
+		_3D::Model nanosuit;
 };
 
 } /* namespace CameraTest */

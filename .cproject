@@ -33,7 +33,7 @@
                             							
                             <targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.release.267968430" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.release"/>
                             							
-                            <builder buildPath="/GameEngine/build/Release" id="de.marw.cdt.cmake.core.genscriptbuilder.2112678736" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+                            <builder buildPath="/GameEngine/build/Release" id="de.marw.cdt.cmake.core.genscriptbuilder.2112678736" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="8" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
                             							
                             <tool id="cdt.managedbuild.tool.gnu.archiver.base.1936319820" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
                             							
@@ -185,7 +185,7 @@
                             							
                             <targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.debug.1908970583" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
                             							
-                            <builder buildPath="/GameEngine/build/Debug" enableAutoBuild="true" id="de.marw.cdt.cmake.core.genscriptbuilder.2023120089" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+                            <builder buildPath="/GameEngine/build/Debug" enableAutoBuild="true" id="de.marw.cdt.cmake.core.genscriptbuilder.2023120089" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="8" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
                             							
                             <tool id="cdt.managedbuild.tool.gnu.archiver.base.369912207" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
                             							
@@ -345,7 +345,7 @@
                             							
                             <targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.debug.399503995" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
                             							
-                            <builder buildPath="/GameEngine/build/Coverage" id="de.marw.cdt.cmake.core.genscriptbuilder.801275000" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+                            <builder buildPath="/GameEngine/build/Coverage" id="de.marw.cdt.cmake.core.genscriptbuilder.801275000" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="8" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
                             							
                             <tool id="cdt.managedbuild.tool.gnu.archiver.base.578597039" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
                             							
@@ -489,8 +489,6 @@
         	
     </storageModule>
     	
-    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-    	
     <storageModule moduleId="scannerConfiguration">
         		
         <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -554,6 +552,78 @@
             <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
             		
         </scannerConfigBuildInfo>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+        		
+        <buildTargets>
+            			
+            <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>CMAKE_BUILD_TOOL</buildCommand>
+                				
+                <buildArguments>$&lt;cmake4eclipse_dyn&gt;</buildArguments>
+                				
+                <buildTarget>all</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>true</useDefaultCommand>
+                				
+                <runAllBuilders>true</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="doc" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>CMAKE_BUILD_TOOL</buildCommand>
+                				
+                <buildArguments>$&lt;cmake4eclipse_dyn&gt;</buildArguments>
+                				
+                <buildTarget>doc</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>true</useDefaultCommand>
+                				
+                <runAllBuilders>true</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="test" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>CMAKE_BUILD_TOOL</buildCommand>
+                				
+                <buildArguments>$&lt;cmake4eclipse_dyn&gt;</buildArguments>
+                				
+                <buildTarget>test</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>true</useDefaultCommand>
+                				
+                <runAllBuilders>true</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>CMAKE_BUILD_TOOL</buildCommand>
+                				
+                <buildArguments>$&lt;cmake4eclipse_dyn&gt;</buildArguments>
+                				
+                <buildTarget>clean</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>true</useDefaultCommand>
+                				
+                <runAllBuilders>true</runAllBuilders>
+                			
+            </target>
+            		
+        </buildTargets>
         	
     </storageModule>
     

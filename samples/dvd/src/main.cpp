@@ -20,8 +20,6 @@
 
 #include "DVDCore.hpp"
 
-using namespace DVD;
-
 int main(void) {
-	DVDCore::getInstance().runLoop();
+	DVD::DVDCore::getInstance().runLoop();
 }
