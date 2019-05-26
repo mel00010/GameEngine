@@ -132,8 +132,8 @@ bool CallbackHandler::registerWindowEventCallback(std::function<void(SDL_WindowE
 bool CallbackHandler::registerKeyboardEventCallback(SDL_Scancode key,
 				KeyEventType type,
 				std::function<void(SDL_KeyboardEvent&)> callback) {
-	if(type == KeyEventType::DOWN)	{ key_up_callbacks[key].push_back(callback); }
-	if(type == KeyEventType::UP)	{ key_down_callbacks[key].push_back(callback); }
+	if(type == KeyEventType::DOWN)	{ key_down_callbacks[key].push_back(callback); }
+	if(type == KeyEventType::UP)	{ key_up_callbacks[key].push_back(callback); }
 	return true;
 }
 bool CallbackHandler::registerKeyboardEventCallback(SDL_Scancode key,

@@ -22,14 +22,18 @@
 
 #include "TextRenderer.hpp"
 
+#include <chrono>
 
 namespace GameEngine {
 namespace _2D {
+
+using Clock = std::chrono::high_resolution_clock;
 
 class FPSRenderer {
 	public:
 		void renderFPS();
 		void calculateFPS();
+		void calculateFrameTime();
 
 		void setShowFPS(bool enable = false);
 		bool isFPSShown();
@@ -38,6 +42,8 @@ class FPSRenderer {
 		void toggleFPS();
 
 		void incrementFrameCount();
+		void startFrameTimer();
+		void stopFrameTimer();
 	protected:
 		bool fps_shown = true;
 
@@ -50,11 +56,18 @@ class FPSRenderer {
 		double ticks_per_second = 1000/ms_per_tick;
 
 		double fps = 100;
+		double frame_time_ns = 0;
+		double frame_time_us = 0;
+		double frame_time_ms = 0;
+		double frame_time_s = 0;
+
 		double fps_avg = 100;
 		std::string fps_str = "100";
 
 		size_t prev_frame_time = 0;
 		size_t curr_frame_time = 0;
+		std::chrono::time_point<Clock> frame_start_time;
+		std::chrono::time_point<Clock> frame_stop_time;
 };
 
 } /* namespace _2D */

@@ -49,7 +49,7 @@ void TextRenderer::init(SDL_Window* _window) {
 			"out vec2 TexCoord;\n"
 			"uniform mat4 projection;\n"
 			"void main() {\n"
-			"	gl_Position = projection * vec4(pos, 0.0f, 1.0f);\n"
+			"	gl_Position = projection * vec4(pos, 1.0f, 1.0f);\n"
 			"	TexCoord = tex;\n"
 			"}";
 	std::string fragment =

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Sound.hpp
+ * Music.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_SOUND_SOUND_HPP_
-#define SRC_SOUND_SOUND_HPP_
+#ifndef SRC_SOUND_MUSIC_HPP_
+#define SRC_SOUND_MUSIC_HPP_
 
 #include <Util/ResourceDefs.hpp>
 
@@ -29,19 +29,19 @@
 
 namespace Sound {
 
-class Sound {
+class Music {
 	public:
-		Sound() {};
-		Sound(const std::string file_path) {
-			loadSound(file_path);
+		Music() {};
+		Music(const std::string file_path) {
+			loadMusic(file_path);
 		}
-		template <Enum ResourceID> Sound(const Resource<ResourceID> resource) {
-			loadSound(resource);
+		template <Enum ResourceID> Music(const Resource<ResourceID> resource) {
+			loadMusic(resource);
 		}
-		~Sound();
+		~Music();
 
 
-		template <Enum ResourceID> Mix_Chunk* loadSound(const Resource<ResourceID> resource) {
+		template <Enum ResourceID> Mix_Music* loadMusic(const Resource<ResourceID> resource) {
 			std::string file_location;
 			char *base_path = SDL_GetBasePath();
 			if (base_path) {
@@ -50,22 +50,30 @@ class Sound {
 				file_location = "./";
 			}
 			file_location += resource.file_path;
-			return loadSound(file_location);
+			return loadMusic(file_location);
 		}
 
-		Mix_Chunk* loadSound(const std::string file_path);
+		Mix_Music* loadMusic(const std::string file_path);
 
 
 	public:
 		void play(size_t times = 1);
+		void pause();
+		void resume();
+		void halt();
 		int  setVolume(int volume);
+		bool isPaused();
+		bool isPlaying();
+
+
 	public:
 		std::string path = "";
-		int channel = -2;
-		Mix_Chunk* chunk = nullptr;
+		Mix_Music* music = nullptr;
 };
 
 } /* namespace Sound */
 
 
-#endif /* SRC_SOUND_SOUND_HPP_ */
+
+
+#endif /* SRC_SOUND_MUSIC_HPP_ */

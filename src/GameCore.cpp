@@ -62,9 +62,12 @@ void GameCoreConcrete::preRender() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	incrementFrameCount();
+	startFrameTimer();
 }
 void GameCoreConcrete::postRender() {
 	renderFPS();
+	stopFrameTimer();
+	calculateFrameTime();
 	SDL_GL_SwapWindow(getWindow());
 }
 
@@ -99,7 +102,10 @@ void GameCoreConcrete::loop() {
 
 void GameCoreConcrete::initSDL() {
 	/* SDL-related initialising functions */
-	SDL_Init(SDL_INIT_EVERYTHING);
+	if(SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+		LOG_F("SDL_init:  " << SDL_GetError());
+		throw EXIT_FAILURE;
+	}
 	int image_flags = IMG_INIT_JPG
 					| IMG_INIT_PNG;
 	if( !( IMG_Init( image_flags ) & image_flags ) ) {
@@ -115,6 +121,12 @@ void GameCoreConcrete::initSDL() {
 		LOG_F( "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() );
 		throw EXIT_FAILURE;
 	}
+
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+		LOG_F("Mix_OpenAudio:  " << Mix_GetError());
+		throw EXIT_FAILURE;
+	}
+	Mix_AllocateChannels(1000);
 
 	// Request an OpenGL 4.5 context (should be core)
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);

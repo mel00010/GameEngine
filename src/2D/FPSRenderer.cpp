@@ -22,8 +22,10 @@
 
 #include <GL/WindowManager.hpp>
 
+#include <chrono>
 #include <iomanip>
 #include <numeric>
+
 
 namespace GameEngine {
 namespace _2D {
@@ -53,6 +55,20 @@ void FPSRenderer::calculateFPS() {
 	}
 	frames_rendered = 0;
 }
+void FPSRenderer::calculateFrameTime() {
+	static size_t pos(0);
+	static std::array<double, 20> time_avg_array({0});
+	time_avg_array[pos] = std::chrono::duration_cast<std::chrono::nanoseconds>(frame_stop_time - frame_start_time).count();
+	if( pos >= 19) {
+		pos = 0;
+	} else {
+		pos++;
+	}
+	frame_time_ns = std::accumulate(time_avg_array.begin(), time_avg_array.end(), 0) / 20.0;
+	frame_time_us = frame_time_ns/1000.0;
+	frame_time_ms = frame_time_ns/1000000.0;
+	frame_time_s =  frame_time_ns/1000000000.0;
+}
 
 void FPSRenderer::renderFPS() {
 	glm::vec3 text_color(1.0, 1.0, 1.0);
@@ -81,6 +97,13 @@ void FPSRenderer::toggleFPS() {
 void FPSRenderer::incrementFrameCount() {
 	frames_rendered++;
 	total_frames_rendered++;
+}
+
+void FPSRenderer::startFrameTimer() {
+	frame_start_time = Clock::now();
+}
+void FPSRenderer::stopFrameTimer() {
+	frame_stop_time = Clock::now();
 }
 
 } /* namespace _2D */

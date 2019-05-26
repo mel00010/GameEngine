@@ -1,8 +1,10 @@
 add_library(Sound STATIC "")
 target_sources(Sound
 	PRIVATE
+		Music.cpp
 		Sound.cpp
 	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/Music.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Sound.hpp
 )
 

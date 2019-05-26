@@ -20,6 +20,7 @@ target_link_libraries(GameEngine
 		
 		Logger
 		boost_program_options
+		pthread
 )
 
 target_include_directories(GameEngine 
