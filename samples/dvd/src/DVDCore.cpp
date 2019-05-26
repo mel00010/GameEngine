@@ -71,6 +71,9 @@ void DVDCore::registerCallbacks() {
 				setScale(glm::dvec2(ev.data1, ev.data2) / glm::dvec2(1920, 1080));
 		}
 	});
+	registerTimeoutCallback("ms_per_frame", 1000, [this]() {
+		LOG_D("ms/frame = " << frame_time_ms << " | fps = " << fps_avg);
+	}, true);
 
 }
 

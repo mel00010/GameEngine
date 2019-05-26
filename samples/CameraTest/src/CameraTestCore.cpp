@@ -30,6 +30,7 @@
 #include <Resources.hpp>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/random.hpp>
 
 
 using namespace GameEngine;
@@ -88,8 +89,13 @@ void CameraTestCore::registerCallbacks() {
 		}
 	});
 	registerTimeoutCallback("ms_per_frame", 1000, [this]() {
-		LOG_D("ms/frame = " << 1000/fps_avg << " | fps = " << fps_avg);
+		LOG_D("ms/frame = " << frame_time_ms << " | fps = " << fps_avg);
 	}, true);
+	registerKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+		nanosuits.push_back(_3D::Model(getResource(ResourceID::NANOSUIT)));
+		nanosuits.back().move(glm::ballRand(5.0f));
+		nanosuits.back().scale(0.05);
+	});
 }
 
 
@@ -116,9 +122,9 @@ void CameraTestCore::setup() {
 	cube.move(glm::vec3(0.0, 0.5, 0.0));
 	cube.scale(0.25);
 
-	nanosuit = _3D::Model(getResource(ResourceID::NANOSUIT));
-	nanosuit.move(glm::vec3(1.0, 0.0, 0.0));
-	nanosuit.scale(0.1);
+	nanosuits.push_back(_3D::Model(getResource(ResourceID::NANOSUIT)));
+	nanosuits.back().move(glm::vec3(1.0, 0.0, 0.0));
+	nanosuits.back().scale(0.05);
 
 	grid = _3D::Model(getResource(ResourceID::GRID));
 	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
@@ -138,7 +144,9 @@ void CameraTestCore::render() {
 	camera.drawModel(grid, p);
 
 	p->setVec3("color", nanosuit_color);
-	camera.drawModel(nanosuit, p);
+	for(auto& i : nanosuits) {
+		camera.drawModel(i, p);
+	}
 }
 
 void CameraTestCore::tick() {

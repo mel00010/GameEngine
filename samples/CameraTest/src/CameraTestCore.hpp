@@ -45,8 +45,8 @@ class CameraTestCore : public GameEngine::GameCore<CameraTestCore> {
 
 		_3D::Camera camera;
 		_3D::Model cube;
+		std::vector<_3D::Model> nanosuits;
 		_3D::Model grid;
-		_3D::Model nanosuit;
 };
 
 } /* namespace CameraTest */
