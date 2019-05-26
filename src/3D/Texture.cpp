@@ -93,10 +93,6 @@ GLFormat determinePixelFormat(SDL_PixelFormat* format) {
 	return f;
 }
 
-Texture::Texture(const std::string file_path, const TextureType type) {
-	loadTexture(file_path, type);
-}
-
 GLuint Texture::loadTexture(const std::string file_path, const TextureType _type) {
 	// New SDL surface and load the image
 	SDL_Surface *surface = IMG_Load(file_path.c_str());

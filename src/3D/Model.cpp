@@ -30,6 +30,9 @@
 namespace GameEngine {
 namespace _3D {
 
+std::vector<Texture> Model::textures_loaded;
+
+
 void Model::rotate(glm::vec3 delta) {
 	model *= glm::orientate4(delta);
 }
@@ -233,14 +236,14 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
 		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
 		bool skip = false;
 		for (size_t j = 0; j < textures_loaded.size(); j++) {
-			if (textures_loaded[j].path == std::string(str.C_Str())) {
+			if (textures_loaded[j].path == (directory + "/" + std::string(str.C_Str()))) {
 				textures.push_back(textures_loaded[j]);
 				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
 				break;
 			}
 		}
 		if (!skip) {	// if texture hasn't been loaded already, load it
-			LOG_D("Loading new texture " << mat->GetName().C_Str());
+//			LOG_D("Loading new texture " << mat->GetName().C_Str());
 			Texture texture(directory + "/" + std::string(str.C_Str()), texture_type);
 			textures.push_back(texture);
 			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.

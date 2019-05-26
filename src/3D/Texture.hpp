@@ -51,11 +51,36 @@ inline std::ostream& operator<<(std::ostream& os, TextureType type) {
 class Texture {
 	public:
 		Texture() : id(-1), type(TextureType::DIFFUSE) {};
-		Texture(const std::string file_path, const TextureType type = TextureType::DIFFUSE);
+		Texture(GLuint _id, TextureType _type, std::string _path) : id(_id), type(_type), path(_path) {}
+		Texture(const std::string file_path, const TextureType type) {
+			loadTexture(file_path, type);
+		}
 		template <Enum ResourceID> Texture(const Resource<ResourceID> resource, TextureType _type = TextureType::DIFFUSE)
 				: id(-1), type(_type) {
 			loadTexture(resource);
 		}
+
+
+		Texture(const Texture& other) // copy constructor
+				: Texture(other.id, other.type, other.path){}
+
+		Texture(Texture&& other) noexcept // move constructor
+				: Texture(other.id, other.type, other.path){
+			other.id = -1;
+			other.path = "";
+		}
+
+		Texture& operator=(const Texture& other) { // copy assignment
+			 return *this = Texture(other);
+		}
+
+		Texture& operator=(Texture&& other) noexcept { // move assignment
+			id = other.id;
+			type = other.type;
+			std::swap(path, other.path);
+			return *this;
+		}
+
 		template <Enum ResourceID> GLuint loadTexture(const Resource<ResourceID> resource,
 													  const TextureType _type = TextureType::DIFFUSE) {
 			std::string file_location;

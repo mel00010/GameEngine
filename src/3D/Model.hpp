@@ -66,7 +66,6 @@ class Model {
 				file_location = "./";
 			}
 			file_location += std::string(resource.file_path) + "/" + std::string(resource.main_file);
-			LOG_D(file_location);
 			loadModel(file_location);
 		}
 		void loadModel(std::string path);
@@ -85,9 +84,9 @@ class Model {
 
 	public:
 		glm::mat4 model = glm::mat4(1.0f);
+		static std::vector<Texture> textures_loaded;
 
 	protected:
-		std::vector<Texture> textures_loaded;
 		std::vector<Mesh> meshes;
 		std::string directory;
 		bool gammaCorrection;

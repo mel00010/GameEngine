@@ -37,7 +37,7 @@ void Mesh::setupMesh() {
 }
 
 void Mesh::draw(GL::ProgramRef prog)  {
-//	prog->useProgram();
+	prog->useProgram();
 	gl.bind();
 	GLuint diffuse_num = 0;
 	GLuint specular_num = 0;
@@ -66,15 +66,12 @@ void Mesh::draw(GL::ProgramRef prog)  {
 				number = std::to_string(height_num++);
 				break;
 		}
-		prog->useProgram();
 		glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
 		prog->setInt(name + number, i);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
-//		LOG_D(textures[i].id);
 	}
 	glActiveTexture(GL_TEXTURE0);
 
-	gl.bind();
 	// draw mesh
 	if(indices_enabled) {
 		glDrawElements(static_cast<GLenum>(mode), indices.size(), GL_UNSIGNED_INT, 0);
