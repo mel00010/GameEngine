@@ -31,6 +31,14 @@
 namespace GameEngine {
 namespace _3D {
 
+using InternalFormat = GLint;
+using Format = GLenum;
+
+struct GLFormat {
+		InternalFormat i_format;
+		Format e_format;
+};
+
 enum TextureType {
 	DIFFUSE,
 	SPECULAR,
@@ -96,10 +104,16 @@ class Texture {
 
 		GLuint loadTexture(const std::string file_path, const TextureType _type = TextureType::DIFFUSE);
 
+	protected:
+		GLFormat determinePixelFormat(SDL_PixelFormat* format);
+
+
 	public:
 		GLuint id;
 		TextureType type;
 		std::string path;
+
+
 };
 
 inline std::ostream& operator<<(std::ostream& os, Texture text) {

@@ -30,16 +30,8 @@
 #include <string>
 #include <sstream>
 
-using InternalFormat = GLint;
-using Format = GLenum;
-
 namespace GameEngine {
 namespace _3D {
-
-struct GLFormat {
-		InternalFormat i_format;
-		Format e_format;
-};
 
 enum Color {
 		EMPTY = -1,
@@ -55,7 +47,7 @@ bool isBlue(Color color) {	return (color == BLUE);  }
 bool isAlpha(Color color) {	return (color == ALPHA); }
 bool isEmpty(Color color) {	return (color == EMPTY); }
 
-GLFormat determinePixelFormat(SDL_PixelFormat* format) {
+GLFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
 	GLFormat f;
 
 	Color bytes[4] = {EMPTY, EMPTY, EMPTY, EMPTY};
@@ -87,13 +79,20 @@ GLFormat determinePixelFormat(SDL_PixelFormat* format) {
 	else if(isRed(bytes[0])  && isGreen(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RG;   f.i_format = GL_RG;   }
 	else if(isRed(bytes[0])  && isEmpty(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RED;  f.i_format = GL_RED;  }
 	else {
-		LOG_F("Unsupported pixel format!");
+		LOG_E("Unsupported pixel format in file " << path << "!");
+		LOG_E("format->Rmask = " << hex(format->Rmask));
+		LOG_E("format->Gmask = " << hex(format->Gmask));
+		LOG_E("format->Bmask = " << hex(format->Bmask));
+		LOG_E("format->Amask = " << hex(format->Amask));
+		f.e_format = GL_RGBA; f.i_format = GL_RGBA;
 		throw EXIT_FAILURE;
 	}
 	return f;
 }
 
 GLuint Texture::loadTexture(const std::string file_path, const TextureType _type) {
+	path = file_path;
+
 	// New SDL surface and load the image
 	SDL_Surface *surface = IMG_Load(file_path.c_str());
 
@@ -129,7 +128,6 @@ GLuint Texture::loadTexture(const std::string file_path, const TextureType _type
 
 	// Free SDL surface
 	SDL_FreeSurface(surface);
-	path = file_path;
 
 	return id;
 }
