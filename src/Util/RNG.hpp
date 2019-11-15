@@ -1,5 +1,5 @@
 /******************************************************************************
- * Singleton.hpp
+ * RNG.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,38 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_UTIL_SINGLETON_HPP_
-#define SRC_UTIL_SINGLETON_HPP_
+#ifndef SRC_UTIL_RNG_HPP_
+#define SRC_UTIL_RNG_HPP_
+
+#include <limits>
+#include <random>
+#include <stdint.h>
 
 namespace GameEngine {
 namespace Util {
 
-/**
- * @brief Wrapper ensuring only one object of a class exists at a time
- * @tparam ActualClass The class to protect
- */
-template<class ActualClass> struct Singleton {
+class RNG {
 	public:
-		/**
-		 * @brief Gets the instance of the encapsulated object
-		 * @return Returns a reference to the encapsulated object
-		 */
-		static inline ActualClass& getInstance() {
-			static ActualClass obj;
-			return obj;
-		}
-		/**
-		 * @brief Alias for getInstance
-		 * @return Returns a reference to the encapsulated object
-		 */
-		static inline ActualClass& instance() {
-			return getInstance();
-		}
-	protected:
-		Singleton(){}
-	private:
-		Singleton(Singleton const &);
-		Singleton& operator = (Singleton const &);
+		static uint64_t get();
 };
 
 } /* namespace Util */
@@ -56,4 +37,4 @@ template<class ActualClass> struct Singleton {
 
 using namespace GameEngine::Util;
 
-#endif /* SRC_UTIL_SINGLETON_HPP_ */
+#endif /* SRC_UTIL_RNG_HPP_ */

@@ -1,5 +1,5 @@
 /******************************************************************************
- * ResourceDefs.hpp
+ * RNG.cpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,29 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_RESOURCEDEFS_HPP_
-#define SRC_RESOURCEDEFS_HPP_
 
-#include <cstddef>
-#include <type_traits>
+#include "RNG.hpp"
 
-enum class ResourceType : size_t {
-		SHADER,
-		IMAGE,
-		MODEL,
-		SOUND,
-		OTHER
-};
+namespace GameEngine {
+namespace Util {
 
-template <typename T> concept Enum = std::is_enum<T>::value;
+uint64_t RNG::get() {
+	static std::random_device rd;
+	static std::mt19937_64 rng(rd());
+	return rng();
+}
 
-template<Enum ResourceID> class Resource {
-	public:
-		ResourceID id;
-		ResourceType type;
-		const char* file_path;
-		const char* main_file;
-};
+} /* namespace Util */
+} /* namespace GameEngine */
 
 
-#endif /* SRC_RESOURCEDEFS_HPP_ */
+

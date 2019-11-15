@@ -1,11 +1,15 @@
-add_library(Util INTERFACE)
+add_library(Util STATIC "")
 
 target_sources(Util
-	INTERFACE
-		${CMAKE_CURRENT_SOURCE_DIR}/ResourceDefs.hpp
+	PRIVATE
+		RNG.cpp
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/EnumBitMask.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/RNG.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Singleton.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/UUID.hpp
 )
 target_link_libraries(Util
-	INTERFACE
+	PUBLIC
 		Logger
 )
