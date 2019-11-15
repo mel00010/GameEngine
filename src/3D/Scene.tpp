@@ -1,5 +1,5 @@
 /******************************************************************************
- * Attribute.cpp
+ * Scene.tpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,39 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_3D_SCENE_TPP_
+#define SRC_3D_SCENE_TPP_
 
-#include "Attribute.hpp"
-
-#include <Log.hpp>
+#include "Scene.hpp"
 
 namespace GameEngine {
-namespace GL {
+namespace _3D {
 
-Attribute::Attribute(std::string _name) : name(_name), location(-1), valid(false) { }
-
-bool Attribute::init(ProgramRef program) {
-	if(isValid()) {
-		return isValid();
+template<typename RealRenderer, typename RealWindowManager> void Scene::draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
+	for (auto& model : models) {
+		camera.drawModel(renderer, model);
 	}
-
-	if( (location = glGetAttribLocation(program->getProgramHandle(), name.c_str()) ) < 0) {
-		LOG_E("glGetAttribLocation(program, "<< name << ") returned " << location << "!  Could not bind attribute!");
-		return (valid = false);
-	}
-
-	GLenum err;
-	if((err = glGetError()) != GL_NO_ERROR && err == GL_INVALID_OPERATION) {
-		LOG_E("glGetAttribLocation(program, "<< name << ") generated error GL_INVALID_OPERATION!  program is not a valid program object!");
-		return (valid = false);
-	}
-	return (valid = true);
+}
 }
 
-bool Attribute::isValid() 			{ return valid;	}
-std::string Attribute::getName()	{ return name;		}
-GLint Attribute::getLocation()		{ return location;	}
-
-} /* namespace GL */
+} /* namespace _3D */
 } /* namespace GameEngine */
 
 
+
+#endif /* SRC_3D_SCENE_TPP_ */

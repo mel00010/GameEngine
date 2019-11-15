@@ -20,64 +20,43 @@
 
 #include "Mesh.hpp"
 
+#include <Log.hpp>
+
 namespace GameEngine {
 namespace _3D {
 
 Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices, std::vector<Texture> _textures,
-		const Primitive _mode, bool _indices_enabled) :
-		vertices(_vertices), indices(_indices), textures(_textures), mode(_mode), indices_enabled(_indices_enabled) {
-	setupMesh();
+		const Primitive _mode) :
+		vertices(_vertices), indices(_indices), textures(_textures), mode(_mode) {
 }
 
-void Mesh::setupMesh() {
-	gl.init();
-	gl.bind();
-	gl.allocate(vertices.size() * sizeof(Vertex), indices.size() * sizeof(GLuint), &vertices[0], &indices[0]);
-	Vertex::addVertexPointers(gl);
-}
 
-void Mesh::draw(GL::ProgramRef prog)  {
-	prog->useProgram();
-	gl.bind();
-	GLuint diffuse_num = 0;
-	GLuint specular_num = 0;
-	GLuint normal_num = 0;
-	GLuint height_num = 0;
 
-	for(size_t i = 0; i < textures.size(); i++) {
-		// retrieve texture number (the N in diffuse_textureN)
-		std::string number;
-		std::string name;
-		switch(textures[i].type) {
-			case TextureType::DIFFUSE:
-				name += "texture_diffuse";
-				number = std::to_string(diffuse_num++);
-				break;
-			case TextureType::SPECULAR:
-				name += "texture_specular";
-				number = std::to_string(specular_num++);
-				break;
-			case TextureType::NORMAL:
-				name += "texture_normal";
-				number = std::to_string(normal_num++);
-				break;
-			case TextureType::HEIGHT:
-				name += "texture_normal";
-				number = std::to_string(height_num++);
-				break;
-		}
-		glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
-		prog->setInt(name + number, i);
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+std::ostream& operator<<(std::ostream& os, const Mesh& m) {
+	os << "Mesh {" << push_indent << std::endl;
+	os << "std::vector<Vertex> vertices = [ " << push_indent << std::endl;
+	for (auto& i : m.vertices) {
+		os <<  i << ", " << std::endl;
 	}
-	glActiveTexture(GL_TEXTURE0);
-
-	// draw mesh
-	if(indices_enabled) {
-		glDrawElements(static_cast<GLenum>(mode), indices.size(), GL_UNSIGNED_INT, 0);
-	} else {
-		glDrawArrays(static_cast<GLenum>(mode), 0, vertices.size());
+	os << pop_indent << "]" << std::endl;
+	os << "std::vector<GLuint> indices = [ " << push_indent << std::endl;
+	for (auto& i : m.indices) {
+		os << i << ", " << std::endl;
 	}
+	os << pop_indent << "]" << std::endl;
+	os << "std::vector<Texture> textures = [ " << push_indent  << std::endl;
+	for (auto& i : m.textures) {
+		os << i << ", " << std::endl;
+	}
+	os << pop_indent << "]" << std::endl;
+	os << "VBO_handle handle = " << m.handle << std::endl;
+	os << "std::vector<std::string> texture_strings = [ " << push_indent  << std::endl;
+	for (auto& i : m.texture_strings) {
+		os << "\"" << i << "\", " << std::endl;
+	}
+	os << "Primitive mode = " << m.mode << std::endl;
+	os << pop_indent << "}";
+	return os;
 }
 
 } /* namespace _3D */

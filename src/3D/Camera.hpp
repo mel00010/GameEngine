@@ -17,12 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_CAMERA_HPP_
-#define SRC_CAMERA_HPP_
+#ifndef SRC_3D_CAMERA_HPP_
+#define SRC_3D_CAMERA_HPP_
 
+#include "Cube.hpp"
 #include "Model.hpp"
-
-#include <Log.hpp>
+#include "Skybox.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -34,66 +34,23 @@ namespace _3D {
 
 class Camera {
 	public:
-		void init(SDL_Window* _window, GL::ProgramRef _p) {
-			window = _window;
-			p = _p;
-			fov = 45.0f;
-			updateView();
-			updateProjection();
-			valid = true;
-		}
+		void init(glm::ivec2 size);
+		void setCameraRotation(glm::vec3 rotation);
+		void setCameraPos(glm::vec3 pos);
+		void rotateCamera(double _yaw, double _pitch);
+		void moveCamera(glm::vec3 delta);
+		void setFOV(float _fov);
+		void updateView();
+		void updateProjection(glm::ivec2 size);
 
-		void setCameraRotation(glm::vec3 rotation) {
-			cameraFront = glm::normalize(rotation);
-			updateView();
-		}
-		void setCameraPos(glm::vec3 pos) {
-			cameraPos = pos;
-			updateView();
-		}
-		void rotateCamera(double _yaw, double _pitch) {
-			yaw += _yaw;
-			pitch += _pitch;
+		template<typename Renderer>
+			void drawModel(Renderer& renderer, Model& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
+		template<typename Renderer>
+			void drawModel(Renderer& renderer, Cube& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
+		template<typename Renderer>
+			void drawModel(Renderer& renderer, Skybox& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
+		glm::ivec2 curr_size;
 
-			glm::vec3 direction;
-			direction.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-			direction.y = sin(glm::radians(pitch));
-			direction.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-			cameraFront = glm::normalize(direction);
-			updateView();
-		}
-		void moveCamera(glm::vec3 delta) {
-			cameraPos += delta;
-			updateView();
-		}
-		void setFOV(float _fov) {
-			fov = _fov;
-			updateProjection();
-		}
-		void updateView() {
-			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		}
-		void updateProjection() {
-			int x, y;
-			SDL_GetWindowSize(window, &x, &y);
-			projection = glm::perspective(glm::radians(fov), static_cast<float>(x) / static_cast<float>(y), 0.1f, 100.0f);
-		}
-
-		void drawModel(Model& model, GL::ProgramRef prog) {
-			// retrieve the matrix uniform locations
-			unsigned int modelLoc		= glGetUniformLocation(p->getPH(), "model");
-			unsigned int viewLoc		= glGetUniformLocation(p->getPH(), "view");
-			unsigned int projectionLoc	= glGetUniformLocation(p->getPH(), "projection");
-
-			// pass them to the shaders (3 different ways)
-			glUniformMatrix4fv(modelLoc,		1, GL_FALSE, &model.model[0][0]);
-			glUniformMatrix4fv(viewLoc, 		1, GL_FALSE, &view[0][0]);
-			glUniformMatrix4fv(projectionLoc,	1, GL_FALSE, &projection[0][0]);
-			model.draw(prog);
-		}
-
-		SDL_Window* window;
-		GL::ProgramRef p = nullptr;
 		float fov;
 		double cameraSpeed = 0.01;
 		double yaw = 0.0;
@@ -112,6 +69,6 @@ class Camera {
 } /* namespace _3D */
 } /* namespace GameEngine */
 
+#include "Camera.tpp"
 
-
-#endif /* SRC_CAMERA_HPP_ */
+#endif /* SRC_3D_CAMERA_HPP_ */

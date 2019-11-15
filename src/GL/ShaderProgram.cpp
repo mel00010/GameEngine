@@ -1,5 +1,5 @@
 /******************************************************************************
- * Program.cpp
+ * ShaderProgram.cpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -18,10 +18,8 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "Program.hpp"
-
-#include "Attribute.hpp"
 #include "Shader.hpp"
+#include "ShaderProgram.hpp"
 
 #include <Log.hpp>
 
@@ -29,19 +27,19 @@
 namespace GameEngine {
 namespace GL {
 
-Program::Program() : program(-1), valid(false) { }
-Program::~Program() { }
+ShaderProgram::ShaderProgram() : program(0), valid(false) { }
+ShaderProgram::~ShaderProgram() { }
 
-bool Program::init() {
+bool ShaderProgram::init() {
 	program = glCreateProgram();
 	return true;
 }
-void Program::attachShader(ShaderRef shader) {
-	shaders.push_back(shader);
-	glAttachShader(program, shader->getShaderHandle());
+void ShaderProgram::attachShader(Shader& shader) {
+	shaders.push_back(&shader);
+	glAttachShader(program, shader.getShaderHandle());
 }
 
-bool Program::link() {
+bool ShaderProgram::link() {
 	if(isValid()) { return isValid(); }
 	glLinkProgram(program);
 
@@ -52,81 +50,90 @@ bool Program::link() {
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_size);
 		std::string log_contents;
 		log_contents.reserve(log_size);
-		glGetProgramInfoLog(program, log_contents.capacity(), &log_size, log_contents.data());
+		glGetProgramInfoLog(program, log_contents.capacity(), &log_size, &log_contents[0]);
 		LOG_E("Program linking failed!  Program log output follows:");
 		LOG_E(log_contents);
 		glDeleteProgram(program);
 		return (valid = false);
 	}
-	for(auto i : shaders) {
+	for(auto& i : shaders) {
 		glDetachShader(program, i->getShaderHandle());
 	}
 	shaders.clear();
 	return (valid = true);
 }
 
-bool Program::isValid() const {							return valid; }
-void Program::setValid(bool validity) {					valid = validity; }
+bool ShaderProgram::isValid() const {							return valid; }
+void ShaderProgram::setValid(bool validity) {					valid = validity; }
 
-GLuint Program::getProgramHandle() {					return program; }
-GLuint Program::getPH() {								return getProgramHandle(); }
+GLuint ShaderProgram::getProgramHandle() {					return program; }
+GLuint ShaderProgram::getPH() {								return getProgramHandle(); }
 
-void Program::addAttribute(AttributeRef attribute) {	attributes.push_back(attribute); }
-std::vector<AttributeRef>& Program::getAttributes() {	return attributes; }
-
-void Program::useProgram() {
+void ShaderProgram::useProgram() const {
 	glUseProgram(program);
 }
-void Program::use() {
+void ShaderProgram::use() const {
 	useProgram();
 }
 
-void Program::setBool(const std::string &name, bool value) const {
+void ShaderProgram::setBool(const std::string &name, bool value) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
 }
-void Program::setInt(const std::string &name, int value) const {
+void ShaderProgram::setInt(const std::string &name, int value) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform1i(glGetUniformLocation(program, name.c_str()), value);
 }
-void Program::setFloat(const std::string &name, float value) const {
+void ShaderProgram::setFloat(const std::string &name, float value) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
 }
-void Program::setVec2(const std::string &name, const glm::vec2 &value) const {
+void ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform2fv(glGetUniformLocation(program, name.c_str()), 1, &value[0]);
 }
-void Program::setVec2(const std::string &name, float x, float y) const {
+void ShaderProgram::setVec2(const std::string &name, float x, float y) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform2f(glGetUniformLocation(program, name.c_str()), x, y);
 }
-void Program::setVec3(const std::string &name, const glm::vec3 &value) const {
+void ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform3fv(glGetUniformLocation(program, name.c_str()), 1, &value[0]);
 }
-void Program::setVec3(const std::string &name, float x, float y, float z) const {
+void ShaderProgram::setVec3(const std::string &name, float x, float y, float z) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform3f(glGetUniformLocation(program, name.c_str()), x, y, z);
 }
-void Program::setVec4(const std::string &name, const glm::vec4 &value) const {
+void ShaderProgram::setVec4(const std::string &name, const glm::vec4 &value) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform4fv(glGetUniformLocation(program, name.c_str()), 1, &value[0]);
 }
-void Program::setVec4(const std::string &name, float x, float y, float z, float w) const {
+void ShaderProgram::setVec4(const std::string &name, float x, float y, float z, float w) const {
 	if(!isValid()) { return; }
+	use();
 	glUniform4f(glGetUniformLocation(program, name.c_str()), x, y, z, w);
 }
-void Program::setMat2(const std::string &name, const glm::mat2 &mat) const {
+void ShaderProgram::setMat2(const std::string &name, const glm::mat2 &mat) const {
 	if(!isValid()) { return; }
+	use();
 	glUniformMatrix2fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
-void Program::setMat3(const std::string &name, const glm::mat3 &mat) const {
+void ShaderProgram::setMat3(const std::string &name, const glm::mat3 &mat) const {
 	if(!isValid()) { return; }
+	use();
 	glUniformMatrix3fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
-void Program::setMat4(const std::string &name, const glm::mat4 &mat) const {
+void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &mat) const {
 	if(!isValid()) { return; }
+	use();
 	glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 

@@ -17,23 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_MESH_HPP_
-#define SRC_MESH_HPP_
+#ifndef SRC_3D_MESH_HPP_
+#define SRC_3D_MESH_HPP_
 
 #define GLM_ENABLE_EXPERIMENTAL
-
-#include <GL/GL.hpp>
-#include <GL/Program.hpp>
 
 #include "Primitive.hpp"
 #include "Texture.hpp"
 #include "Vertex.hpp"
 
-#include <Log.hpp>
+#include <Renderer.hpp>
+#include <VBO_handle.hpp>
 
-#include <glm/gtx/euler_angles.hpp>
-#include <GL/glew.h>
 #include <vector>
+#include <GL/glew.h>
 
 
 namespace GameEngine {
@@ -43,52 +40,32 @@ class Mesh {
 	public:
 		Mesh() {}
 		Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures,
-				const Primitive mode = Primitive::TRIANGLES, bool indices_enabled = true);
-		void draw(GL::ProgramRef prog);
+				const Primitive mode = Primitive::TRIANGLES);
+		template<typename Renderer> void setupMesh(Renderer& renderer, ShaderPrograms shaders);
+
+		template<typename Renderer> void draw(Renderer& renderer, ShaderPrograms shaders);
 
 	protected:
-		void setupMesh();
 
 	public:
 		/*  Mesh Data  */
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 		std::vector<Texture> textures;
+
 	protected:
-		GL::GL gl;
+		VBO_handle handle;
+		std::vector<std::string> texture_strings;
 		Primitive mode = Primitive::TRIANGLES;
-		bool indices_enabled = true;
-		friend std::ostream& operator<<(std::ostream& os, Mesh m);
+
+		friend std::ostream& operator<<(std::ostream& os, const Mesh& m);
 };
-inline std::ostream& operator<<(std::ostream& os, Mesh m) {
-	os << "Mesh {" << push_indent << std::endl;
-	os << "std::vector<Vertex> vertices = [ " << push_indent << std::endl;
-	for (auto& i : m.vertices) {
-		os <<  i << ", " << std::endl;
-	}
-	os << pop_indent << "]" << std::endl;
-	os << "std::vector<GLuint> indices = [ " << push_indent << std::endl;
-	for (auto& i : m.indices) {
-		os << i << ", " << std::endl;
-	}
-	os << pop_indent << "]" << std::endl;
-	os << "std::vector<Texture> textures = [ " << push_indent  << std::endl;
-	for (auto& i : m.textures) {
-		os << i << ", " << std::endl;
-	}
-	os << pop_indent << "]" << std::endl;
-	os << "GL::GL gl = " << m.gl << std::endl;
-	os << "Primitive mode = " << m.mode << std::endl;
-	os << "bool indices_enabled = " << m.indices_enabled << std::endl;
-	os << pop_indent << "}";
-	return os;
-}
 
 
 
 } /* namespace _3D */
 } /* namespace GameEngine */
 
+#include "Mesh.tpp"
 
-
-#endif /* SRC_MESH_HPP_ */
+#endif /* SRC_3D_MESH_HPP_ */

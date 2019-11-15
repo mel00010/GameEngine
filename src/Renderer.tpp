@@ -1,5 +1,5 @@
 /******************************************************************************
- * GameCore.cpp
+ * Renderer.tpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,20 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_RENDERER_TPP_
+#define SRC_RENDERER_TPP_
 
-#include "GameCore.hpp"
-
-#include <Log.hpp>
-
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
+#include "Renderer.hpp"
 
 namespace GameEngine {
 
 } /* namespace GameEngine */
+
+#endif /* SRC_RENDERER_TPP_ */

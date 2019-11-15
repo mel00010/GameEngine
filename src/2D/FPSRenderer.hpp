@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_FPSRENDERER_HPP_
-#define SRC_FPSRENDERER_HPP_
+#ifndef SRC_2D_FPSRENDERER_HPP_
+#define SRC_2D_FPSRENDERER_HPP_
 
 #include "TextRenderer.hpp"
 
@@ -31,7 +31,16 @@ using Clock = std::chrono::high_resolution_clock;
 
 class FPSRenderer {
 	public:
-		void renderFPS();
+		template<typename Renderer> void initFPSRenderer(Renderer& renderer) {
+			text.init(renderer);
+		}
+		template<typename Renderer> void renderFPS(Renderer& renderer) {
+			glm::vec3 text_color(1.0, 1.0, 1.0);
+
+			if(isFPSShown()) {
+				text.renderTextRelativeToTopRight(renderer, fps_str, 80, 50, 1.0f, text_color);
+			}
+		}
 		void calculateFPS();
 		void calculateFrameTime();
 
@@ -45,9 +54,8 @@ class FPSRenderer {
 		void startFrameTimer();
 		void stopFrameTimer();
 	protected:
-		bool fps_shown = true;
-
 		TextRenderer text;
+		bool fps_shown = true;
 
 		size_t frames_rendered = 0;
 		size_t total_frames_rendered = 0;
@@ -75,4 +83,4 @@ class FPSRenderer {
 
 
 
-#endif /* SRC_FPSRENDERER_HPP_ */
+#endif /* SRC_2D_FPSRENDERER_HPP_ */

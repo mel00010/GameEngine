@@ -20,8 +20,6 @@
 
 #include "FPSRenderer.hpp"
 
-#include <GL/WindowManager.hpp>
-
 #include <chrono>
 #include <iomanip>
 #include <numeric>
@@ -70,14 +68,6 @@ void FPSRenderer::calculateFrameTime() {
 	frame_time_s =  frame_time_ns/1000000000.0;
 }
 
-void FPSRenderer::renderFPS() {
-	glm::vec3 text_color(1.0, 1.0, 1.0);
-
-	if(isFPSShown()) {
-		text.renderTextRelativeToTopRight(fps_str, 80, 50, 1.0f, text_color);
-	}
-}
-
 void FPSRenderer::setShowFPS(bool enable) {
 	fps_shown = enable;
 }
@@ -92,6 +82,7 @@ void FPSRenderer::hideFPS() {
 }
 void FPSRenderer::toggleFPS() {
 	fps_shown = !fps_shown;
+	LOG_D("Toggled FPS display " << (fps_shown ? "on" : "off"));
 }
 
 void FPSRenderer::incrementFrameCount() {

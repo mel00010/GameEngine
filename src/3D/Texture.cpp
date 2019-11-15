@@ -33,6 +33,36 @@
 namespace GameEngine {
 namespace _3D {
 
+Texture::Texture() :
+		id(-1), type(TextureType::DIFFUSE) {
+
+};
+Texture::Texture(GLuint _id, TextureType _type, std::string _path) :
+		id(_id), type(_type), path(_path) {
+
+}
+
+Texture::Texture(const Texture& other) // copy constructor
+		: Texture(other.id, other.type, other.path){}
+
+Texture::Texture(Texture&& other) noexcept // move constructor
+		: Texture(other.id, other.type, other.path){
+	other.id = -1;
+	other.path = "";
+}
+
+Texture& Texture::operator=(const Texture& other) { // copy assignment
+	 return *this = Texture(other);
+}
+
+Texture& Texture::operator=(Texture&& other) noexcept { // move assignment
+	id = other.id;
+	type = other.type;
+	std::swap(path, other.path);
+	return *this;
+}
+
+
 enum Color {
 		EMPTY = -1,
 		RED = 0,
@@ -47,8 +77,8 @@ bool isBlue(Color color) {	return (color == BLUE);  }
 bool isAlpha(Color color) {	return (color == ALPHA); }
 bool isEmpty(Color color) {	return (color == EMPTY); }
 
-GLFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
-	GLFormat f;
+PixelFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
+	PixelFormat f;
 
 	Color bytes[4] = {EMPTY, EMPTY, EMPTY, EMPTY};
 
@@ -79,7 +109,7 @@ GLFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
 	else if(isRed(bytes[0])  && isGreen(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RG;   f.i_format = GL_RG;   }
 	else if(isRed(bytes[0])  && isEmpty(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RED;  f.i_format = GL_RED;  }
 	else {
-		LOG_E("Unsupported pixel format in file " << path << "!");
+		LOG_E("Unsupported pixel format in file!");
 		LOG_E("format->Rmask = " << hex(format->Rmask));
 		LOG_E("format->Gmask = " << hex(format->Gmask));
 		LOG_E("format->Bmask = " << hex(format->Bmask));
@@ -90,46 +120,21 @@ GLFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
 	return f;
 }
 
-GLuint Texture::loadTexture(const std::string file_path, const TextureType _type) {
-	path = file_path;
-
-	// New SDL surface and load the image
-	SDL_Surface *surface = IMG_Load(file_path.c_str());
-
-	// Check if image data loaded ok
-	if(surface == 0) {
-		LOG_E("Error!  surface == 0");
-		LOG_E("file_path = " << file_path);
-		LOG_E("texture_type = " << _type);
-
-		throw EXIT_FAILURE;
+std::ostream& operator<<(std::ostream& os, const Texture& text) {
+	return os << "Texture {" << push_indent << "\n"
+			<< "GLuint id = "<< text.id << "\n"
+			<< "TextureType type = " << text.type << "\n"
+			<< "std::string path = \"" << text.path << "\"\n"
+			<< pop_indent << " }";
+}
+std::ostream& operator<<(std::ostream& os, const TextureType type) {
+	switch(type) {
+		case TextureType::DIFFUSE: 	return os << "TextureType::DIFFUSE";
+		case TextureType::SPECULAR:	return os << "TextureType::SPECULAR";
+		case TextureType::NORMAL:	return os << "TextureType::NORMAL";
+		case TextureType::HEIGHT:	return os << "TextureType::HEIGHT";
 	}
-
-	// Get dimensions
-	int width = surface->w;
-	int height = surface->h;
-
-	// Check that the image's dimensions are powers of 2
-	if ( (width & (width - 1)) != 0 ) { 		LOG_W("Non power-of-two texture loaded: " + file_path);	}
-	else if ( (height & (height - 1)) != 0 ) {	LOG_W("Non power-of-two texture loaded: " + file_path);	}
-
-	GLFormat f = determinePixelFormat(surface->format);
-
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
-	// Set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, f.i_format, width, height, 0, f.e_format, GL_UNSIGNED_BYTE, surface->pixels);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Free SDL surface
-	SDL_FreeSurface(surface);
-
-	return id;
+	return os;
 }
 
 } /* namespace _3D */

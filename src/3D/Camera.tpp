@@ -1,5 +1,5 @@
 /******************************************************************************
- * GameCore.cpp
+ * Camera.tpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,20 +17,29 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_3D_CAMERA_TPP_
+#define SRC_3D_CAMERA_TPP_
 
-#include "GameCore.hpp"
-
-#include <Log.hpp>
-
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
+#include "Camera.hpp"
 
 namespace GameEngine {
+namespace _3D {
 
+template<typename Renderer> void Camera::drawModel(Renderer& renderer, Model& model, ShaderPrograms shaders) {
+	renderer.setMatrices(shaders, model.model, view, projection);
+	model.draw(renderer, shaders);
+}
+
+template<typename Renderer> void Camera::drawModel(Renderer& renderer, Cube& model, ShaderPrograms shaders) {
+	renderer.setMatrices(shaders, model.model, view, projection);
+	model.draw(renderer, shaders);
+}
+template<typename Renderer> void Camera::drawModel(Renderer& renderer, Skybox& model, ShaderPrograms shaders) {
+	renderer.setMatrices(shaders, glm::mat4(1.0f), glm::mat4(glm::mat3(view)), projection);
+	model.draw(renderer);
+}
+
+} /* namespace _3D */
 } /* namespace GameEngine */
+
+#endif /* SRC_3D_CAMERA_TPP_ */

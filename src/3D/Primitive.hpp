@@ -17,28 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_PRIMITIVE_HPP_
-#define SRC_PRIMITIVE_HPP_
+#ifndef SRC_3D_PRIMITIVE_HPP_
+#define SRC_3D_PRIMITIVE_HPP_
 
-#include <GL/glew.h>
+#include <ostream>
 
 namespace GameEngine {
 namespace _3D {
 
-enum class Primitive : GLenum {
-	POINTS = GL_POINTS,
-	LINES = GL_LINES,
-	LINE_STRIP = GL_LINE_STRIP,
-	LINE_LOOP = GL_LINE_LOOP,
-	TRIANGLES = GL_TRIANGLES,
-	TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
-	TRIANGLE_FAN = GL_TRIANGLE_FAN,
-	QUADS = GL_QUADS,
-	QUAD_STRIP = GL_QUAD_STRIP,
-	PATCHES = GL_PATCHES
+enum class Primitive {
+	POINTS,
+	LINES,
+	LINE_STRIP,
+	LINE_LOOP,
+	TRIANGLES,
+	TRIANGLE_STRIP,
+	TRIANGLE_FAN,
+	QUADS,
+	QUAD_STRIP,
+	PATCHES
 };
 
-inline std::ostream& operator<<(std::ostream& os, Primitive p) {
+inline std::ostream& operator<<(std::ostream& os, const Primitive p) {
 	switch(p) {
 		case Primitive::POINTS: 		return os << "Primitive::POINTS";
 		case Primitive::LINES: 			return os << "Primitive::LINES";
@@ -57,6 +57,4 @@ inline std::ostream& operator<<(std::ostream& os, Primitive p) {
 } /* namespace _3D */
 } /* namespace GameEngine */
 
-
-
-#endif /* SRC_PRIMITIVE_HPP_ */
+#endif /* SRC_3D_PRIMITIVE_HPP_ */

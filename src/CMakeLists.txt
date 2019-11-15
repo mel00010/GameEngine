@@ -7,8 +7,15 @@ target_sources(GameEngine
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/CallbackHandler.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/GameCore.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/InputHandler.hpp		
+		${CMAKE_CURRENT_SOURCE_DIR}/InputHandler.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Renderer.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ShaderPrograms.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/VBO_handle.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Vertex.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/WindowManager.hpp
 )
+
+cmrc_add_resource_library(GameEngine-Resources ALIAS GameEngine::Resources NAMESPACE GameEngine)
 
 target_link_libraries(GameEngine
 	PUBLIC
@@ -17,6 +24,8 @@ target_link_libraries(GameEngine
 		GL
 		Sound
 		Util
+		
+		GameEngine::Resources
 		
 		Logger
 		boost_program_options

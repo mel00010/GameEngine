@@ -1,5 +1,5 @@
 /******************************************************************************
- * GameCore.cpp
+ * Scene.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,20 +17,29 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#ifndef SRC_3D_SCENE_HPP_
+#define SRC_3D_SCENE_HPP_
 
-#include "GameCore.hpp"
+#include "Camera.hpp"
+#include "Mesh.hpp"
+#include "Model.hpp"
 
-#include <Log.hpp>
-
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
+#include <vector>
 
 namespace GameEngine {
+namespace _3D {
 
+class Scene {
+	public:
+		template<typename Renderer> void draw(Renderer renderer);
+	protected:
+		std::vector<Model> models;
+		Camera camera;
+};
+
+} /* namespace _3D */
 } /* namespace GameEngine */
+
+#include "Scene.tpp"
+
+#endif /* SRC_3D_SCENE_HPP_ */

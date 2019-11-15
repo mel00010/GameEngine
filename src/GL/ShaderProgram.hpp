@@ -1,5 +1,5 @@
 /******************************************************************************
- * Program.hpp
+ * ShaderProgram.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,9 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_PROGRAM_HPP_
-#define SRC_PROGRAM_HPP_
-
+#ifndef SRC_GL_SHADERPROGRAM_HPP_
+#define SRC_GL_SHADERPROGRAM_HPP_
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -31,20 +30,14 @@
 namespace GameEngine {
 namespace GL {
 
-class Attribute;
 class Shader;
 
-using AttributeRef = std::shared_ptr<Attribute>;
-using ShaderRef = std::shared_ptr<Shader>;
-
-
-class Program {
+class ShaderProgram {
 	public:
-		Program();
-		~Program();
+		ShaderProgram();
+		~ShaderProgram();
 	public:
-		void attachShader(ShaderRef shader);
-		void addAttribute(AttributeRef attribute);
+		void attachShader(Shader& shader);
 
 		bool link();
 		bool init();
@@ -54,10 +47,9 @@ class Program {
 
 		GLuint getProgramHandle();
 		GLuint getPH();
-		std::vector<AttributeRef>& getAttributes();
 
-		void useProgram();
-		void use();
+		void useProgram() const ;
+		void use() const ;
 
 		void setBool(const std::string &name, bool value) const;
 		void setInt(const std::string &name, int value) const;
@@ -75,13 +67,10 @@ class Program {
 		GLuint program;
 		bool valid;
 
-		std::vector<ShaderRef> shaders;
-		std::vector<AttributeRef> attributes;
+		std::vector<Shader*> shaders;
 };
-
-using ProgramRef = std::shared_ptr<Program>;
 
 } /* namespace GL */
 } /* namespace GameEngine */
 
-#endif /* SRC_PROGRAM_HPP_ */
+#endif /* SRC_GL_SHADERPROGRAM_HPP_ */

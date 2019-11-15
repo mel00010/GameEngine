@@ -1,5 +1,5 @@
 /******************************************************************************
- * Attribute.hpp
+ * PixelFormat.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,36 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_ATTRIBUTE_HPP_
-#define SRC_ATTRIBUTE_HPP_
-
-#include "Program.hpp"
-
-#include <memory>
+#ifndef SRC_3D_PIXELFORMAT_HPP_
+#define SRC_3D_PIXELFORMAT_HPP_
 
 namespace GameEngine {
-namespace GL {
+namespace _3D {
 
-class Attribute {
-	public:
-		Attribute(std::string name);
-		bool init(ProgramRef program);
+using InternalFormat = int;
+using Format = unsigned int;
 
-		bool 		isValid();
-		std::string	getName();
-		GLint		getLocation();
-
-		std::string	name;
-		GLint		location;
-		bool		valid;
+struct PixelFormat {
+		InternalFormat i_format;
+		Format e_format;
 };
 
-using AttributeRef = std::shared_ptr<Attribute>;
-
-
-} /* namespace GL */
+} /* namespace _3D */
 } /* namespace GameEngine */
 
-
-
-#endif /* SRC_ATTRIBUTE_HPP_ */
+#endif /* SRC_3D_PIXELFORMAT_HPP_ */

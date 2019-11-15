@@ -20,8 +20,6 @@
 
 #include "Shader.hpp"
 
-#include <Util/ResourceDefs.hpp>
-
 #include <Log.hpp>
 
 #include <SDL2/SDL.h>
@@ -33,12 +31,12 @@ namespace GameEngine {
 namespace GL {
 
 Shader::Shader(std::string _source, ShaderType _type) :
-		source(_source), type(_type),
-				shader(glCreateShader(static_cast<GLenum>(_type))), valid(false) {
+		source(_source), type(_type), shader(0), valid(false) {
 }
 
 Shader::~Shader() {
 	if (isValid()) {
+//		LOG_D("shader = " << shader);
 		glDeleteShader(shader);
 	}
 	valid = false;
@@ -48,6 +46,7 @@ bool Shader::init() {
 	if (isValid()) {
 		return isValid();
 	}
+	shader = glCreateShader(static_cast<GLenum>(type));
 
 	const char* c_str = source.c_str();
 	glShaderSource(shader, 1, &c_str, NULL);
@@ -61,7 +60,7 @@ bool Shader::init() {
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_size);
 		std::string log_contents;
 		log_contents.reserve(log_size);
-		glGetShaderInfoLog(shader, log_contents.capacity(), &log_size, log_contents.data());
+		glGetShaderInfoLog(shader, log_contents.capacity(), &log_size, &log_contents[0]);
 		LOG_E("Shader of type " << type << " failed to compile!  Shader compiler log output follows:");
 		LOG_E(log_contents);
 		LOG_E("Shading language version = " << glGetString(GL_SHADING_LANGUAGE_VERSION));

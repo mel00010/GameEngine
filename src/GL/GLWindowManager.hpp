@@ -1,5 +1,5 @@
 /******************************************************************************
- * WindowManager.hpp
+ * GLWindowManager.hpp
  * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
@@ -17,8 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_WINDOWMANAGER_HPP_
-#define SRC_WINDOWMANAGER_HPP_
+#ifndef SRC_GL_GLWINDOWMANAGER_HPP_
+#define SRC_GL_GLWINDOWMANAGER_HPP_
+
+#include <WindowManager.hpp>
 
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
@@ -26,13 +28,13 @@
 namespace GameEngine {
 namespace GL {
 
-class WindowManager {
+class GLWindowManager : public WindowManager<GLWindowManager> {
 	public:
+		void init(std::string program_name);
 		SDL_Window* getWindow();
 		void setWindow(SDL_Window* p);
 
-		glm::ivec2 getWindowSize();
-		static glm::ivec2 getWindowSize(SDL_Window* p);
+		static glm::ivec2 getWindowSize();
 
 		void setFullscreen(bool enable = false);
 		bool isFullscreen();
@@ -49,9 +51,12 @@ class WindowManager {
 		void disableCursor(bool disabled = true);
 		bool toggleCursor();
 
-	private:
-		SDL_Window* window = nullptr;
+		void redrawWindowBounds(glm::ivec2 size);
 
+	public:
+		static SDL_Window* window;
+
+	protected:
 		bool cursor_disabled = false;
 		bool isScreenFullscreen = false;
 		bool vsync_enabled = false;
@@ -65,4 +70,4 @@ class WindowManager {
 
 
 
-#endif /* SRC_WINDOWMANAGER_HPP_ */
+#endif /* SRC_GL_GLWINDOWMANAGER_HPP_ */

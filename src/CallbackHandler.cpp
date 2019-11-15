@@ -21,6 +21,8 @@
 
 #include "InputHandler.hpp"
 
+#include <algorithm>
+
 namespace GameEngine {
 
 void CallbackHandler::dispatchCallbacks() {

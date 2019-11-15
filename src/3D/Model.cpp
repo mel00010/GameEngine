@@ -32,224 +32,269 @@ namespace _3D {
 
 std::vector<Texture> Model::textures_loaded;
 
+Model::Model() :
+		gammaCorrection(false) {
+}
+Model::Model(Mesh mesh) :
+		gammaCorrection(false) {
+	meshes.push_back(mesh);
+}
 
 void Model::rotate(glm::vec3 delta) {
 	model *= glm::orientate4(delta);
+	rotation += delta;
 }
+void Model::rotate(float delta_a, float delta_b, float delta_c) {
+	rotate(glm::vec3(delta_a, delta_b, delta_c));
+}
+void Model::rotateA(float a) {
+	rotate(a, 0.0, 0.0);
+}
+void Model::rotateB(float b) {
+	rotate(0.0, b, 0.0);
+}
+void Model::rotateC(float c) {
+	rotate(0.0, 0.0, c);
+}
+void Model::rotateAB(glm::vec2 delta) {
+	rotate(delta.x, delta.y, 0.0);
+}
+void Model::rotateAB(float delta_a, float delta_b) {
+	rotate(delta_a, delta_b, 0.0);
+}
+void Model::rotateAC(glm::vec2 delta) {
+	rotate(delta.x, 0.0, delta.y);
+}
+void Model::rotateAC(float delta_a, float delta_c) {
+	rotate(delta_a, 0.0, delta_c);
+}
+void Model::rotateBC(glm::vec2 delta) {
+	rotate(0.0, delta.x, delta.y);
+}
+void Model::rotateBC(float delta_b, float delta_c) {
+	rotate(0.0, delta_b, delta_c);
+}
+
+void Model::rotateTo(glm::vec3 rot) {
+	rotation = rot;
+	model = glm::mat4(1.0f);
+	model *= glm::orientate4(rotation);
+	model = glm::translate(model, position);
+	model = glm::scale(model, scaling);
+}
+void Model::rotateTo(float rot_a, float rot_b, float rot_c) {
+	rotateTo(glm::vec3(rot_a, rot_b, rot_c));
+}
+void Model::rotateATo(float a) {
+	rotateTo(a, 0.0, 0.0);
+}
+void Model::rotateBTo(float b) {
+	rotateTo(0.0, b, 0.0);
+}
+void Model::rotateCTo(float c) {
+	rotateTo(0.0, 0.0, c);
+}
+void Model::rotateABTo(glm::vec2 rot) {
+	rotateTo(rot.x, rot.y, 0.0);
+}
+void Model::rotateABTo(float rot_a, float rot_b) {
+	rotateTo(rot_a, rot_b, 0.0);
+}
+void Model::rotateACTo(glm::vec2 rot) {
+	rotateTo(rot.x, 0.0, rot.y);
+}
+void Model::rotateACTo(float rot_a, float rot_c) {
+	rotateTo(rot_a, 0.0, rot_c);
+}
+void Model::rotateBCTo(glm::vec2 rot) {
+	rotateTo(0.0, rot.x, rot.y);
+}
+void Model::rotateBCTo(float rot_b, float rot_c) {
+	rotateTo(0.0, rot_b, rot_c);
+}
+
+
 void Model::move(glm::vec3 delta) {
 	model = glm::translate(model, delta);
+	position += delta;
 }
-void Model::scale(double scale) {
-	model = glm::scale(model, glm::vec3(scale, scale, scale));
+void Model::move(float delta_x, float delta_y, float delta_z) {
+	move(glm::vec3(delta_x, delta_y, delta_z));
 }
-
-void Model::draw(GL::ProgramRef prog) {
-	for (auto& i : meshes) {
-		i.draw(prog);
-	}
+void Model::moveX(float x) {
+	move(x, 0.0, 0.0);
 }
-
-void Model::loadModel(std::string path) {
-	Assimp::Importer import;
-	const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate
-											   | aiProcess_FlipUVs
-											   | aiProcess_JoinIdenticalVertices
-											   | aiProcess_SortByPType);
-
-	if (!scene || ( scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ) || !scene->mRootNode)
-			{
-		LOG_E("ASSIMP::" << import.GetErrorString());
-		return;
-	}
-	directory = path.substr(0, path.find_last_of('/'));
-
-	processNode(scene->mRootNode, scene);
+void Model::moveY(float y) {
+	move(0.0, y, 0.0);
 }
-
-void Model::processNode(aiNode* node, const aiScene* scene) {
-	// process all the node's meshes (if any)
-	for (size_t i = 0; i < node->mNumMeshes; i++) {
-		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
-	}
-	// then do the same for each of its children
-	for (size_t i = 0; i < node->mNumChildren; i++) {
-		processNode(node->mChildren[i], scene);
-	}
+void Model::moveZ(float z) {
+	move(0.0, 0.0, z);
+}
+void Model::moveXY(glm::vec2 delta) {
+	move(delta.x, delta.y, 0.0);
+}
+void Model::moveXY(float delta_x, float delta_y) {
+	move(delta_x, delta_y, 0.0);
+}
+void Model::moveXZ(glm::vec2 delta) {
+	move(delta.x, 0.0, delta.y);
+}
+void Model::moveXZ(float delta_x, float delta_z) {
+	move(delta_x, 0.0, delta_z);
+}
+void Model::moveYZ(glm::vec2 delta) {
+	move(0.0, delta.x, delta.y);
+}
+void Model::moveYZ(float delta_y, float delta_z) {
+	move(0.0, delta_y, delta_z);
 }
 
-Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
-	// data to fill
-	std::vector<Vertex> vertices;
-	std::vector<GLuint> indices;
-	std::vector<Texture> textures;
-
-	// Walk through each of the mesh's vertices
-	for (size_t i = 0; i < mesh->mNumVertices; i++) {
-		Vertex vertex;
-		glm::vec2 vector2; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec2 first.
-		glm::vec3 vector3; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-		glm::vec4 vector4; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec4 first.
-
-
-		// positions
-		if(mesh->HasPositions()) {
-			vector3.x = mesh->mVertices[i].x;
-			vector3.y = mesh->mVertices[i].y;
-			vector3.z = mesh->mVertices[i].z;
-			vertex.position = vector3;
-		}
-
-		// normals
-		if(mesh->HasNormals()) { // does the mesh contain normals?
-			vector3.x = mesh->mNormals[i].x;
-			vector3.y = mesh->mNormals[i].y;
-			vector3.z = mesh->mNormals[i].z;
-			vertex.normal = vector3;
-		}
-
-		// texture coordinates
-		if (mesh->HasTextureCoords(0)) { // does the mesh contain texture coordinate 0?
-			vector2.x = mesh->mTextureCoords[0][i].x;
-			vector2.y = mesh->mTextureCoords[0][i].y;
-			vertex.tex_coord0 = vector2;
-		}
-		if (mesh->HasTextureCoords(1)) { // does the mesh contain texture coordinate 1?
-			vector2.x = mesh->mTextureCoords[1][i].x;
-			vector2.y = mesh->mTextureCoords[1][i].y;
-			vertex.tex_coord1 = vector2;
-		}
-		if (mesh->HasTextureCoords(2)) { // does the mesh contain texture coordinate 2?
-			vector2.x = mesh->mTextureCoords[2][i].x;
-			vector2.y = mesh->mTextureCoords[2][i].y;
-			vertex.tex_coord2 = vector2;
-		}
-		if (mesh->HasTextureCoords(3)) { // does the mesh contain texture coordinate 3?
-			vector2.x = mesh->mTextureCoords[3][i].x;
-			vector2.y = mesh->mTextureCoords[3][i].y;
-			vertex.tex_coord3 = vector2;
-		}
-		if (mesh->HasTextureCoords(4)) { // does the mesh contain texture coordinate 4?
-			vector2.x = mesh->mTextureCoords[4][i].x;
-			vector2.y = mesh->mTextureCoords[4][i].y;
-			vertex.tex_coord4 = vector2;
-		}
-		if (mesh->HasTextureCoords(5)) { // does the mesh contain texture coordinate 5?
-			vector2.x = mesh->mTextureCoords[5][i].x;
-			vector2.y = mesh->mTextureCoords[5][i].y;
-			vertex.tex_coord5 = vector2;
-		}
-		if (mesh->HasTextureCoords(6)) { // does the mesh contain texture coordinate 6?
-			vector2.x = mesh->mTextureCoords[6][i].x;
-			vector2.y = mesh->mTextureCoords[6][i].y;
-			vertex.tex_coord6 = vector2;
-		}
-		if (mesh->HasTextureCoords(7)) { // does the mesh contain texture coordinate 7?
-			vector2.x = mesh->mTextureCoords[7][i].x;
-			vector2.y = mesh->mTextureCoords[7][i].y;
-			vertex.tex_coord7 = vector2;
-		}
-
-		// colors
-		if (mesh->HasVertexColors(0)) { // does the mesh contain primary vertex colors?
-			vector4.r = mesh->mColors[0][i].r;
-			vector4.g = mesh->mColors[0][i].g;
-			vector4.b = mesh->mColors[0][i].b;
-			vector4.a = mesh->mColors[0][i].a;
-			vertex.color = vector4;
-		}
-		if (mesh->HasVertexColors(1)) { // does the mesh contain secondary vertex colors?
-			vector4.r = mesh->mColors[1][i].r;
-			vector4.g = mesh->mColors[1][i].g;
-			vector4.b = mesh->mColors[1][i].b;
-			vector4.a = mesh->mColors[1][i].a;
-			vertex.secondary_color = vector4;
-		}
-
-		if (mesh->HasTangentsAndBitangents()) {  // does the mesh contain tangents and bitangents?
-			// tangent
-			vector3.x = mesh->mTangents[i].x;
-			vector3.y = mesh->mTangents[i].y;
-			vector3.z = mesh->mTangents[i].z;
-			vertex.tangent = vector3;
-
-			// bitangent
-			vector3.x = mesh->mBitangents[i].x;
-			vector3.y = mesh->mBitangents[i].y;
-			vector3.z = mesh->mBitangents[i].z;
-			vertex.bitangent = vector3;
-		}
-		vertices.push_back(vertex);
-	}
-	// now walk through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-	for (size_t i = 0; i < mesh->mNumFaces; i++) {
-		aiFace face = mesh->mFaces[i];
-		// retrieve all indices of the face and store them in the indices vector
-		for (size_t j = 0; j < face.mNumIndices; j++) {
-			indices.push_back(face.mIndices[j]);
-		}
-	}
-	// process materials
-	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
-	// Same applies to other texture as the following list summarizes:
-	// diffuse: texture_diffuseN
-	// specular: texture_specularN
-	// normal: texture_normalN
-
-	// 1. diffuse maps
-	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::DIFFUSE);
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	// 2. specular maps
-	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::SPECULAR);
-	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	// 3. normal maps
-	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, TextureType::NORMAL);
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	// 4. height maps
-	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, TextureType::HEIGHT);
-	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-	Primitive mode = Primitive::TRIANGLES;
-	switch(mesh->mPrimitiveTypes) {
-		case aiPrimitiveType_POINT:
-			mode = Primitive::POINTS;
-			break;
-		case aiPrimitiveType_LINE:
-			glLineWidth(3.0);
-			mode = Primitive::LINES;
-			break;
-		case aiPrimitiveType_TRIANGLE:
-			mode = Primitive::TRIANGLES;
-			break;
-	}
-	// return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures, mode);
+void Model::moveTo(glm::vec3 pos) {
+	position = pos;
+	model = glm::mat4(1.0f);
+	model *= glm::orientate4(rotation);
+	model = glm::translate(model, position);
+	model = glm::scale(model, scaling);
+}
+void Model::moveTo(float pos_x, float pos_y, float pos_z) {
+	moveTo(glm::vec3(pos_x, pos_y, pos_z));
+}
+void Model::moveXTo(float x) {
+	moveTo(x, 0.0, 0.0);
+}
+void Model::moveYTo(float y) {
+	moveTo(0.0, y, 0.0);
+}
+void Model::moveZTo(float z) {
+	moveTo(0.0, 0.0, z);
+}
+void Model::moveXYTo(glm::vec2 pos) {
+	moveTo(pos.x, pos.y, 0.0);
+}
+void Model::moveXYTo(float pos_x, float pos_y) {
+	moveTo(pos_x, pos_y, 0.0);
+}
+void Model::moveXZTo(glm::vec2 pos) {
+	moveTo(pos.x, 0.0, pos.y);
+}
+void Model::moveXZTo(float pos_x, float pos_z) {
+	moveTo(pos_x, 0.0, pos_z);
+}
+void Model::moveYZTo(glm::vec2 pos) {
+	moveTo(0.0, pos.x, pos.y);
+}
+void Model::moveYZTo(float pos_y, float pos_z) {
+	moveTo(0.0, pos_y, pos_z);
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType texture_type) {
-	std::vector<Texture> textures;
-	for (size_t i = 0; i < mat->GetTextureCount(type); i++) {
-		aiString str;
-		mat->GetTexture(type, i, &str);
-		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-		bool skip = false;
-		for (size_t j = 0; j < textures_loaded.size(); j++) {
-			if (textures_loaded[j].path == (directory + "/" + std::string(str.C_Str()))) {
-				textures.push_back(textures_loaded[j]);
-				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-				break;
-			}
-		}
-		if (!skip) {	// if texture hasn't been loaded already, load it
-//			LOG_D("Loading new texture " << mat->GetName().C_Str());
-			Texture texture(directory + "/" + std::string(str.C_Str()), texture_type);
-			textures.push_back(texture);
-			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-		}
-	}
-	return textures;
+void Model::scale(float scale) {
+	scaleXYZ(scale, scale, scale);
 }
+void Model::scaleX(float scale) {
+	scaleXYZ(scale, 1.0, 1.0);
+}
+void Model::scaleY(float scale) {
+	scaleXYZ(scale, scale, 1.0);
+}
+void Model::scaleZ(float scale) {
+	scaleXYZ(1.0, 1.0, scale);
+}
+void Model::scaleXY(glm::vec2 scale) {
+	scaleXYZ(scale.x, scale.y, 1.0);
+}
+void Model::scaleXY(float scale_x, float scale_y) {
+	scaleXYZ(scale_x, scale_y, 1.0);
+}
+void Model::scaleXZ(glm::vec2 scale) {
+	scaleXYZ(scale.x, 1.0, scale.y);
+}
+void Model::scaleXZ(float scale_x, float scale_z) {
+	scaleXYZ(scale_x, 1.0, scale_z);
+}
+void Model::scaleYZ(glm::vec2 scale) {
+	scaleXYZ(1.0, scale.x, scale.y);
+}
+void Model::scaleYZ(float scale_y, float scale_z) {
+	scaleXYZ(1.0, scale_y, scale_z);
+}
+void Model::scaleXYZ(glm::vec3 scale) {
+	scaleXYZ(scale.x, scale.y, scale.z);
+}
+void Model::scaleXYZ(float scale_x, float scale_y, float scale_z) {
+	model = glm::scale(model, glm::vec3(scale_x, scale_y, scale_z));
+	scaling *= glm::vec3(scale_x, scale_y, scale_z);
+}
+
+
+void Model::scaleTo(float scale) {
+	scaleXYZTo(scale, scale, scale);
+}
+void Model::scaleXTo(float scale) {
+	scaleXYZTo(scale, 1.0, 1.0);
+}
+void Model::scaleYTo(float scale) {
+	scaleXYZTo(scale, scale, 1.0);
+}
+void Model::scaleZTo(float scale) {
+	scaleXYZTo(1.0, 1.0, scale);
+}
+void Model::scaleXYTo(glm::vec2 scale) {
+	scaleXYZTo(scale.x, scale.y, 1.0);
+}
+void Model::scaleXYTo(float scale_x, float scale_y) {
+	scaleXYZTo(scale_x, scale_y, 1.0);
+}
+void Model::scaleXZTo(glm::vec2 scale) {
+	scaleXYZTo(scale.x, 1.0, scale.y);
+}
+void Model::scaleXZTo(float scale_x, float scale_z) {
+	scaleXYZTo(scale_x, 1.0, scale_z);
+}
+void Model::scaleYZTo(glm::vec2 scale) {
+	scaleXYZTo(1.0, scale.x, scale.y);
+}
+void Model::scaleYZTo(float scale_y, float scale_z) {
+	scaleXYZTo(1.0, scale_y, scale_z);
+}
+void Model::scaleXYZTo(glm::vec3 scale) {
+	scaleXYZTo(scale.x, scale.y, scale.z);
+}
+void Model::scaleXYZTo(float scale_x, float scale_y, float scale_z) {
+	scaling = glm::vec3(scale_x, scale_y, scale_z);
+	model = glm::mat4(1.0f);
+	model *= glm::orientate4(rotation);
+	model = glm::translate(model, position);
+	model = glm::scale(model, scaling);
+}
+
+std::ostream& operator<<(std::ostream& os, Model m) {
+	os << "Model {" << std::endl << push_indent;
+
+	os << "glm::mat4 model = " << push_indent << m.model << pop_indent << std::endl;
+
+	os << "std::vector<Texture> textures_loaded = { " << std::endl;
+	os << push_indent;
+	for (auto& i : m.textures_loaded) {
+		os << i << ", " << std::endl;
+	}
+	os << pop_indent;
+	os << "}" << std::endl;
+
+	os << "std::vector<Mesh> meshes = {" << std::endl;
+	os << push_indent;
+	for (auto& i : m.meshes) {
+		os << i << ", " << std::endl;
+	}
+	os << pop_indent;
+	os << "}" << std::endl;
+	os << "cmrc::embedded_filesystem* fs = " << m.fs << std::endl;
+	os << "std::string directory = \"" << m.directory << "\"" << std::endl;
+	os << "std::string folder = \"" << m.folder << "\"" << std::endl;
+	os << "bool gammaCorrection = " << m.gammaCorrection << std::endl;
+
+	os << pop_indent << "}";
+	return os;
+}
+
 } /* namespace _3D */
 } /* namespace GameEngine */

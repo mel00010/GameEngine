@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_SHADER_HPP_
-#define SRC_SHADER_HPP_
-
-#include <Util/ResourceDefs.hpp>
+#ifndef SRC_GL_SHADER_HPP_
+#define SRC_GL_SHADER_HPP_
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
+
+#include <cmrc/cmrc.hpp>
 
 #include <memory>
 #include <ostream>
@@ -41,7 +41,7 @@ enum class ShaderType : GLenum {
 		FRAGMENT = GL_FRAGMENT_SHADER,
 		COMPUTE = GL_COMPUTE_SHADER
 };
-inline std::ostream& operator<<(std::ostream& os, ShaderType type) {
+inline std::ostream& operator<<(std::ostream& os, const ShaderType type) {
 	switch(type) {
 		case ShaderType::VERTEX: 			return os << "ShaderType::VERTEX";
 		case ShaderType::TESS_CONTROL:		return os << "ShaderType::TESS_CONTROL";
@@ -55,21 +55,10 @@ inline std::ostream& operator<<(std::ostream& os, ShaderType type) {
 
 class Shader {
 	public:
-		template<Enum ResourceID> Shader(Resource<ResourceID> resource, ShaderType _type) :
+		Shader(const cmrc::file file, ShaderType _type) :
 				type(_type), shader(glCreateShader(static_cast<GLenum>(_type))),
 				valid(false) {
-			std::string file_location;
-			char* base_path = SDL_GetBasePath();
-			if (base_path) {
-				file_location = base_path;
-			} else {
-				file_location = SDL_strdup("./");
-			}
-
-			file_location+=resource.file_path;
-			std::ifstream file(file_location);
-			source = std::string((std::istreambuf_iterator<char>(file)),
-					 std::istreambuf_iterator<char>());
+			source = std::string(file.begin(), file.end());
 		}
 		Shader(std::string source, ShaderType type);
 		~Shader();
@@ -86,10 +75,8 @@ class Shader {
 		bool valid;
 };
 
-using ShaderRef = std::shared_ptr<Shader>;
-
 } /* namespace GL */
 } /* namespace GameEngine */
 
 
-#endif /* SRC_SHADER_HPP_ */
+#endif /* SRC_GL_SHADER_HPP_ */

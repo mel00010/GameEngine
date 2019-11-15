@@ -17,11 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SRC_TEXTRENDERER_HPP_
-#define SRC_TEXTRENDERER_HPP_
+#ifndef SRC_2D_TEXTRENDERER_HPP_
+#define SRC_2D_TEXTRENDERER_HPP_
 
-#include <GL/GL.hpp>
-#include <GL/Program.hpp>
+#include <3D/Texture.hpp>
+
+#include <Util/Singleton.hpp>
+
+#include <Renderer.hpp>
+#include <Vertex.hpp>
 
 #include <glm/glm.hpp>
 #include <GL/glew.h>
@@ -31,38 +35,40 @@
 
 #include <SDL2/SDL.h>
 
-
 #include <map>
+#include <string>
 
 namespace GameEngine {
 namespace _2D {
 
 class TextRenderer {
 	public:
-		TextRenderer();
-		void init(SDL_Window* window);
-		void renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
-		void renderTextRelativeToTopRight(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+		template<typename Renderer>
+		void init(Renderer& renderer);
+
+		template<typename Renderer>
+		void renderText(Renderer& renderer, std::string text, float x, float y, float scale, glm::vec3 color);
+
+		template<typename Renderer>
+		void renderTextRelativeToTopRight(Renderer& renderer, std::string text, float x, float y, float scale, glm::vec3 color);
 
 	protected:
 		struct Character {
-			GLuint		TextureID;	// ID handle of the glyph texture
-			glm::ivec2	Size;		// Size of glyph
-			glm::ivec2	Bearing;	// Offset from baseline to left/top of glyph
-			FT_Pos		Advance;	// Offset to advance to next glyph
+			_3D::Texture 	Texture;	// Glyph texture
+			glm::ivec2		Size;		// Size of glyph
+			glm::ivec2		Bearing;	// Offset from baseline to left/top of glyph
+			FT_Pos			Advance;	// Offset to advance to next glyph
 		};
 
-		std::map<GLchar, Character> characters;
-		GL::GL gl;
-		SDL_Window* window;
-		GL::ProgramRef p = nullptr;
+		std::map<char, Character> characters;
 
-		bool valid;
+		bool valid = false;
+		VBO_handle handle;
 };
 
 } /* namespace _2D */
 } /* namespace GameEngine */
 
+#include "TextRenderer.tpp"
 
-
-#endif /* SRC_TEXTRENDERER_HPP_ */
+#endif /* SRC_2D_TEXTRENDERER_HPP_ */
