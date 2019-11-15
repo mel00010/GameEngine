@@ -6,8 +6,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 	append_coverage_compiler_flags()
 	set(COVERAGE_EXCLUDES
 		'${PROJECT_SOURCE_DIR}/test/*'
-		'${PROJECT_BINARY_DIR}/googletest-src/*'
-		'${PROJECT_BINARY_DIR}/googletest-build/*'
 		'/usr/include/c++/6/*'
 		'/usr/include/c++/7/*'
 		'/usr/include/c++/8/*'
@@ -31,10 +29,16 @@ target_include_directories(tests
 		${PROJECT_SOURCE_DIR}/src
 )
 
+set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
+message("$ENV{LD_LIBRARY_PATH}")
 target_link_libraries(tests
-	gtest
-	gmock
-	gmock_main
+	Util_test
+	Logger
+	
+	# $<TARGET_FILE> is used to prevent shared linking of gtest 
+	$<TARGET_FILE:gtest>
+	$<TARGET_FILE:gmock>
+	$<TARGET_FILE:gmock_main>
 	pthread
 )
-
+add_subdirectory(Util)
