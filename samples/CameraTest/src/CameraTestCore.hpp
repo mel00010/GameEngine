@@ -22,8 +22,13 @@
 
 #include <3D/Camera.hpp>
 #include <3D/Model.hpp>
+#include <3D/Skybox.hpp>
 #include <GameCore.hpp>
-#include <Resources.hpp>
+
+
+#include <cmrc/cmrc.hpp>
+
+CMRC_DECLARE(CameraTest);
 
 
 using namespace GameEngine;
@@ -39,12 +44,16 @@ class CameraTestCore : public GameEngine::GameCore<CameraTestCore> {
 		void registerCallbacks();
 
 	protected:
+		cmrc::embedded_filesystem fs = cmrc::CameraTest::get_filesystem();
+
 		glm::vec3 line_color = glm::vec3(1.0, 1.0, 0.0);
 		glm::vec3 cube_color = glm::vec3(1.0, 1.0, 1.0);
 		glm::vec3 nanosuit_color = glm::vec3(1.0, 1.0, 1.0);
 
 		_3D::Camera camera;
+		_3D::Skybox skybox;
 		_3D::Model cube;
+		_3D::Model axes;
 		std::vector<_3D::Model> nanosuits;
 		_3D::Model grid;
 };

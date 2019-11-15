@@ -25,8 +25,10 @@
 #include <Sound/Sound.hpp>
 #include <Sound/Music.hpp>
 #include <GameCore.hpp>
-#include <Resources.hpp>
 
+#include <cmrc/cmrc.hpp>
+
+CMRC_DECLARE(SoundTest);
 
 using namespace GameEngine;
 
@@ -41,6 +43,8 @@ class SoundTest : public GameEngine::GameCore<SoundTest> {
 		void registerCallbacks();
 
 	protected:
+		cmrc::embedded_filesystem fs = cmrc::SoundTest::get_filesystem();
+
 		glm::vec3 line_color = glm::vec3(1.0, 1.0, 0.0);
 
 		_3D::Camera camera;

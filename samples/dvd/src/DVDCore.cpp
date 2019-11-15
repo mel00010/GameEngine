@@ -22,7 +22,6 @@
 
 #include "DVDCore.hpp"
 
-#include <GL/Attribute.hpp>
 #include <GL/Shader.hpp>
 
 #include <Log.hpp>
@@ -33,8 +32,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtx/color_space.hpp>
-
-#include <Resources.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -79,31 +76,12 @@ void DVDCore::registerCallbacks() {
 
 void DVDCore::setup() {
 	setSpeed(2.0f);
-
-
-	p = std::make_shared<GL::Program>();
-	p->init();
-	GL::ShaderRef vertex_shader = std::make_shared<GL::Shader>(Resources[static_cast<size_t>(ResourceID::VERTEX_SHADER)], GL::ShaderType::VERTEX);
-	GL::ShaderRef fragment_shader = std::make_shared<GL::Shader>(Resources[static_cast<size_t>(ResourceID::FRAGMENT_SHADER)], GL::ShaderType::FRAGMENT);
-	vertex_shader->init();
-	fragment_shader->init();
-	p->attachShader(vertex_shader);
-	p->attachShader(fragment_shader);
-	p->link();
-
-	/* When all init functions run without errors,
-	   the glsl_program can initialize the resources */
-	if (!p->isValid()) {
-		throw EXIT_FAILURE;
-	}
-
-	glUseProgram(p->getPH());
 	addDVD();
 }
 
 void DVDCore::render() {
 	for(auto& i : dvds) {
-		i.draw(fps);
+		i.draw(renderer, fps);
 	}
 }
 

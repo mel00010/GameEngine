@@ -23,11 +23,12 @@
 #include <Log.hpp>
 
 #include <3D/Model.hpp>
+#include <3D/Skybox.hpp>
 
-#include <GL/Program.hpp>
 #include <GL/Shader.hpp>
+#include <GL/ShaderProgram.hpp>
 
-#include <Resources.hpp>
+#include <cmrc/cmrc.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
@@ -78,21 +79,21 @@ void CameraTestCore::registerCallbacks() {
 		camera.moveCamera(dir);
 	});
 	registerMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
-		if(isCursorDisabled()) {
+		if(renderer.isCursorDisabled()) {
 			camera.rotateCamera(static_cast<double>(delta.x)/10, -static_cast<double>(delta.y)/10);
 		}
 	});
 	registerWindowEventCallback([this](SDL_WindowEvent& ev) {
 		switch(ev.event) {
 			case SDL_WINDOWEVENT_RESIZED:
-				camera.updateProjection();
+				camera.updateProjection(glm::ivec2(ev.data1, ev.data2));
 		}
 	});
 	registerTimeoutCallback("ms_per_frame", 1000, [this]() {
 		LOG_D("ms/frame = " << frame_time_ms << " | fps = " << fps_avg);
 	}, true);
 	registerKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		nanosuits.push_back(_3D::Model(getResource(ResourceID::NANOSUIT)));
+		nanosuits.push_back(_3D::Model(renderer, fs, "nanosuit"));
 		nanosuits.back().move(glm::ballRand(5.0f));
 		nanosuits.back().scale(0.05);
 	});
@@ -100,53 +101,51 @@ void CameraTestCore::registerCallbacks() {
 
 
 void CameraTestCore::setup() {
-	p = std::make_shared<GL::Program>();
-	p->init();
-	GL::ShaderRef vertex_shader = std::make_shared<GL::Shader>(getResource(ResourceID::VERTEX_SHADER), GL::ShaderType::VERTEX);
-	GL::ShaderRef fragment_shader = std::make_shared<GL::Shader>(getResource(ResourceID::FRAGMENT_SHADER), GL::ShaderType::FRAGMENT);
-	vertex_shader->init();
-	fragment_shader->init();
-	p->attachShader(vertex_shader);
-	p->attachShader(fragment_shader);
-	p->link();
-
-	/* When all init functions run without errors,
-	   the glsl_program can initialize the resources */
-	if (!p->isValid()) {
-		throw EXIT_FAILURE;
-	}
-	p->useProgram();
-	gl.bind();
-
-	cube = _3D::Model(getResource(ResourceID::CUBE));
+	cube = _3D::Model(renderer, fs, "cube");
 	cube.move(glm::vec3(0.0, 0.5, 0.0));
 	cube.scale(0.25);
 
-	nanosuits.push_back(_3D::Model(getResource(ResourceID::NANOSUIT)));
+	axes = _3D::Model(renderer, fs, "axes");
+	axes.scale(0.1);
+
+	nanosuits.push_back(_3D::Model(renderer, fs, "nanosuit"));
 	nanosuits.back().move(glm::vec3(1.0, 0.0, 0.0));
 	nanosuits.back().scale(0.05);
 
-	grid = _3D::Model(getResource(ResourceID::GRID));
+	grid = _3D::Model(renderer, fs, "grid");
 	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
 
-	camera.init(getWindow(), p);
+	camera.init(renderer.getWindowSize());
+
+	skybox = _3D::Skybox(renderer, fs, "nebula");
 }
 
 void CameraTestCore::render() {
-	p->use();
-	gl.bind();
+	camera.drawModel(renderer, skybox, ShaderPrograms::SKYBOX);
 
 	cube.rotate(glm::vec3(glm::radians(0.1f), glm::radians(0.2f), glm::radians(-0.3f)));
-	p->setVec3("color", cube_color);
-	camera.drawModel(cube, p);
-
-	p->setVec3("color", line_color);
-	camera.drawModel(grid, p);
-
-	p->setVec3("color", nanosuit_color);
+	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(cube_color, 1.0f));
+	camera.drawModel(renderer, cube, ShaderPrograms::DEFAULT);
+	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(line_color, 1.0f));
+	camera.drawModel(renderer, grid, ShaderPrograms::DEFAULT);
+	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(nanosuit_color, 1.0f));
 	for(auto& i : nanosuits) {
-		camera.drawModel(i, p);
+		camera.drawModel(renderer, i, ShaderPrograms::DEFAULT);
 	}
+	renderer.disable_depth_testing();
+
+	glm::mat4 view = camera.view;
+	glm::mat4 projection = camera.projection;
+
+	camera.view = glm::mat4(glm::mat3(view));
+	camera.projection = glm::mat4(1.0);
+
+	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	camera.drawModel(renderer, axes, ShaderPrograms::DEFAULT);
+
+	camera.view = view;
+	camera.projection = projection;
+	renderer.enable_depth_testing();
 }
 
 void CameraTestCore::tick() {

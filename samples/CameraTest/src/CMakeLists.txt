@@ -10,17 +10,73 @@ target_sources(CameraTest
 target_link_libraries(CameraTest
 	PUBLIC
 		GameEngine
-		CameraTest_Resources
-		
+				
 		Logger
+		CameraTest::Resources
 )
-include(ConfigureResources)
-#				 Target			Top Directory				Namespace
-target_resources(CameraTest		${CMAKE_CURRENT_BINARY_DIR}	CameraTest
-#	Path												ID				Type	Main File
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/vertex.glsl	VERTEX_SHADER	SHADER	vertex.glsl
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/fragment.glsl	FRAGMENT_SHADER	SHADER	fragment.glsl
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/cube			CUBE			MODEL	cube.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/grid			GRID			MODEL	grid.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/nanosuit		NANOSUIT		MODEL	nanosuit.obj
+
+include(CMakeRC)
+
+cmrc_add_resource_library(CameraTest-Resources ALIAS CameraTest::Resources NAMESPACE CameraTest)
+cmrc_add_resources(CameraTest-Resources
+	WHENCE resources
+	
+	resources/cube/cube.mtl
+	resources/cube/cube.obj
+	resources/cube/wall.jpg
+	
+	resources/grid/grid.mtl
+	resources/grid/grid.obj
+	resources/grid/grid.png
+	
+	resources/nanosuit/arm_dif.png
+	resources/nanosuit/arm_showroom_ddn.png
+	resources/nanosuit/arm_showroom_spec.png
+	resources/nanosuit/body_dif.png
+	resources/nanosuit/body_showroom_ddn.png
+	resources/nanosuit/body_showroom_spec.png
+	resources/nanosuit/glass_ddn.png
+	resources/nanosuit/glass_dif.png
+	resources/nanosuit/hand_dif.png
+	resources/nanosuit/hand_showroom_ddn.png
+	resources/nanosuit/hand_showroom_spec.png
+	resources/nanosuit/helmet_diff.png
+	resources/nanosuit/helmet_showroom_ddn.png
+	resources/nanosuit/helmet_showroom_spec.png
+	resources/nanosuit/leg_dif.png
+	resources/nanosuit/leg_showroom_ddn.png
+	resources/nanosuit/leg_showroom_spec.png
+	resources/nanosuit/LICENSE.txt
+	resources/nanosuit/nanosuit.blend
+	resources/nanosuit/nanosuit.mtl
+	resources/nanosuit/nanosuit.obj
+	
+	resources/skybox/back.png
+	resources/skybox/bottom.png
+	resources/skybox/front.png
+	resources/skybox/left.png
+	resources/skybox/right.png
+	resources/skybox/top.png
+	
+	resources/orbital/back.png
+	resources/orbital/bottom.png
+	resources/orbital/front.png
+	resources/orbital/left.png
+	resources/orbital/right.png
+	resources/orbital/top.png
+	
+	resources/nebula/back.png
+	resources/nebula/bottom.png
+	resources/nebula/front.png
+	resources/nebula/left.png
+	resources/nebula/right.png
+	resources/nebula/top.png
+	
+	resources/axes/axes.mtl
+	resources/axes/axes.obj
+	resources/axes/red.png
+	resources/axes/green.png
+	resources/axes/blue.png
+	
+	
 )

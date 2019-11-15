@@ -10,20 +10,47 @@ target_sources(SoundTest
 target_link_libraries(SoundTest
 	PUBLIC
 		GameEngine
-		SoundTest_Resources
+		SoundTest::Resources
 		
 		Logger
 )
-include(ConfigureResources)
-#				 Target			Top Directory				Namespace
-target_resources(SoundTest		${CMAKE_CURRENT_BINARY_DIR}	SoundTest
-#	Path												ID				Type	Main File
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/vertex.glsl	VERTEX_SHADER	SHADER	vertex.glsl
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/fragment.glsl	FRAGMENT_SHADER	SHADER	fragment.glsl
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/cube			CUBE			MODEL	cube.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/grid			GRID			MODEL	grid.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/nanosuit		NANOSUIT		MODEL	nanosuit.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/oof.ogg		OOF				SOUND	oof.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/ouch.ogg		OUCH			SOUND	ouch.obj
-	${CMAKE_CURRENT_SOURCE_DIR}/resources/rickroll.ogg	RICKROLL		SOUND	rickroll.obj
+include(CMakeRC)
+
+cmrc_add_resource_library(SoundTest-Resources ALIAS SoundTest::Resources NAMESPACE SoundTest)
+cmrc_add_resources(SoundTest-Resources
+	WHENCE resources
+	
+	resources/cube/cube.mtl
+	resources/cube/cube.obj
+	resources/cube/wall.jpg
+	
+	resources/grid/grid.mtl
+	resources/grid/grid.obj
+	resources/grid/grid.png
+	
+	resources/nanosuit/arm_dif.png
+	resources/nanosuit/arm_showroom_ddn.png
+	resources/nanosuit/arm_showroom_spec.png
+	resources/nanosuit/body_dif.png
+	resources/nanosuit/body_showroom_ddn.png
+	resources/nanosuit/body_showroom_spec.png
+	resources/nanosuit/glass_ddn.png
+	resources/nanosuit/glass_dif.png
+	resources/nanosuit/hand_dif.png
+	resources/nanosuit/hand_showroom_ddn.png
+	resources/nanosuit/hand_showroom_spec.png
+	resources/nanosuit/helmet_diff.png
+	resources/nanosuit/helmet_showroom_ddn.png
+	resources/nanosuit/helmet_showroom_spec.png
+	resources/nanosuit/leg_dif.png
+	resources/nanosuit/leg_showroom_ddn.png
+	resources/nanosuit/leg_showroom_spec.png
+	resources/nanosuit/LICENSE.txt
+	resources/nanosuit/nanosuit.blend
+	resources/nanosuit/nanosuit.mtl
+	resources/nanosuit/nanosuit.obj
+	
+	resources/oof.ogg
+	resources/ouch.ogg
+	resources/rickroll.ogg
 )

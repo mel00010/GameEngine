@@ -20,16 +20,14 @@
 
 #include "SoundTest.hpp"
 
-#include <Log.hpp>
 
 #include <3D/Model.hpp>
-
-#include <GL/Program.hpp>
 #include <GL/Shader.hpp>
+#include <GL/ShaderProgram.hpp>
 
-#include <Resources.hpp>
-
+#include <cmrc/cmrc.hpp>
 #include <glm/glm.hpp>
+#include <Log.hpp>
 
 #include <thread>
 
@@ -94,14 +92,14 @@ void SoundTest::registerCallbacks() {
 	});
 
 	registerMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
-		if(isCursorDisabled()) {
+		if(renderer.isCursorDisabled()) {
 			camera.rotateCamera(static_cast<double>(delta.x)/10, -static_cast<double>(delta.y)/10);
 		}
 	});
 	registerWindowEventCallback([this](SDL_WindowEvent& ev) {
 		switch(ev.event) {
 			case SDL_WINDOWEVENT_RESIZED:
-				camera.updateProjection();
+				camera.updateProjection(glm::ivec2(ev.data1, ev.data2));
 		}
 	});
 	registerTimeoutCallback("ms_per_frame", 1000, [this]() {
@@ -111,40 +109,19 @@ void SoundTest::registerCallbacks() {
 
 
 void SoundTest::setup() {
-	p = std::make_shared<GL::Program>();
-	p->init();
-	GL::ShaderRef vertex_shader = std::make_shared<GL::Shader>(getResource(ResourceID::VERTEX_SHADER), GL::ShaderType::VERTEX);
-	GL::ShaderRef fragment_shader = std::make_shared<GL::Shader>(getResource(ResourceID::FRAGMENT_SHADER), GL::ShaderType::FRAGMENT);
-	vertex_shader->init();
-	fragment_shader->init();
-	p->attachShader(vertex_shader);
-	p->attachShader(fragment_shader);
-	p->link();
-
-	/* When all init functions run without errors,
-	   the glsl_program can initialize the resources */
-	if (!p->isValid()) {
-		throw EXIT_FAILURE;
-	}
-	p->useProgram();
-	gl.bind();
-
-	grid = _3D::Model(getResource(ResourceID::GRID));
+	grid = _3D::Model(renderer, fs, "grid");
 	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
 
-	camera.init(getWindow(), p);
+	camera.init(renderer.getWindowSize());
 
-	oof = Sound::Sound(getResource(ResourceID::OOF));
-	ouch = Sound::Sound(getResource(ResourceID::OUCH));
-	rickroll = Sound::Music(getResource(ResourceID::RICKROLL));
+	oof = Sound::Sound(fs.open("oof.ogg"));
+	ouch = Sound::Sound(fs.open("ouch.ogg"));
+	rickroll = Sound::Music(fs.open("rickroll.ogg"));
 }
 
 void SoundTest::render() {
-	p->use();
-	gl.bind();
-
-	p->setVec3("color", line_color);
-	camera.drawModel(grid, p);
+	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(line_color, 1.0f));
+	camera.drawModel(renderer, grid);
 }
 
 void SoundTest::tick() {

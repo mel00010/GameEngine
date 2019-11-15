@@ -1,3 +1,6 @@
 add_subdirectory(CameraTest)
+add_subdirectory(CubeTest)
 add_subdirectory(dvd)
+add_subdirectory(dvd_model)
+add_subdirectory(MineTest)
 add_subdirectory(SoundTest)

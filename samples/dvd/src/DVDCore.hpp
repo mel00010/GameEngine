@@ -57,7 +57,7 @@ class DVDCore : public GameEngine::GameCore<DVDCore> {
 			}
 		}
 		void addDVD() {
-			dvds.push_back(DVD(p));
+			dvds.push_back(DVD(renderer));
 		}
 		void removeDVD() {
 			if(!dvds.empty()) {
