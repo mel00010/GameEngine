@@ -22,6 +22,7 @@
 
 #include <Log.hpp>
 
+namespace GameEngine {
 namespace Sound {
 
 Music::~Music() {
@@ -35,8 +36,10 @@ Music::~Music() {
 	Mix_FreeMusic(music);
 }
 
-Mix_Music* Music::loadMusic(const std::string file_path) {
-	music = Mix_LoadMUS(file_path.c_str());
+Mix_Music* Music::loadMusic(const cmrc::file file) {
+	std::vector<uint8_t> file_contents(file.begin(), file.end());
+	path = file.path();
+	music = Mix_LoadMUS_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
 	if (music == nullptr) {
 		LOG_E("Mix_LoadMUS:  " << Mix_GetError());
 	}
@@ -74,6 +77,6 @@ bool Music::isPlaying() {
 	return Mix_PlayingMusic();
 }
 } /* namespace Sound */
-
+} /* namespace GameEngine */
 
 

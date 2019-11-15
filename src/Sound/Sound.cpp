@@ -24,6 +24,7 @@
 
 #include <string>
 
+namespace GameEngine {
 namespace Sound {
 
 Sound::~Sound() {
@@ -45,11 +46,12 @@ Sound::~Sound() {
 	Mix_FreeChunk(chunk);
 }
 
-Mix_Chunk* Sound::loadSound(const std::string file_path) {
-	path = file_path;
+Mix_Chunk* Sound::loadSound(const cmrc::file file) {
+	std::vector<uint8_t> file_contents(file.begin(), file.end());
+	path = file.path();
 	/* Allocate one more channel */
 	Mix_AllocateChannels(Mix_AllocateChannels(-1) + 1);
-	chunk = Mix_LoadWAV(file_path.c_str());
+	chunk = Mix_LoadWAV_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
 	if (chunk == nullptr) {
 		LOG_E("Mix_LoadWav:  " << Mix_GetError());
 	}
@@ -69,4 +71,5 @@ int Sound::setVolume(int volume) {
 	return Mix_VolumeChunk(chunk, volume);
 }
 } /* namespace Sound */
+} /* namespace GameEngine */
 

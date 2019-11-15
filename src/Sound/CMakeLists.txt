@@ -19,4 +19,6 @@ target_link_libraries(Sound
 		Logger
 		SDL2
 		SDL2_mixer
+		
+		GameEngine::Resources
 )

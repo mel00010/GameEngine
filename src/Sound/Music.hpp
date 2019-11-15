@@ -20,40 +20,25 @@
 #ifndef SRC_SOUND_MUSIC_HPP_
 #define SRC_SOUND_MUSIC_HPP_
 
-#include <Util/ResourceDefs.hpp>
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include <cmrc/cmrc.hpp>
+
 #include <string>
 
+namespace GameEngine {
 namespace Sound {
 
 class Music {
 	public:
 		Music() {};
-		Music(const std::string file_path) {
-			loadMusic(file_path);
-		}
-		template <Enum ResourceID> Music(const Resource<ResourceID> resource) {
-			loadMusic(resource);
+		Music(const cmrc::file file) {
+			loadMusic(file);
 		}
 		~Music();
 
-
-		template <Enum ResourceID> Mix_Music* loadMusic(const Resource<ResourceID> resource) {
-			std::string file_location;
-			char *base_path = SDL_GetBasePath();
-			if (base_path) {
-				file_location = base_path;
-			} else {
-				file_location = "./";
-			}
-			file_location += resource.file_path;
-			return loadMusic(file_location);
-		}
-
-		Mix_Music* loadMusic(const std::string file_path);
+		Mix_Music* loadMusic(const cmrc::file file);
 
 
 	public:
@@ -72,7 +57,7 @@ class Music {
 };
 
 } /* namespace Sound */
-
+} /* namespace GameEngine */
 
 
 
