@@ -22,24 +22,24 @@
 
 #include "Camera.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-template<typename Renderer> void Camera::drawModel(Renderer& renderer, Model& model, ShaderPrograms shaders) {
-	renderer.setMatrices(shaders, model.model, view, projection);
-	model.draw(renderer, shaders);
+template<typename Renderer> void Camera::DrawModel(const Renderer& renderer, Model& model, ShaderPrograms shaders) {
+	renderer.SetMatrices(shaders, model.model_, view_, projection_);
+	model.Draw(renderer, shaders);
 }
 
-template<typename Renderer> void Camera::drawModel(Renderer& renderer, Cube& model, ShaderPrograms shaders) {
-	renderer.setMatrices(shaders, model.model, view, projection);
-	model.draw(renderer, shaders);
+template<typename Renderer> void Camera::DrawModel(const Renderer& renderer, Cube& cube, ShaderPrograms shaders) {
+	renderer.SetMatrices(shaders, cube.model_, view_, projection_);
+	cube.Draw(renderer, shaders);
 }
-template<typename Renderer> void Camera::drawModel(Renderer& renderer, Skybox& model, ShaderPrograms shaders) {
-	renderer.setMatrices(shaders, glm::mat4(1.0f), glm::mat4(glm::mat3(view)), projection);
-	model.draw(renderer);
+template<typename Renderer> void Camera::DrawModel(const Renderer& renderer, Skybox& skybox, ShaderPrograms shaders) {
+	renderer.SetMatrices(shaders, glm::mat4(1.0f), glm::mat4(glm::mat3(view_)), projection_);
+	skybox.Draw(renderer, shaders);
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_CAMERA_TPP_ */

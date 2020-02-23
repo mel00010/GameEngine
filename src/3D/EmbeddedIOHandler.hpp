@@ -27,12 +27,12 @@
 
 #include <map>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 class EmbeddedIOHandler : public Assimp::IOSystem {
 	public:
-		EmbeddedIOHandler(cmrc::embedded_filesystem& _fs) : fs(_fs) {}
+		explicit EmbeddedIOHandler(const cmrc::embedded_filesystem& fs) : fs_(fs) {}
 
 	public:
 		// -------------------------------------------------------------------
@@ -41,13 +41,13 @@ class EmbeddedIOHandler : public Assimp::IOSystem {
 		 * @param pFile Path to the file
 		 * @return true if there is a file with this path, else false.
 		 */
-		virtual bool Exists( const char* pFile) const override;
+		bool Exists( const char* pFile) const override;
 
 		// -------------------------------------------------------------------
 		/** @brief Returns the system specific directory separator
 		 *  @return System specific directory separator
 		 */
-		virtual char getOsSeparator() const override;
+		char getOsSeparator() const override;
 
 		// -------------------------------------------------------------------
 		/** @brief Open a new file with a given path.
@@ -64,21 +64,21 @@ class EmbeddedIOHandler : public Assimp::IOSystem {
 		 *  @note When implementing this class to provide custom IO handling,
 		 *  you probably have to supply an own implementation of IOStream as well.
 		 */
-		virtual Assimp::IOStream* Open(const char* pFile, const char* pMode = "rb") override;
+		Assimp::IOStream* Open(const char* pFile, const char* pMode = "rb") override;
 
 		// -------------------------------------------------------------------
 		/** @brief Closes the given file and releases all resources
 		 *    associated with it.
 		 *  @param pFile The file instance previously created by Open().
 		 */
-		virtual void Close( Assimp::IOStream* pFile) override;
+		void Close( Assimp::IOStream* pFile) override;
 
 	protected:
-		cmrc::embedded_filesystem& fs;
-		std::vector<EmbeddedIOStream*> io_streams;
+		const cmrc::embedded_filesystem& fs_;
+		std::vector<EmbeddedIOStream*> io_streams_;
 };
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_EMBEDDEDIOHANDLER_HPP_ */

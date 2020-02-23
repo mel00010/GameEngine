@@ -52,13 +52,19 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wformat -Werror=format-
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wextra -std=c++2a -fconcepts")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fdiagnostics-color=always -D_DEBUG_BUILD=0 -DMIN_LOG_LEVEL=0")
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffile-prefix-map=../../samples/= -ffile-prefix-map=../samples/= -ffile-prefix-map=${CMAKE_SOURCE_DIR}= -ffile-prefix-map=../src=GameEngine -ffile-prefix-map=../../src=GameEngine -ffile-prefix-map=_deps/=")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffile-prefix-map=../../samples/= -ffile-prefix-map=../samples/=-ffile-prefix-map=${CMAKE_SOURCE_DIR}= -ffile-prefix-map=../src=GameEngine -ffile-prefix-map=../../src=GameEngine -ffile-prefix-map=_deps/=")
+
 cmake_policy(SET CMP0072 NEW)
 set(OpenGL_GL_PREFERENCE "GLVND")
 
 include(GetLogger)
+include(GetSlang)
 include(GetAssimp)
-set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-w")
+include(GetP7)
+include(GetGFlags)
 
+set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-w")
 
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 
@@ -75,6 +81,10 @@ target_include_directories(GLEW INTERFACE ${GLEW_INCLUDE_DIRS})
 target_compile_definitions(GLEW INTERFACE ${GLEW_DEFINITIONS})
 
 find_package(glm REQUIRED)
+add_library(glm INTERFACE)
+target_link_libraries(glm INTERFACE ${glm_LIBRARIES})
+target_include_directories(glm INTERFACE ${glm_INCLUDE_DIRS})
+target_compile_definitions(glm INTERFACE ${glm_DEFINITIONS})
 
 find_file(SDL2_INCLUDE_DIR NAME SDL.h HINTS SDL2)
 find_package(SDL2 REQUIRED)
@@ -116,7 +126,7 @@ if(NOT TARGET uninstall)
 		"${CMAKE_SOURCE_DIR}/cmake/Uninstall.cmake.in"
 		"${CMAKE_CURRENT_BINARY_DIR}/Uninstall.cmake"
 		IMMEDIATE @ONLY)
-	
+
 	add_custom_target(uninstall
 		COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/Uninstall.cmake)
 endif()

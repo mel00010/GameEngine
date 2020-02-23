@@ -31,76 +31,76 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-inline glm::vec2 convert(const aiVector2D vec) {
+inline glm::vec2 Convert(const aiVector2D vec) {
 	return glm::vec2(vec.x, vec.y);
 }
-inline glm::vec3 convert(const aiVector3D vec) {
+inline glm::vec3 Convert(const aiVector3D vec) {
 	return glm::vec3(vec.x, vec.y, vec.z);
 }
-inline glm::vec3 convert(const aiColor3D vec) {
+inline glm::vec3 Convert(const aiColor3D vec) {
 	return glm::vec3(vec.r, vec.g, vec.b);
 }
-inline glm::vec4 convert(const aiColor4D vec) {
+inline glm::vec4 Convert(const aiColor4D vec) {
 	return glm::vec4(vec.r, vec.g, vec.b, vec.a);
 }
 
 template<typename Renderer>
-Model::Model(Renderer& renderer, cmrc::embedded_filesystem& fs,  const std::string& path, bool gamma) :
-		gammaCorrection(gamma) {
-	loadModel(renderer, fs, path);
+Model::Model(Renderer& renderer, const cmrc::embedded_filesystem& fs,  const std::string& path, const bool gamma) :
+		gamma_correction_(gamma) {
+	LoadModel(renderer, fs, path);
 }
 
 template<typename Renderer>
-void Model::loadModel(Renderer& renderer, cmrc::embedded_filesystem& _fs, const std::string& path) {
-	directory = path;
+void Model::LoadModel(Renderer& renderer, const cmrc::embedded_filesystem& _fs, const std::string& path) {
+	directory_ = path;
 //	LOG_D("directory = " << directory);
 	if(path.rfind('/') == std::string::npos) {
-		folder = path;
+		folder_ = path;
 	} else {
-		folder = path.substr(path.rfind('/'));
+		folder_ = path.substr(path.rfind('/'));
 	}
 //	LOG_D("folder = " << folder);
 
-	fs = &_fs;
+	fs_ = &_fs;
 
-	EmbeddedIOHandler* io_handler = new EmbeddedIOHandler(*fs);
+	EmbeddedIOHandler* io_handler = new EmbeddedIOHandler(*fs_);
 
 	Assimp::Importer import;
 	import.SetExtraVerbose(true);
 	import.SetIOHandler(io_handler);
 
-	const aiScene *scene = import.ReadFile((path + "/" + folder + ".obj").c_str(),
+	const aiScene *scene = import.ReadFile((path + "/" + folder_ + ".obj").c_str(),
 			  aiProcess_Triangulate
 			| aiProcess_FlipUVs
 			| aiProcess_JoinIdenticalVertices
 			| aiProcess_SortByPType);
 //	LOG_D("Imported file " << (path + "/" + folder + ".obj"));
-	if (!scene || ( scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ) || !scene->mRootNode) {
+	if ((!scene) || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || (!scene->mRootNode)) {
 		LOG_E("ASSIMP::" << import.GetErrorString());
 		return;
 	}
 
-	processNode(renderer, scene->mRootNode, scene);
+	ProcessNode(renderer, scene->mRootNode, scene);
 }
 
 template<typename Renderer>
-void Model::processNode(Renderer& renderer, aiNode* node, const aiScene* scene) {
+void Model::ProcessNode(Renderer& renderer, aiNode* node, const aiScene* scene) {
 	// process all the node's meshes (if any)
 	for (size_t i = 0; i < node->mNumMeshes; i++) {
 		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(renderer, mesh, scene));
+		meshes_.push_back(ProcessMesh(renderer, mesh, scene));
 	}
 	// then do the same for each of its children
 	for (size_t i = 0; i < node->mNumChildren; i++) {
-		processNode(renderer, node->mChildren[i], scene);
+		ProcessNode(renderer, node->mChildren[i], scene);
 	}
 }
 
 template<typename Renderer>
-Mesh Model::processMesh(Renderer& renderer, aiMesh* mesh, const aiScene* scene) {
+Mesh Model::ProcessMesh(Renderer& renderer, aiMesh* mesh, const aiScene* scene) {
 	// data to fill
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
@@ -112,51 +112,51 @@ Mesh Model::processMesh(Renderer& renderer, aiMesh* mesh, const aiScene* scene) 
 
 		// positions
 		if(mesh->HasPositions()) { // does the mesh contain positions?
-			vertex.position = convert(mesh->mVertices[i]);
+			vertex.position = Convert(mesh->mVertices[i]);
 		}
 
 		// normals
 		if(mesh->HasNormals()) { // does the mesh contain normals?
-			vertex.normal = convert(mesh->mNormals[i]);
+			vertex.normal = Convert(mesh->mNormals[i]);
 		}
 
 		// texture coordinates
 		if (mesh->HasTextureCoords(0)) { // does the mesh contain texture coordinate 0?
-			vertex.tex_coord0 = convert(mesh->mTextureCoords[0][i]);
+			vertex.tex_coord0 = Convert(mesh->mTextureCoords[0][i]);
 		}
 		if (mesh->HasTextureCoords(1)) { // does the mesh contain texture coordinate 1?
-			vertex.tex_coord1 = convert(mesh->mTextureCoords[1][i]);
+			vertex.tex_coord1 = Convert(mesh->mTextureCoords[1][i]);
 		}
 		if (mesh->HasTextureCoords(2)) { // does the mesh contain texture coordinate 2?
-			vertex.tex_coord2 = convert(mesh->mTextureCoords[2][i]);
+			vertex.tex_coord2 = Convert(mesh->mTextureCoords[2][i]);
 		}
 		if (mesh->HasTextureCoords(3)) { // does the mesh contain texture coordinate 3?
-			vertex.tex_coord3 = convert(mesh->mTextureCoords[3][i]);
+			vertex.tex_coord3 = Convert(mesh->mTextureCoords[3][i]);
 		}
 		if (mesh->HasTextureCoords(4)) { // does the mesh contain texture coordinate 4?
-			vertex.tex_coord4 = convert(mesh->mTextureCoords[4][i]);
+			vertex.tex_coord4 = Convert(mesh->mTextureCoords[4][i]);
 		}
 		if (mesh->HasTextureCoords(5)) { // does the mesh contain texture coordinate 5?
-			vertex.tex_coord5 = convert(mesh->mTextureCoords[5][i]);
+			vertex.tex_coord5 = Convert(mesh->mTextureCoords[5][i]);
 		}
 		if (mesh->HasTextureCoords(6)) { // does the mesh contain texture coordinate 6?
-			vertex.tex_coord6 = convert(mesh->mTextureCoords[6][i]);
+			vertex.tex_coord6 = Convert(mesh->mTextureCoords[6][i]);
 		}
 		if (mesh->HasTextureCoords(7)) { // does the mesh contain texture coordinate 7?
-			vertex.tex_coord7 = convert(mesh->mTextureCoords[7][i]);
+			vertex.tex_coord7 = Convert(mesh->mTextureCoords[7][i]);
 		}
 
 		// colors
 		if (mesh->HasVertexColors(0)) { // does the mesh contain primary vertex colors?
-			vertex.color = convert(mesh->mColors[0][i]);
+			vertex.color = Convert(mesh->mColors[0][i]);
 		}
 		if (mesh->HasVertexColors(1)) { // does the mesh contain secondary vertex colors?
-			vertex.secondary_color = convert(mesh->mColors[1][i]);
+			vertex.secondary_color = Convert(mesh->mColors[1][i]);
 		}
 
 		if (mesh->HasTangentsAndBitangents()) {  // does the mesh contain tangents and bitangents?
-			vertex.tangent = convert(mesh->mTangents[i]);
-			vertex.bitangent = convert(mesh->mBitangents[i]);
+			vertex.tangent = Convert(mesh->mTangents[i]);
+			vertex.bitangent = Convert(mesh->mBitangents[i]);
 		}
 		vertices.push_back(vertex);
 	}
@@ -180,16 +180,16 @@ Mesh Model::processMesh(Renderer& renderer, aiMesh* mesh, const aiScene* scene) 
 	// normal: texture_normalN
 
 	// 1. diffuse maps
-	std::vector<Texture> diffuseMaps = loadMaterialTextures(renderer, material, aiTextureType_DIFFUSE, TextureType::DIFFUSE);
+	std::vector<Texture> diffuseMaps = LoadMaterialTextures(renderer, material, aiTextureType_DIFFUSE, TextureType::DIFFUSE);
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	// 2. specular maps
-	std::vector<Texture> specularMaps = loadMaterialTextures(renderer, material, aiTextureType_SPECULAR, TextureType::SPECULAR);
+	std::vector<Texture> specularMaps = LoadMaterialTextures(renderer, material, aiTextureType_SPECULAR, TextureType::SPECULAR);
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	// 3. normal maps
-	std::vector<Texture> normalMaps = loadMaterialTextures(renderer, material, aiTextureType_HEIGHT, TextureType::NORMAL);
+	std::vector<Texture> normalMaps = LoadMaterialTextures(renderer, material, aiTextureType_HEIGHT, TextureType::NORMAL);
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	// 4. height maps
-	std::vector<Texture> heightMaps = loadMaterialTextures(renderer, material, aiTextureType_AMBIENT, TextureType::HEIGHT);
+	std::vector<Texture> heightMaps = LoadMaterialTextures(renderer, material, aiTextureType_AMBIENT, TextureType::HEIGHT);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 	Primitive mode = Primitive::TRIANGLES;
@@ -206,14 +206,15 @@ Mesh Model::processMesh(Renderer& renderer, aiMesh* mesh, const aiScene* scene) 
 			break;
 	}
 	// return a mesh object created from the extracted mesh data
-	Mesh mesh_(vertices, indices, textures, mode);
+	Mesh _mesh(vertices, indices, textures, mode);
+	_mesh.Init(renderer, ShaderPrograms::DEFAULT);
 //	mesh_.setupMesh(renderer);
-	return mesh_;
+	return _mesh;
 }
 
 template<typename Renderer>
-std::vector<Texture> Model::loadMaterialTextures(
-		Renderer& renderer,
+std::vector<Texture> Model::LoadMaterialTextures(
+		const Renderer& renderer,
 		aiMaterial* mat, aiTextureType type, TextureType texture_type) {
 
 	std::vector<Texture> textures;
@@ -223,9 +224,9 @@ std::vector<Texture> Model::loadMaterialTextures(
 		mat->GetTexture(type, i, &str);
 		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
 		bool skip = false;
-		for (GLuint j = 0; j < textures_loaded.size(); j++) {
-			if (textures_loaded[j].path == (directory + "/" + std::string(str.C_Str()))) {
-				textures.push_back(textures_loaded[j]);
+		for (GLuint j = 0; j < textures_loaded_.size(); j++) {
+			if (textures_loaded_[j].path_ == (directory_ + "/" + std::string(str.C_Str()))) {
+				textures.push_back(textures_loaded_[j]);
 				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
 				break;
 			}
@@ -233,24 +234,24 @@ std::vector<Texture> Model::loadMaterialTextures(
 		if (!skip) {	// if texture hasn't been loaded already, load it
 //			LOG_D("Loading new texture " << mat->GetName().C_Str());
 			Texture texture;
-			cmrc::file file = fs->open(directory + "/" + std::string(str.C_Str()));
+			cmrc::file file = fs_->open(directory_ + "/" + std::string(str.C_Str()));
 //			LOG_D("Opening texture " << file.path());
-			texture.loadTexture(renderer, file, ShaderPrograms::DEFAULT, texture_type);
+			texture.LoadTexture(renderer, file, ShaderPrograms::DEFAULT, texture_type);
 			textures.push_back(texture);
-			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
+			textures_loaded_.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
 		}
 	}
 	return textures;
 }
 
 
-template<typename Renderer> void Model::draw(Renderer& renderer, ShaderPrograms shaders) {
-	for (auto& i : meshes) {
-		i.draw(renderer, shaders);
+template<typename Renderer> void Model::Draw(const Renderer& renderer, const ShaderPrograms shaders) {
+	for (auto& i : meshes_) {
+		i.Draw(renderer, shaders);
 	}
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_MODEL_TPP_ */

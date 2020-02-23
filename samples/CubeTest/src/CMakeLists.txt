@@ -9,18 +9,21 @@ target_sources(CubeTest
 
 target_link_libraries(CubeTest
 	PUBLIC
-		GameEngine
+		GameEngine::GameEngine
 		CubeTest::Resources
-		
-		Logger
+
+		Logger::Logger
 )
 include(CMakeRC)
 
-cmrc_add_resource_library(CubeTest-Resources ALIAS CubeTest::Resources NAMESPACE CubeTest)
+cmrc_add_resource_library(CubeTest-Resources ALIAS CubeTest::Resources NAMESPACE cube_test)
 cmrc_add_resources(CubeTest-Resources
 	WHENCE resources
-	
-	resources/cube/cube.mtl
-	resources/cube/cube.obj
-	resources/cube/wall.jpg
+
+	resources/cube/back.png
+	resources/cube/bottom.png
+	resources/cube/front.png
+	resources/cube/left.png
+	resources/cube/right.png
+	resources/cube/top.png
 )

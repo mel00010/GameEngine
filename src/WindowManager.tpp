@@ -22,8 +22,8 @@
 
 #include "WindowManager.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_WINDOWMANAGER_TPP_ */

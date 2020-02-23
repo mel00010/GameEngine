@@ -37,37 +37,62 @@
 
 #include <map>
 #include <string>
+#include <utility>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _2D {
 
 class TextRenderer {
 	public:
 		template<typename Renderer>
-		void init(Renderer& renderer);
+		void Init(Renderer& renderer);
 
 		template<typename Renderer>
-		void renderText(Renderer& renderer, std::string text, float x, float y, float scale, glm::vec3 color);
+		void RenderText(const Renderer& renderer, const std::string text,
+				const float x, const float y, const float scale, const glm::vec3 color);
 
 		template<typename Renderer>
-		void renderTextRelativeToTopRight(Renderer& renderer, std::string text, float x, float y, float scale, glm::vec3 color);
+		void RenderTextRelativeToTopRight(const Renderer& renderer, const std::string text,
+				const float x, const float y, const float scale, const glm::vec3 color);
 
-	protected:
+		void swap(TextRenderer& other) noexcept {
+			using std::swap;
+			swap(other.characters_, characters_);
+			swap(other.valid_, valid_);
+			swap(other.handle_, handle_);
+		}
+
 		struct Character {
-			_3D::Texture 	Texture;	// Glyph texture
-			glm::ivec2		Size;		// Size of glyph
-			glm::ivec2		Bearing;	// Offset from baseline to left/top of glyph
-			FT_Pos			Advance;	// Offset to advance to next glyph
+				_3D::Texture texture; // Glyph texture
+				glm::ivec2 size; // Size of glyph
+				glm::ivec2 bearing; // Offset from baseline to left/top of glyph
+				FT_Pos advance; // Offset to advance to next glyph
+
+				void swap(Character &other) noexcept {
+					using std::swap;
+					swap(other.texture, texture);
+					swap(other.size, size);
+					swap(other.bearing, bearing);
+					swap(other.advance, advance);
+				}
 		};
+	protected:
+		std::map<char, Character> characters_;
 
-		std::map<char, Character> characters;
-
-		bool valid = false;
-		VBO_handle handle;
+		bool valid_ = false;
+		VboHandle handle_;
 };
 
+inline void swap(TextRenderer::Character& a, TextRenderer::Character& b) noexcept {
+	a.swap(b);
+}
+
+inline void swap(TextRenderer& a, TextRenderer& b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace _2D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "TextRenderer.tpp"
 

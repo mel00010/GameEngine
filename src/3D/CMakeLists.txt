@@ -1,4 +1,6 @@
 add_library(3D STATIC "")
+add_library(GameEngine::3D ALIAS 3D)
+
 target_sources(3D
 	PRIVATE
 		Camera.cpp
@@ -9,6 +11,7 @@ target_sources(3D
 		Mesh.cpp
 		Model.cpp
 		Texture.cpp
+		Transformations.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/Camera.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Cube.hpp	
@@ -22,6 +25,7 @@ target_sources(3D
 		${CMAKE_CURRENT_SOURCE_DIR}/Scene.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Skybox.hpp	
 		${CMAKE_CURRENT_SOURCE_DIR}/Texture.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Transformations.hpp
 )
 
 target_include_directories(3D 
@@ -31,18 +35,18 @@ target_include_directories(3D
 
 target_link_libraries(3D
 	PUBLIC
-		GL
-		Util
-		Logger
-		assimp
+		GameEngine::3D::Resources
+		GameEngine::GL
+		GameEngine::Util
 		
-		3D::Resources
+		Logger::Logger
+		assimp::assimp
 )
 
 include(CMakeRC)
 
-cmrc_add_resource_library(3D-Resources ALIAS 3D::Resources NAMESPACE _3D)
-cmrc_add_resources(3D-Resources
+cmrc_add_resource_library(GameEngine-3D-Resources ALIAS GameEngine::3D::Resources NAMESPACE _3D)
+cmrc_add_resources(GameEngine-3D-Resources
 	WHENCE resources
 	
 	resources/cube/cube.mtl

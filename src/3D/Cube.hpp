@@ -23,54 +23,92 @@
 #include <glm/glm.hpp>
 
 #include "Cubemap.hpp"
-#include "Model.hpp"
+#include "Transformations.hpp"
+#include "Vertex.hpp"
+
+#include <VboHandle.hpp>
 
 #include <cmrc/cmrc.hpp>
 #include <GL/glew.h>
 
 #include <vector>
+#include <utility>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-class Cube {
+class Cube : public Transformations {
 	public:
-		Cube() {}
+		Cube() = default;
+		Cube& operator=(const Cube& rhs) = default;
+		Cube(const Cube& rhs) = default;
+		Cube& operator=(Cube&& rhs) noexcept = default;
+		Cube(Cube&& rhs) noexcept = default;
+		~Cube() noexcept = default;
 
 		template<typename Renderer>
-		Cube(Renderer& renderer, ShaderPrograms shaders, cmrc::embedded_filesystem& fs, const std::string& path);
+		Cube(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path,
+				const ShaderPrograms shaders = ShaderPrograms::CUBE);
 
 		template<typename Renderer>
-		void loadCube(Renderer& renderer, ShaderPrograms shaders, cmrc::embedded_filesystem& fs, const std::string& path);
+		void LoadCube(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path,
+				const ShaderPrograms shaders = ShaderPrograms::CUBE);
 
 		template<typename Renderer>
-		void draw(Renderer& renderer, ShaderPrograms shaders);
+		void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
 
-	protected:
-		Model model;
+		void swap(Cube& other) noexcept {
+			using std::swap;
+			swap(other.cube_mesh_, cube_mesh_);
+		}
 
+	private:
 		class CubeMesh {
 			public:
-				VBO_handle handle;
-				std::vector<Vertex> vertices;
-				std::vector<GLuint> indices;
-				Cubemap cube_map;
+				VboHandle handle_ { };
+				std::vector<Vertex> vertices_ { };
+				std::vector<GLuint> indices_ { };
+				Cubemap cube_map_ { };
 
-				CubeMesh() {}
-				CubeMesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, Cubemap cube_map);
+				CubeMesh() = default;
+				CubeMesh& operator=(const CubeMesh& rhs) = default;
+				CubeMesh(const CubeMesh& rhs) = default;
+				CubeMesh& operator=(CubeMesh&& rhs) noexcept = default;
+				CubeMesh(CubeMesh&& rhs) noexcept = default;
+				~CubeMesh() noexcept = default;
 
-				template<typename Renderer> void draw(Renderer& renderer, ShaderPrograms shaders);
+				CubeMesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const Cubemap& cube_map)
+						: vertices_(vertices), indices_(indices), cube_map_(cube_map) {
+				};
+
+				template<typename Renderer> void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
+
+				void swap(CubeMesh& other) noexcept {
+					using std::swap;
+					swap(other.handle_, handle_);
+					swap(other.vertices_, vertices_);
+					swap(other.indices_, indices_);
+					swap(other.cube_map_, cube_map_);
+				}
 		};
 
-		CubeMesh cube_mesh;
+		CubeMesh cube_mesh_;
 
-		friend std::ostream& operator<<(std::ostream& os, Cube m);
+		friend void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept;
+		friend std::ostream& operator<<(std::ostream& os, const Cube& m);
 		friend std::ostream& operator<<(std::ostream& os, const Cube::CubeMesh& m);
 };
 
+inline void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept {
+	a.swap(b);
+}
+
+inline void swap(Cube& a, Cube& b) noexcept {
+	a.swap(b);
+}
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Cube.tpp"
 

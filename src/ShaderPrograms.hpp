@@ -25,13 +25,14 @@
 #include <GL/glew.h>
 #include <Log.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 
 enum class ShaderPrograms : GLuint {
 		NULL_SHADER = 0,
 		DEFAULT = (1 << 0),
-		TEXT = (1 << 1),
-		SKYBOX = (1 << 2)
+		CUBE = (1 << 1),
+		TEXT = (1 << 2),
+		SKYBOX = (1 << 3)
 };
 ENABLE_BITMASK_OPERATORS(ShaderPrograms);
 
@@ -45,6 +46,12 @@ inline std::ostream& operator<<(std::ostream& os, const ShaderPrograms sp) {
 				out += " | ";
 		}
 		out += "DEFAULT";
+	}
+	if((sp & ShaderPrograms::CUBE) != ShaderPrograms::NULL_SHADER) {
+		if(out.length() != 0) {
+				out += " | ";
+		}
+		out += "CUBE";
 	}
 	if((sp & ShaderPrograms::TEXT) != ShaderPrograms::NULL_SHADER) {
 		if(out.length() != 0) {
@@ -61,6 +68,6 @@ inline std::ostream& operator<<(std::ostream& os, const ShaderPrograms sp) {
 	return os << out;
 }
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_SHADERPROGRAMS_HPP_ */

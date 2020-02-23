@@ -22,53 +22,27 @@
 
 #include "Mesh.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-template<typename Renderer> void Mesh::setupMesh(Renderer& renderer, ShaderPrograms shaders) {
+template<typename Renderer> void Mesh::Init(Renderer& renderer, const ShaderPrograms shaders) {
 	// TODO Decouple from rendering logic
-	handle = renderer.generateVBO(shaders, vertices, indices);
-
-	GLuint diffuse_num = 0;
-	GLuint specular_num = 0;
-	GLuint normal_num = 0;
-	GLuint height_num = 0;
-
-	for(GLuint i = 0; i < textures.size(); i++) {
-		switch(textures[i].type) {
-			case TextureType::DIFFUSE:
-				texture_strings.push_back("texture_diffuse" + std::to_string(diffuse_num++));
-				break;
-			case TextureType::SPECULAR:
-				texture_strings.push_back("texture_specular" + std::to_string(specular_num++));
-				break;
-			case TextureType::NORMAL:
-				texture_strings.push_back("texture_normal" + std::to_string(normal_num++));
-				break;
-			case TextureType::HEIGHT:
-				texture_strings.push_back("texture_normal" + std::to_string(height_num++));
-				break;
-		}
-	}
+	handle_ = renderer.GenerateVbo(shaders, vertices_, indices_);
 }
 
-template<typename Renderer> void Mesh::draw(Renderer& renderer, ShaderPrograms shaders) {
-	if(!renderer.has_vbo(handle)) {
-		setupMesh(renderer, shaders);
-	}
-
-	for(GLuint i = 0; i < textures.size(); i++) {
-		renderer.bindTexture(shaders, texture_strings[i], textures[i], i);
+template<typename Renderer> void Mesh::Draw(const Renderer& renderer, const ShaderPrograms shaders) const {
+	for(GLuint i = 0; i < textures_.size(); i++) {
+		renderer.BindTexture(shaders, texture_strings_[i], textures_[i], i);
 	}
 
 	// draw mesh
-	renderer.render(handle, mode);
+	renderer.Render(handle_, mode_);
 
 //	LOG_D("this = " << *this);
 }
 
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_MESH_TPP_ */

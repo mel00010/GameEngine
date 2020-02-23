@@ -32,20 +32,21 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#include <string>
 #include <variant>
 
 
-CMRC_DECLARE(GL);
+CMRC_DECLARE(gl);
 
-namespace GameEngine {
-namespace GL {
+namespace game_engine {
+namespace gl {
 
-void glLogCallback(GLenum msg_source, GLenum msg_type, GLuint id, GLenum msg_severity,
-		[[maybe_unused]] GLsizei length, const GLchar* msg_message, [[maybe_unused]] const void* userParam) {
-	std::string source;
-	std::string type;
-	std::string severity;
-	std::string message(msg_message);
+void GlLogCallback(const GLenum msg_source, const GLenum msg_type, const GLuint id, const GLenum msg_severity,
+		[[maybe_unused]] const GLsizei length, const GLchar* msg_message, [[maybe_unused]] const void* userParam) {
+	std::string source = "";
+	std::string type = "";
+	const std::string severity = "";
+	const std::string message(msg_message);
 	switch(msg_source) {
 		case GL_DEBUG_SOURCE_API:
 			source = "OpenGL API";
@@ -112,20 +113,20 @@ void glLogCallback(GLenum msg_source, GLenum msg_type, GLuint id, GLenum msg_sev
 	}
 }
 
-void GLRenderer::init(std::string program_name) {
+void GLRenderer::Init(const std::string program_name) {
 	/* SDL-related initialising functions */
 	if(SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		LOG_F("SDL_init:  " << SDL_GetError());
 		throw EXIT_FAILURE;
 	}
-	int image_flags = IMG_INIT_JPG
+	const int image_flags = IMG_INIT_JPG
 					| IMG_INIT_PNG;
 	if( !( IMG_Init( image_flags ) & image_flags ) ) {
 		LOG_F( "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() );
 		throw EXIT_FAILURE;
 	}
 
-	int mixer_flags = MIX_INIT_FLAC
+	const int mixer_flags = MIX_INIT_FLAC
 					| MIX_INIT_MOD
 					| MIX_INIT_MP3
 					| MIX_INIT_OGG;
@@ -148,15 +149,15 @@ void GLRenderer::init(std::string program_name) {
 	// Also request a depth buffer
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	setWindow(SDL_CreateWindow(program_name.c_str(),
+	SetWindow(SDL_CreateWindow(program_name.c_str(),
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		1920, 1080,
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL));
-	SDL_GL_CreateContext(getWindow());
-	enableVSync();
+	SDL_GL_CreateContext(GetWindow());
+	EnableVSync();
 	/* Extension wrangler initialising */
 	glewExperimental = GL_TRUE;
-	GLenum glew_status = glewInit();
+	const GLenum glew_status = glewInit();
 	if (glew_status != GLEW_OK) {
 		LOG_F("Error: glewInit: " << glewGetErrorString(glew_status));
 		throw EXIT_FAILURE;
@@ -164,54 +165,41 @@ void GLRenderer::init(std::string program_name) {
 	glDisable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	setSwizzleMask(GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA);
+	SetSwizzleMask(GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA);
 
 	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(glLogCallback, NULL);
+	glDebugMessageCallback(GlLogCallback, NULL);
 
-	default_shader = setupShader("default.vs.glsl", "default.fs.glsl");
-	skybox_shader = setupShader("skybox.vs.glsl", "skybox.fs.glsl");
-	text_shader = setupShader("text.vs.glsl", "text.fs.glsl");
+	default_shader_ = SetupShader("default.vs.glsl", "default.fs.glsl");
+	cube_shader_ = SetupShader("cube.vs.glsl", "cube.fs.glsl");
+	skybox_shader_ = SetupShader("skybox.vs.glsl", "skybox.fs.glsl");
+	text_shader_ = SetupShader("text.vs.glsl", "text.fs.glsl");
 
-	useShader(ShaderPrograms::DEFAULT);
+	UseShader(ShaderPrograms::DEFAULT);
 }
 
-void GLRenderer::useShader(const ShaderPrograms shader_program) {
+void GLRenderer::UseShader(const ShaderPrograms shader_program) const {
 //	LOG_D("Using shader " << shader_program);
-	return getShader(shader_program)->use();
+	return GetShader(shader_program)->Use();
 }
 
-void GLRenderer::render(const VBO_handle vbo_handle, _3D::Primitive mode) {
-	auto it = vbos.find(vbo_handle);
-	if(it == vbos.end()) {
+void GLRenderer::Render(const VboHandle vbo_handle, const _3D::Primitive mode) const {
+	const auto it = vbos_.find(vbo_handle);
+	if(it == vbos_.end()) {
 		LOG_E("VBO_handle " << vbo_handle << " not in map!");
 		return;
 	}
-	VBO vbo = it->second;
-
-	auto draw = [](VBO vbo_, _3D::Primitive mode) {
-		vbo_.bind();
-
-		// draw mesh
-		if(vbo_.n_indices != 0) {
-			glDrawElements(static_cast<GLenum>(convert(mode)), vbo_.n_indices, GL_UNSIGNED_INT, 0);
-		} else {
-			glDrawArrays(static_cast<GLenum>(convert(mode)), 0, vbo_.n_vertices);
-		}
-	};
+	Vbo vbo = it->second;
 
 //	LOG_D("VBO.shaders = " << vbo.shaders);
-	if((vbo.shaders & ShaderPrograms::DEFAULT) != ShaderPrograms::NULL_SHADER) {
-		default_shader->use();
-		draw(vbo, mode);
-	}
-	if((vbo.shaders & ShaderPrograms::TEXT) != ShaderPrograms::NULL_SHADER) {
-		text_shader->use();
-		draw(vbo, mode);
-	}
-	if((vbo.shaders & ShaderPrograms::SKYBOX) != ShaderPrograms::NULL_SHADER) {
-		skybox_shader->use();
-		draw(vbo, mode);
+	GetShader(vbo.shaders_)->Use();
+	vbo.Bind();
+
+	// draw mesh
+	if(vbo.n_indices_ != 0) {
+		glDrawElements(static_cast<GLenum>(Convert(mode)), vbo.n_indices_, GL_UNSIGNED_INT, 0);
+	} else {
+		glDrawArrays(static_cast<GLenum>(Convert(mode)), 0, vbo.n_vertices_);
 	}
 
 //	LOG_D("p = " << p);
@@ -219,75 +207,75 @@ void GLRenderer::render(const VBO_handle vbo_handle, _3D::Primitive mode) {
 //	LOG_D("vbo_handle.uuid = " << vbo_handle.uuid);
 }
 
-VBO_handle GLRenderer::generateVBO(const ShaderPrograms shader_program,
+VboHandle GLRenderer::GenerateVbo(const ShaderPrograms shader_program,
 		const std::vector<Vertex>& vertices,
 		const std::vector<GLuint>& indices) {
-	VBO vbo;
+	Vbo vbo {};
 
-	vbo.init(shader_program);
-	vbo.bind();
-	vbo.allocate(vertices, indices);
-	VBO_handle vbo_handle = {UUID(), true};
+	vbo.Init(shader_program);
+	vbo.Bind();
+	vbo.Allocate(vertices, indices);
+	VboHandle vbo_handle;
 //	LOG_D("vbo_handle.uuid = " << vbo_handle.uuid);
-	vbos.emplace(vbo_handle, vbo);
+	vbos_.emplace(vbo_handle, vbo);
 	return vbo_handle;
 }
 
-VBO_handle GLRenderer::updateVBO(const VBO_handle vbo_handle,
-		const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices) {
-	VBO vbo = vbos.find(vbo_handle)->second;
-	vbo.bind();
-	vbo.update(vertices, indices);
+VboHandle GLRenderer::UpdateVbo(const VboHandle vbo_handle,
+		const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices) const {
+	Vbo vbo = vbos_.find(vbo_handle)->second;
+	vbo.Bind();
+	vbo.Update(vertices, indices);
 	return vbo_handle;
 }
 
-bool GLRenderer::has_vbo(const VBO_handle vbo_handle) {
-	return (vbos.count(vbo_handle) != 0);
+bool GLRenderer::HasVbo(const VboHandle vbo_handle) const {
+	return (vbos_.count(vbo_handle) != 0);
 }
 
-void GLRenderer::setMatrices(const ShaderPrograms shader_program, const glm::mat4& model,
-		const glm::mat4& view, const glm::mat4& projection) {
+void GLRenderer::SetMatrices(const ShaderPrograms shader_program, const glm::mat4& model,
+		const glm::mat4& view, const glm::mat4& projection) const {
 	// pass them to the shaders
-	useShader(shader_program);
-	getShader(shader_program)->setMat4("model", model);
-	getShader(shader_program)->setMat4("view", view);
-	getShader(shader_program)->setMat4("projection", projection);
+	UseShader(shader_program);
+	GetShader(shader_program)->SetMat4("model", model);
+	GetShader(shader_program)->SetMat4("view", view);
+	GetShader(shader_program)->SetMat4("projection", projection);
 }
-void GLRenderer::bindTexture(const ShaderPrograms shader_program, const std::string& name,
-		const _3D::Texture& texture, const GLuint texture_unit) {
+void GLRenderer::BindTexture(const ShaderPrograms shader_program, const std::string& name,
+		const _3D::Texture& texture, const GLuint texture_unit) const {
 //	LOG_D("Binding texture id " << texture.id << " to texture unit " << texture_unit << " with name " << name);
-	useShader(shader_program);
+	UseShader(shader_program);
 	glActiveTexture(GL_TEXTURE0 + texture_unit); // activate proper texture unit before binding
-	getShader(shader_program)->setInt(name, texture_unit);
-	glBindTexture(GL_TEXTURE_2D, texture.id);
+	GetShader(shader_program)->SetInt(name, texture_unit);
+	glBindTexture(GL_TEXTURE_2D, texture.id_);
 }
-void GLRenderer::bindCubemap(const ShaderPrograms shader_program, const std::string& name,
-		const _3D::Cubemap& cube_map, const GLuint texture_unit) {
-	useShader(shader_program);
+void GLRenderer::BindCubemap(const ShaderPrograms shader_program, const std::string& name,
+		const _3D::Cubemap& cube_map, const GLuint texture_unit) const {
+	UseShader(shader_program);
 	glActiveTexture(GL_TEXTURE0 + texture_unit); // activate proper texture unit before binding
-	getShader(shader_program)->setInt(name, texture_unit);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map.id);
+	GetShader(shader_program)->SetInt(name, texture_unit);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map.id_);
 }
-void GLRenderer::enable_blending() {
+void GLRenderer::EnableBlending() const {
 	glEnable(GL_BLEND);
 }
-void GLRenderer::disable_blending() {
+void GLRenderer::DisableBlending() const {
 	glDisable(GL_BLEND);
 }
-void GLRenderer::enable_depth_testing() {
+void GLRenderer::EnableDepthTesting() const {
 	glEnable(GL_DEPTH_TEST);
 }
-void GLRenderer::disable_depth_testing() {
+void GLRenderer::DisableDepthTesting() const {
 	glDisable(GL_DEPTH_TEST);
 }
 
-void GLRenderer::setColor(const ShaderPrograms shader_program, glm::vec3 color) {
-	getShader(shader_program)->setVec3("color", color);
+void GLRenderer::SetColor(const ShaderPrograms shader_program, const glm::vec3 color) const {
+	GetShader(shader_program)->SetVec3("color", color);
 }
 
-unsigned int GLRenderer::createTexture(const ShaderPrograms shader_program, _3D::PixelFormat format, glm::ivec2 size, void* pixels) {
-	useShader(shader_program);
-
+unsigned int GLRenderer::CreateTexture(const ShaderPrograms shader_program, const _3D::PixelFormat format,
+		const glm::ivec2 size, const void* pixels) const {
+	UseShader(shader_program);
 
 	unsigned int id;
 	glGenTextures(1, &id);
@@ -302,8 +290,9 @@ unsigned int GLRenderer::createTexture(const ShaderPrograms shader_program, _3D:
 	glGenerateMipmap(GL_TEXTURE_2D);
 	return id;
 }
-unsigned int GLRenderer::createCubemap(const ShaderPrograms shader_program, _3D::PixelFormat format, glm::ivec2 size, _3D::CubemapBuffers& buffers) {
-	getShader(shader_program)->use();
+unsigned int GLRenderer::CreateCubemap(const ShaderPrograms shader_program, const _3D::PixelFormat format,
+		const glm::ivec2 size, const _3D::CubemapBuffers& buffers) const {
+	GetShader(shader_program)->Use();
 
 	unsigned int id;
 	glGenTextures(1, &id);
@@ -331,48 +320,49 @@ unsigned int GLRenderer::createCubemap(const ShaderPrograms shader_program, _3D:
 	return id;
 }
 
-void GLRenderer::setSwizzleMask(GLint swizzle_r, GLint swizzle_g, GLint swizzle_b, GLint swizzle_a) {
+void GLRenderer::SetSwizzleMask(const GLint swizzle_r, const GLint swizzle_g,
+		const GLint swizzle_b, const GLint swizzle_a) const {
 	GLint swizzle_mask[] = {swizzle_r, swizzle_g, swizzle_b, swizzle_a};
 	glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzle_mask);
 }
 
-void GLRenderer::disable_byte_alignement_restriction() {
+void GLRenderer::DisableByteAlignementRestriction() const {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 }
-void GLRenderer::enable_byte_alignement_restriction() {
+void GLRenderer::EnableByteAlignementRestriction() const {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 0); // Disable byte-alignment restriction}
 }
-void GLRenderer::clear(glm::vec4 color) {
+void GLRenderer::Clear(const glm::vec4 color) const {
 	glClearColor(color.r, color.g, color.b, color.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-void GLRenderer::swap() {
-	SDL_GL_SwapWindow(window);
+void GLRenderer::Swap() const {
+	SDL_GL_SwapWindow(window_);
 }
 
-ShaderProgram* GLRenderer::setupShader(const std::string& vertex, const std::string& fragment) {
+ShaderProgram* GLRenderer::SetupShader(const std::string& vertex, const std::string& fragment) const {
 	ShaderProgram* shader = new ShaderProgram();
 
-	shader->init();
+	shader->Init();
 
-	auto fs = cmrc::GL::get_filesystem();
-	auto vertex_file = fs.open(vertex);
-	auto fragment_file = fs.open(fragment);
+	const cmrc::embedded_filesystem fs = cmrc::gl::get_filesystem();
+	const cmrc::file vertex_file = fs.open(vertex);
+	const cmrc::file fragment_file = fs.open(fragment);
 
-	std::string vertex_source(vertex_file.begin(), vertex_file.size());
-	std::string fragment_source(fragment_file.begin(), fragment_file.size());
+	const std::string vertex_source(vertex_file.begin(), vertex_file.size());
+	const std::string fragment_source(fragment_file.begin(), fragment_file.size());
 
 	Shader vertex_shader(vertex_source, ShaderType::VERTEX);
 	Shader fragment_shader(fragment_source, ShaderType::FRAGMENT);
-	vertex_shader.init();
-	fragment_shader.init();
-	shader->attachShader(vertex_shader);
-	shader->attachShader(fragment_shader);
-	shader->link();
+	vertex_shader.Init();
+	fragment_shader.Init();
+	shader->AttachShader(vertex_shader);
+	shader->AttachShader(fragment_shader);
+	shader->Link();
 
 	/* When all init functions run without errors,
 	   the glsl_program can initialize the resources */
-	if (!shader->isValid()) {
+	if (!shader->IsValid()) {
 		throw EXIT_FAILURE;
 	}
 //	shader->useProgram();
@@ -380,59 +370,64 @@ ShaderProgram* GLRenderer::setupShader(const std::string& vertex, const std::str
 	return shader;
 }
 
-ShaderProgram* GLRenderer::getShader(const ShaderPrograms shader_program) const {
+ShaderProgram* GLRenderer::GetShader(const ShaderPrograms shader_program) const {
 	switch(shader_program) {
 		case ShaderPrograms::DEFAULT:
-			return default_shader;
+			return default_shader_;
+		case ShaderPrograms::CUBE:
+			return cube_shader_;
 		case ShaderPrograms::SKYBOX:
-			return skybox_shader;
+			return skybox_shader_;
 		case ShaderPrograms::TEXT:
-			return text_shader;
+			return text_shader_;
 		default:
-			return default_shader;
+			return default_shader_;
 	}
-	return default_shader;
+	return default_shader_;
 }
 
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, bool value) const {
-	getShader(shader_program)->setBool(name, value);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const bool value) const {
+	GetShader(shader_program)->SetBool(name, value);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, int value) const {
-	getShader(shader_program)->setInt(name, value);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const int value) const {
+	GetShader(shader_program)->SetInt(name, value);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, float value) const {
-	getShader(shader_program)->setFloat(name, value);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const float value) const {
+	GetShader(shader_program)->SetFloat(name, value);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec2& value) const {
-	getShader(shader_program)->setVec2(name, value);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec2& value) const {
+	GetShader(shader_program)->SetVec2(name, value);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, float x, float y) const {
-	getShader(shader_program)->setVec2(name, x, y);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name,
+		const float x, const float y) const {
+	GetShader(shader_program)->SetVec2(name, x, y);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec3& value) const {
-	getShader(shader_program)->setVec3(name, value);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec3& value) const {
+	GetShader(shader_program)->SetVec3(name, value);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, float x, float y, float z) const {
-	getShader(shader_program)->setVec3(name, x, y, z);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name,
+		const float x, const float y, const float z) const {
+	GetShader(shader_program)->SetVec3(name, x, y, z);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec4& value) const {
-	getShader(shader_program)->setVec4(name, value);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec4& value) const {
+	GetShader(shader_program)->SetVec4(name, value);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, float x, float y, float z, float w) const {
-	getShader(shader_program)->setVec4(name, x, y, z, w);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name,
+		const float x, const float y, const float z, const float w) const {
+	GetShader(shader_program)->SetVec4(name, x, y, z, w);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat2& mat) const {
-	getShader(shader_program)->setMat2(name, mat);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat2& mat) const {
+	GetShader(shader_program)->SetMat2(name, mat);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat3& mat) const {
-	getShader(shader_program)->setMat3(name, mat);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat3& mat) const {
+	GetShader(shader_program)->SetMat3(name, mat);
 };
-void GLRenderer::setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat4& mat) const {
-	getShader(shader_program)->setMat4(name, mat);
+void GLRenderer::SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat4& mat) const {
+	GetShader(shader_program)->SetMat4(name, mat);
 };
 
-} /* namespace GL */
-} /* namespace GameEngine */
+} /* namespace gl */
+} /* namespace game_engine */
 
 
 

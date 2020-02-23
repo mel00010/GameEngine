@@ -20,6 +20,6 @@
 
 #include "CubeTestCore.hpp"
 
-int main(void) {
-	CubeTest::CubeTestCore::getInstance().runLoop();
+int main(int argc, char** argv) {
+	cube_test::CubeTestCore::Main(&argc, &argv);
 }

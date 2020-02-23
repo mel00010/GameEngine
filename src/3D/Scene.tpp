@@ -22,18 +22,18 @@
 
 #include "Scene.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-template<typename RealRenderer, typename RealWindowManager> void Scene::draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
-	for (auto& model : models) {
-		camera.drawModel(renderer, model);
+template<typename RealRenderer, typename RealWindowManager> void Scene::Draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
+	for (auto& model : models_) {
+		camera_.DrawModel(renderer, model);
 	}
 }
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 

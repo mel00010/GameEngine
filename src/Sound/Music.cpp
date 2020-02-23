@@ -22,61 +22,61 @@
 
 #include <Log.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 namespace Sound {
 
-Music::~Music() {
-	if(music == nullptr) {
+Music::~Music() noexcept {
+	if(music_ == nullptr) {
 		return;
 	}
 	// Do not call SDL_Mix functions if Mix is not initialized
 	if(!Mix_Init(0)) {
 		return;
 	}
-	Mix_FreeMusic(music);
+	Mix_FreeMusic(music_);
 }
 
-Mix_Music* Music::loadMusic(const cmrc::file file) {
+Mix_Music* Music::LoadMusic(const cmrc::file file) {
 	std::vector<uint8_t> file_contents(file.begin(), file.end());
-	path = file.path();
-	music = Mix_LoadMUS_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
-	if (music == nullptr) {
+	path_ = file.path();
+	music_ = Mix_LoadMUS_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
+	if (music_ == nullptr) {
 		LOG_E("Mix_LoadMUS:  " << Mix_GetError());
 	}
-	return music;
+	return music_;
 }
 
-void Music::play(size_t times) {
+void Music::Play(const size_t times) {
 	if(times == 0) {
 		return;
 	}
-	if (Mix_PlayMusic(music, static_cast<int>(times - 1)) == -1) {
+	if (Mix_PlayMusic(music_, static_cast<int>(times - 1)) == -1) {
 		LOG_E("Mix_PlayMusic:  " << Mix_GetError());
 	}
 }
 
-void Music::pause() {
+void Music::Pause() {
 	Mix_PauseMusic();
 }
-void Music::resume() {
+void Music::Resume() {
 	Mix_ResumeMusic();
 }
-void Music::halt() {
+void Music::Halt() {
 	Mix_HaltMusic();
 }
-int Music::setVolume(int volume) {
+int Music::SetVolume(const int volume) {
 	if(volume < -1) {
 		return -1;
 	}
 	return Mix_VolumeMusic(volume);
 }
-bool Music::isPaused() {
+bool Music::IsPaused() {
 	return Mix_PausedMusic();
 }
-bool Music::isPlaying() {
+bool Music::IsPlaying() {
 	return Mix_PlayingMusic();
 }
 } /* namespace Sound */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 

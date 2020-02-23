@@ -31,6 +31,6 @@
 #include FT_FREETYPE_H
 
 
-namespace GameEngine {
+namespace game_engine {
 
-} /* namespace GameEngine */
+} /* namespace game_engine */

@@ -20,6 +20,6 @@
 
 #include "MineTest.hpp"
 
-int main(void) {
-	MineTest::MineTest::getInstance().runLoop();
+int main(int argc, char** argv) {
+	mine_test::MineTest::Main(&argc, &argv);
 }

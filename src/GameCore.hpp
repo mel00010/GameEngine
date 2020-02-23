@@ -22,10 +22,13 @@
 
 #include "CallbackHandler.hpp"
 
+#include <string>
+#include <string_view>
+
 #include <Renderer.hpp>
 #include <WindowManager.hpp>
 
-#include <2D/FPSRenderer.hpp>
+#include <2D/FpsRenderer.hpp>
 #include <2D/TextRenderer.hpp>
 
 #include <GL/GLRenderer.hpp>
@@ -33,12 +36,24 @@
 
 #include <Util/Singleton.hpp>
 
-#define SCREEN_CLEAR_COLOR glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+#include <gflags/gflags.h>
+#include <gflags/gflags_completions.h>
+
+#include <Logging/Client.hpp>
 
 /**
  * @brief Holds all classes for GameEngine
  */
-namespace GameEngine {
+namespace game_engine {
+
+constexpr inline glm::vec4 kScreenClearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+inline logging::Client client;
+
+class GameCoreImpl {
+	public:
+
+};
 
 /**
  * @brief The main class of GameEngine
@@ -59,38 +74,47 @@ namespace GameEngine {
  */
 template <
 	typename Derived,
-	typename _Renderer = GL::GLRenderer,
-	typename _WindowManager = GL::GLWindowManager
+	typename _Renderer = gl::GLRenderer,
+	typename _WindowManager = gl::GLWindowManager
 >
 class GameCore : public Singleton<Derived>,
-				 public _2D::FPSRenderer,
+				 public _2D::FpsRenderer,
 				 public CallbackHandler,
-				 public InputHandler {
+				 public InputHandler,
+				 public Crtp<GameCore, Derived, _Renderer, _WindowManager> {
 	public:
 		/**
-		 * @brief Runs the program.
+		 * @brief Runs the program and parses command line flags.
 		 */
-		void runLoop() {
-			setup();
-			loop();
-		}
-	private:
-		/**
-		 * @brief A convenience function for CRTP
-		 * @return Returns a reference to the derived class
-		 */
-		Derived& derived() {
-			return *static_cast<Derived*>(this);
+		static void Main(int* argc, char*** argv) {
+			using namespace std::literals::string_literals;
+
+			::gflags::SetUsageMessage("Sample usage:\n\t"s
+					+ (*argv)[0] + " [flags...]");
+			::gflags::SetVersionString("0.0.1");
+			::gflags::ParseCommandLineFlags(argc, argv, true);
+			::gflags::HandleCommandLineHelpFlags();
+
+			Singleton<Derived>::GetInstance().RunLoop();
 		}
 
 		/**
+		 * @brief Runs the program.
+		 */
+		void RunLoop() {
+			Setup();
+			Loop();
+		}
+
+	private:
+		/**
 		 * @brief Sets up the program
 		 */
-		void setup() {
-			preSetup();
-			derived().registerCallbacks();
-			derived().setup();
-			postSetup();
+		void Setup() {
+			PreSetup();
+			this->Underlying().RegisterCallbacks();
+			this->Underlying().Setup();
+			PostSetup();
 		}
 
 		/**
@@ -99,71 +123,71 @@ class GameCore : public Singleton<Derived>,
 		 * Calls preRender, then calls the derived class's render function,
 		 * then calls postRender
 		 */
-		void render() {
-			preRender();
-			derived().render();
-			postRender();
+		void Render() {
+			PreRender();
+			this->Underlying().Render();
+			PostRender();
 		}
 		/**
 		 * @brief Main tick function
 		 *
-		 * Calls preTick, then calls the derived class's tick function,
-		 * then calls postTick
+		 * Calls PreTick, then calls the derived class's Tick function,
+		 * then calls PostTick
 		 */
-		void tick() {
-			preTick();
-			derived().tick();
-			postTick();
+		void Tick() {
+			PreTick();
+			this->Underlying().Tick();
+			PostTick();
 		}
 
 		/**
 		 * @brief Run prior to main setup
 		 */
-		void preSetup() {
-			setProgramName(derived().program_name);
-			renderer.init(program_name);
-			initFPSRenderer(renderer);
-			registerDefaultCallbacks();
+		void PreSetup() {
+			SetProgramName(this->Underlying().program_name_);
+			renderer_.Init(std::string(program_name_));
+			InitFpsRenderer(renderer_);
+			RegisterDefaultCallbacks();
 		}
 
 		/**
 		 * @brief Run after main setup
 		 */
-		void postSetup() {
+		void PostSetup() const {
 
 		}
 
 		/**
 		 * @brief Run prior to main tick function
 		 */
-		void preTick() {
+		void PreTick() const {
 
 		}
 
 		/**
 		 * @brief Run after main tick function
 		 */
-		void postTick() {
-			calculateFPS();
-			dispatchCallbacks();
+		void PostTick() {
+			CalculateFps();
+			DispatchCallbacks();
 		}
 
 		/**
 		 * @brief Run prior to main render function
 		 */
-		void preRender() {
-			renderer.clear(SCREEN_CLEAR_COLOR);
-			incrementFrameCount();
-			startFrameTimer();
+		void PreRender() {
+			renderer_.Clear(kScreenClearColor);
+			IncrementFrameCount();
+			StartFrameTimer();
 		}
 		/**
 		 * @brief Run after main render function
 		 */
-		void postRender() {
-			renderFPS(renderer);
-			stopFrameTimer();
-			calculateFrameTime();
-			renderer.swap();
+		void PostRender() {
+			RenderFps(renderer_);
+			StopFrameTimer();
+			CalculateFrameTime();
+			renderer_.Swap();
 		}
 
 		/**
@@ -182,35 +206,35 @@ class GameCore : public Singleton<Derived>,
 		 *  |V key press				| Toggles VSync                                         |
 		 *  |E key press				| Toggles the cursor                                    |
 		 */
-		void registerDefaultCallbacks() {
-			registerTimeoutCallback("tick", ms_per_tick, [&]() { tick(); } , true);
-			registerTimeoutCallback("render", 0, [&]() { render(); }, true);
+		void RegisterDefaultCallbacks() {
+			RegisterTimeoutCallback("tick", ms_per_tick_, [this]() { Tick(); } , true);
+			RegisterTimeoutCallback("render", 0, [this]() { Render(); }, true);
 
-			registerQuitEventCallback([](SDL_QuitEvent&) {
+			RegisterQuitEventCallback([](SDL_QuitEvent&) {
 				LOG_I("Exiting gracefully");
 				SDL_Quit();
 				exit(EXIT_SUCCESS);
 			});
-			registerWindowEventCallback([this](SDL_WindowEvent& ev) {
+			RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
 				switch(ev.event) {
 					case SDL_WINDOWEVENT_RESIZED:
-						renderer.redrawWindowBounds(glm::ivec2(ev.data1, ev.data2));
+						renderer_.RedrawWindowBounds(glm::ivec2(ev.data1, ev.data2));
 				}
 			});
 
-			registerKeyboardEventCallback(SDL_SCANCODE_Q,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer.quit(); });
-			registerKeyboardEventCallback(SDL_SCANCODE_F,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { toggleFPS(); });
-			registerKeyboardEventCallback(SDL_SCANCODE_F11, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer.toggleFullscreen(); });
-			registerKeyboardEventCallback(SDL_SCANCODE_V,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer.toggleVSync(); });
-			registerKeyboardEventCallback(SDL_SCANCODE_E,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer.toggleCursor(); });
+			RegisterKeyboardEventCallback(SDL_SCANCODE_Q,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer_.Quit(); });
+			RegisterKeyboardEventCallback(SDL_SCANCODE_F,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { ToggleFps(); });
+			RegisterKeyboardEventCallback(SDL_SCANCODE_F11, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer_.ToggleFullscreen(); });
+			RegisterKeyboardEventCallback(SDL_SCANCODE_V,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer_.ToggleVSync(); });
+			RegisterKeyboardEventCallback(SDL_SCANCODE_E,   KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { renderer_.ToggleCursor(); });
 		}
 
 		/**
 		 * @brief The main loop
 		 */
-		void loop() {
+		void Loop() {
 			for(;;) {
-				dispatchTimeoutEvents();
+				DispatchTimeoutEvents();
 			}
 		}
 
@@ -218,24 +242,24 @@ class GameCore : public Singleton<Derived>,
 		 * @brief Sets the program's name
 		 * @param name The program's new name
 		 */
-		void setProgramName(std::string name) {
-			program_name = name;
+		void SetProgramName(const std::string_view name) {
+			program_name_ = name;
 		}
 
 	protected:
 		/**
 		 * @brief Object responsible for actual rendering
 		 */
-		_Renderer renderer;
+		_Renderer renderer_;
 
 		/**
 		 * @brief The program's name
 		 */
-		std::string program_name;
+		std::string_view program_name_;
 };
 
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "GameCore.tpp"
 

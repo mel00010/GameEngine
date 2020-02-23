@@ -23,7 +23,7 @@
 #include <glm/glm.hpp>
 #include <Log.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 
 struct Vertex {
 	glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
@@ -67,7 +67,7 @@ inline std::ostream& operator<<(std::ostream& os, const Vertex& v) {
 
 }
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 

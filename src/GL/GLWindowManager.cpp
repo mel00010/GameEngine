@@ -25,12 +25,12 @@
 #include <SDL2/SDL.h>
 
 
-namespace GameEngine {
-namespace GL {
+namespace game_engine {
+namespace gl {
 
-SDL_Window* GLWindowManager::window = nullptr;
+SDL_Window* GLWindowManager::window_ = nullptr;
 
-void GLWindowManager::init(std::string program_name) {
+void GLWindowManager::Init(std::string program_name) {
 //	setWindow(SDL_CreateWindow(program_name.c_str(),
 //		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 //		1920, 1080,
@@ -39,74 +39,74 @@ void GLWindowManager::init(std::string program_name) {
 //	enableVSync();
 }
 
-SDL_Window* GLWindowManager::getWindow() {
-	return window;
+SDL_Window* GLWindowManager::GetWindow() {
+	return window_;
 }
-void GLWindowManager::setWindow(SDL_Window* p) {
-	window = p;
+void GLWindowManager::SetWindow(SDL_Window* p) {
+	window_ = p;
 }
 
-glm::ivec2 GLWindowManager::getWindowSize() {
+glm::ivec2 GLWindowManager::GetWindowSize() {
 	glm::ivec2 v(0, 0);
-	SDL_GetWindowSize(window, &v.x, &v.y);
+	SDL_GetWindowSize(window_, &v.x, &v.y);
 	return v;
 }
 
-void GLWindowManager::setFullscreen(bool enable) {
-	if (SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(window), &native) != 0) {
+void GLWindowManager::SetFullscreen(bool enable) {
+	if (SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(window_), &native_) != 0) {
 		// In case of error...
-		LOG_E("Could not get display mode for video display #"<< SDL_GetWindowDisplayIndex(window) <<": " << SDL_GetError());
+		LOG_E("Could not get display mode for video display #"<< SDL_GetWindowDisplayIndex(window_) <<": " << SDL_GetError());
 		throw EXIT_FAILURE;
 	} else {
 		// On success, print the current display mode.
-		LOG_D("Display #" << SDL_GetWindowDisplayIndex(window) <<": native display mode is " << native.w << "x" << native.h << "px @ " << native.refresh_rate << "hz.");
+		LOG_D("Display #" << SDL_GetWindowDisplayIndex(window_) <<": native display mode is " << native_.w << "x" << native_.h << "px @ " << native_.refresh_rate << "hz.");
 	}
-	isScreenFullscreen = enable;
-	if (isScreenFullscreen) {
-		current = native;
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
-		SDL_SetWindowDisplayMode(window, &current);
+	is_screen_fullscreen_ = enable;
+	if (is_screen_fullscreen_) {
+		current_ = native_;
+		SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN);
+		SDL_SetWindowDisplayMode(window_, &current_);
 	} else {
-		current = native;
-		SDL_SetWindowFullscreen(window, 0);
+		current_ = native_;
+		SDL_SetWindowFullscreen(window_, 0);
 	}
 }
-bool GLWindowManager::isFullscreen() {
-	return isScreenFullscreen;
+bool GLWindowManager::IsFullscreen() {
+	return is_screen_fullscreen_;
 }
-void GLWindowManager::toggleFullscreen() {
-	setFullscreen(!isScreenFullscreen);
-}
-
-void GLWindowManager::setVSyncEnabled(bool enable) {
-	vsync_enabled = enable;
-	SDL_GL_SetSwapInterval(vsync_enabled);
-}
-bool GLWindowManager::isVSyncEnabled() {
-	return vsync_enabled;
-}
-void GLWindowManager::enableVSync() {
-	setVSyncEnabled(true);
-}
-void GLWindowManager::disableVSync() {
-	setVSyncEnabled(false);
-}
-void GLWindowManager::toggleVSync() {
-	setVSyncEnabled(!vsync_enabled);
+void GLWindowManager::ToggleFullscreen() {
+	SetFullscreen(!is_screen_fullscreen_);
 }
 
-void GLWindowManager::quit() {
+void GLWindowManager::SetVSyncEnabled(bool enable) {
+	vsync_enabled_ = enable;
+	SDL_GL_SetSwapInterval(vsync_enabled_);
+}
+bool GLWindowManager::IsVSyncEnabled() {
+	return vsync_enabled_;
+}
+void GLWindowManager::EnableVSync() {
+	SetVSyncEnabled(true);
+}
+void GLWindowManager::DisableVSync() {
+	SetVSyncEnabled(false);
+}
+void GLWindowManager::ToggleVSync() {
+	SetVSyncEnabled(!vsync_enabled_);
+}
+
+void GLWindowManager::Quit() {
 	SDL_Event sdlevent;
 	sdlevent.type = SDL_QUIT;
 	SDL_PushEvent(&sdlevent);
 }
 
-bool GLWindowManager::isCursorDisabled() {
-	return cursor_disabled;
+bool GLWindowManager::IsCursorDisabled() {
+	return cursor_disabled_;
 }
-void GLWindowManager::disableCursor(bool disabled) {
-	cursor_disabled = disabled;
-	if (cursor_disabled) {
+void GLWindowManager::DisableCursor(bool disabled) {
+	cursor_disabled_ = disabled;
+	if (cursor_disabled_) {
 		SDL_ShowCursor(SDL_DISABLE);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 	} else {
@@ -114,22 +114,22 @@ void GLWindowManager::disableCursor(bool disabled) {
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
 }
-bool GLWindowManager::toggleCursor() {
-	if (cursor_disabled) {
-		cursor_disabled = false;
+bool GLWindowManager::ToggleCursor() {
+	if (cursor_disabled_) {
+		cursor_disabled_ = false;
 		SDL_ShowCursor(SDL_ENABLE);
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	} else {
-		cursor_disabled = true;
+		cursor_disabled_ = true;
 		SDL_ShowCursor(SDL_DISABLE);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
-	return cursor_disabled;
+	return cursor_disabled_;
 }
 
-void GLWindowManager::redrawWindowBounds(glm::ivec2 size) {
+void GLWindowManager::RedrawWindowBounds(glm::ivec2 size) {
 	glViewport(0, 0, size.x, size.y);
 }
 
-} /* namespace GL */
-} /* namespace GameEngine */
+} /* namespace gl */
+} /* namespace game_engine */

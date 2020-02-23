@@ -1,4 +1,6 @@
 add_library(Sound STATIC "")
+add_library(GameEngine::Sound ALIAS Sound)
+
 target_sources(Sound
 	PRIVATE
 		Music.cpp
@@ -15,10 +17,11 @@ target_include_directories(Sound
 
 target_link_libraries(Sound
 	PUBLIC
-		Util
-		Logger
 		SDL2
 		SDL2_mixer
 		
+		Logger::Logger
+		
+		GameEngine::Util
 		GameEngine::Resources
 )

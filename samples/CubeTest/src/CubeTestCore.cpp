@@ -22,7 +22,7 @@
 
 #include <Log.hpp>
 
-#include <3D/Model.hpp>
+#include <3D/Cube.hpp>
 
 #include <GL/Shader.hpp>
 #include <GL/ShaderProgram.hpp>
@@ -32,85 +32,84 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 
+using namespace game_engine;
 
-using namespace GameEngine;
+namespace cube_test {
 
-namespace CubeTest {
-
-void CubeTestCore::registerCallbacks() {
-	registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = camera.cameraFront;
+void CubeTestCore::RegisterCallbacks() {
+	RegisterKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = camera_.camera_front_;
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp));
+	RegisterKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_));
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -camera.cameraFront;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -camera_.camera_front_;
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp));
+	RegisterKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_));
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_SPACE, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = camera.cameraUp;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_SPACE, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = camera_.camera_up_;
 		dir *= 0.025;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_LSHIFT, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -camera.cameraUp;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_LSHIFT, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -camera_.camera_up_;
 		dir *= 0.025;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_RSHIFT, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -camera.cameraUp;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_RSHIFT, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -camera_.camera_up_;
 		dir *= 0.025;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
-		if(renderer.isCursorDisabled()) {
-			camera.rotateCamera(static_cast<double>(delta.x)/10, -static_cast<double>(delta.y)/10);
+	RegisterMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
+		if(renderer_.IsCursorDisabled()) {
+			camera_.RotateCamera(static_cast<double>(delta.x)/10, -static_cast<double>(delta.y)/10);
 		}
 	});
-	registerWindowEventCallback([this](SDL_WindowEvent& ev) {
+	RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
 		switch(ev.event) {
 			case SDL_WINDOWEVENT_RESIZED:
-				camera.updateProjection(glm::ivec2(ev.data1, ev.data2));
+				camera_.UpdateProjection(glm::ivec2(ev.data1, ev.data2));
 		}
 	});
-	registerTimeoutCallback("ms_per_frame", 1000, [this]() {
-		LOG_D("ms/frame = " << frame_time_ms << " | fps = " << fps_avg);
+	RegisterTimeoutCallback("ms_per_frame", 1000, [this]() {
+		LOG_D("ms/frame = " << frame_time_ms_ << " | fps = " << fps_avg_);
 	}, true);
 }
 
 
-void CubeTestCore::setup() {
-	cube = _3D::Model(renderer, fs, "cube");
-	cube.move(glm::vec3(0.0, 0.5, 0.0));
-	cube.scale(0.25);
+void CubeTestCore::Setup() {
+	cube_ = _3D::Cube(renderer_, fs_, "cube");
+	cube_.Move(glm::vec3(0.0, 0.5, 0.0));
+	cube_.Scale(0.25);
 
-	camera.init(renderer.getWindowSize());
+	camera_.Init(renderer_.GetWindowSize());
 //	LOG_D(cube);
 }
 
-void CubeTestCore::render() {
-	cube.rotate(glm::vec3(glm::radians(0.1f), glm::radians(0.2f), glm::radians(-0.3f)));
-	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(cube_color, 1.0f));
-	camera.drawModel(renderer, cube);
+void CubeTestCore::Render() {
+	cube_.Rotate(glm::vec3(glm::radians(0.1f), glm::radians(0.2f), glm::radians(-0.3f)));
+	renderer_.SetColor(ShaderPrograms::DEFAULT, glm::vec4(cube_color_, 1.0f));
+	camera_.DrawModel(renderer_, cube_);
 }
 
-void CubeTestCore::tick() {
+void CubeTestCore::Tick() {
 
 }
 
-} /* namespace CubeTest */
+} /* namespace cube_test */

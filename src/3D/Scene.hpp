@@ -26,19 +26,19 @@
 
 #include <vector>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 class Scene {
 	public:
-		template<typename Renderer> void draw(Renderer renderer);
+		template<typename Renderer> void Draw(Renderer renderer);
 	protected:
-		std::vector<Model> models;
-		Camera camera;
+		std::vector<Model> models_;
+		Camera camera_;
 };
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Scene.tpp"
 

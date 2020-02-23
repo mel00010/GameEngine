@@ -28,46 +28,67 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <SDL2/SDL.h>
+#include <utility>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 class Camera {
 	public:
-		void init(glm::ivec2 size);
-		void setCameraRotation(glm::vec3 rotation);
-		void setCameraPos(glm::vec3 pos);
-		void rotateCamera(double _yaw, double _pitch);
-		void moveCamera(glm::vec3 delta);
-		void setFOV(float _fov);
-		void updateView();
-		void updateProjection(glm::ivec2 size);
+		void Init(const glm::ivec2 size);
+		void SetCameraRotation(glm::vec3 rotation);
+		void SetCameraPos(const glm::vec3 pos);
+		void RotateCamera(const double _yaw, const double _pitch);
+		void MoveCamera(const glm::vec3 delta);
+		void SetFov(const float _fov);
+		void UpdateView();
+		void UpdateProjection(glm::ivec2 size);
 
 		template<typename Renderer>
-			void drawModel(Renderer& renderer, Model& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
+		void DrawModel(const Renderer& renderer, Model& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
 		template<typename Renderer>
-			void drawModel(Renderer& renderer, Cube& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
+		void DrawModel(const Renderer& renderer, Cube& cube, ShaderPrograms shaders = ShaderPrograms::CUBE);
 		template<typename Renderer>
-			void drawModel(Renderer& renderer, Skybox& model, ShaderPrograms shaders = ShaderPrograms::DEFAULT);
-		glm::ivec2 curr_size;
+		void DrawModel(const Renderer& renderer, Skybox& skybox, ShaderPrograms shaders = ShaderPrograms::SKYBOX);
 
-		float fov;
-		double cameraSpeed = 0.01;
-		double yaw = 0.0;
-		double pitch = 15.0;
+		glm::ivec2 curr_size_;
 
-		glm::vec3 cameraPos = glm::vec3(0.0f, 0.5f, 3.0f);
-		glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-		glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f,  0.0f);
+		float fov_;
+		double camera_speed_ = 0.01;
+		double yaw_ = 0.0;
+		double pitch_ = 15.0;
 
-		glm::mat4 view			= glm::mat4(1.0f);
-		glm::mat4 projection	= glm::mat4(1.0f);
+		glm::vec3 camera_pos_ = glm::vec3(0.0f, 0.5f, 3.0f);
+		glm::vec3 camera_front_ = glm::vec3(0.0f, 0.0f, -1.0f);
+		glm::vec3 camera_up_ = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		bool valid = false;
+		glm::mat4 view_ = glm::mat4(1.0f);
+		glm::mat4 projection_ = glm::mat4(1.0f);
+
+		bool valid_ = false;
+
+		void swap(Camera& other) noexcept {
+			using std::swap;
+
+			swap(other.curr_size_, curr_size_);
+			swap(other.fov_, fov_);
+			swap(other.camera_speed_, camera_speed_);
+			swap(other.yaw_, yaw_);
+			swap(other.pitch_, pitch_);
+			swap(other.camera_pos_, camera_pos_);
+			swap(other.camera_front_, camera_front_);
+			swap(other.camera_up_, camera_up_);
+			swap(other.view_, view_);
+			swap(other.projection_, projection_);
+		}
 };
 
+inline void swap(Camera& a, Camera& b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Camera.tpp"
 

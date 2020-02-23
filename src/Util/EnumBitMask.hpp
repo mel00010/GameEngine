@@ -26,12 +26,12 @@
  * @brief Enable the usual bitwise operators on an enum class
  */
 #define ENABLE_BITMASK_OPERATORS(x)								\
-template<> struct GameEngine::Util::EnableBitMaskOperators<x> {	\
+template<> struct game_engine::util::EnableBitMaskOperators<x> {	\
 		static const bool enable = true;						\
 }
 
-namespace GameEngine {
-namespace Util {
+namespace game_engine {
+namespace util {
 
 /**
  * @brief Struct defining whether bitwise operators should be defined on an enum class
@@ -124,9 +124,9 @@ typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>:
 	return static_cast<Enumerator> (static_cast<underlying>(lhs) ^= static_cast<underlying>(rhs));
 }
 
-} /* namespace Util */
-} /* namespace GameEngine */
+} /* namespace util */
+} /* namespace game_engine */
 
-using namespace GameEngine::Util;
+using namespace game_engine::util;
 
 #endif /* SRC_UTIL_ENUMBITMASK_HPP_ */

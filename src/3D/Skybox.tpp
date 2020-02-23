@@ -22,27 +22,27 @@
 
 #include "Skybox.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 template<typename Renderer>
-Skybox::Skybox(Renderer& renderer, cmrc::embedded_filesystem& fs,  const std::string& path) {
-	loadSkybox(renderer, fs, path);
+Skybox::Skybox(Renderer& renderer, const cmrc::embedded_filesystem& fs,  const std::string& path) {
+	LoadSkybox(renderer, fs, path);
 }
 
 template<typename Renderer>
-void Skybox::loadSkybox(Renderer& renderer, cmrc::embedded_filesystem& fs, const std::string& path) {
-	cube.loadCube(renderer, ShaderPrograms::SKYBOX, fs, path);
+void Skybox::LoadSkybox(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path) {
+	cube_.LoadCube(renderer, fs, path, ShaderPrograms::SKYBOX);
 }
 
-template<typename Renderer> void Skybox::draw(Renderer& renderer) {
+template<typename Renderer> void Skybox::Draw(const Renderer& renderer, const ShaderPrograms shaders) {
 	glDepthMask(GL_FALSE);
-	cube.draw(renderer, ShaderPrograms::SKYBOX);
+	cube_.Draw(renderer, shaders);
 	glDepthMask(GL_TRUE);
 
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_SKYBOX_TPP_ */

@@ -20,6 +20,6 @@
 
 #include "SoundTest.hpp"
 
-int main(void) {
-	SoundTest::SoundTest::getInstance().runLoop();
+int main(int argc, char** argv) {
+	sound_test::SoundTest::Main(&argc, &argv);
 }

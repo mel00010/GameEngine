@@ -22,59 +22,59 @@
 
 #include <Log.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
-void Camera::init(glm::ivec2 size) {
-	fov = 45.0f;
-	curr_size = size;
-	updateView();
-	updateProjection(size);
-	valid = true;
+void Camera::Init(const glm::ivec2 size) {
+	fov_ = 45.0f;
+	curr_size_ = size;
+	UpdateView();
+	UpdateProjection(size);
+	valid_ = true;
 }
 
-void Camera::setCameraRotation(glm::vec3 rotation) {
-	cameraFront = glm::normalize(rotation);
-	updateView();
+void Camera::SetCameraRotation(glm::vec3 rotation) {
+	camera_front_ = glm::normalize(rotation);
+	UpdateView();
 }
-void Camera::setCameraPos(glm::vec3 pos) {
-	cameraPos = pos;
-	updateView();
+void Camera::SetCameraPos(const glm::vec3 pos) {
+	camera_pos_ = pos;
+	UpdateView();
 }
-void Camera::rotateCamera(double _yaw, double _pitch) {
-	yaw += _yaw;
-	pitch += _pitch;
-	if(pitch > 89.99) {
-		pitch = 89.99;
+void Camera::RotateCamera(const double yaw, const double pitch) {
+	yaw_ += yaw;
+	pitch_ += pitch;
+	if(pitch_ > 89.99) {
+		pitch_ = 89.99;
 	}
-	if(pitch < -89.99) {
-		pitch = -89.99;
+	if(pitch_ < -89.99) {
+		pitch_ = -89.99;
 	}
 
 	glm::vec3 direction;
-	direction.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-	direction.y = sin(glm::radians(pitch));
-	direction.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-	cameraFront = glm::normalize(direction);
-	updateView();
+	direction.x = cos(glm::radians(pitch_)) * cos(glm::radians(yaw_));
+	direction.y = sin(glm::radians(pitch_));
+	direction.z = cos(glm::radians(pitch_)) * sin(glm::radians(yaw_));
+	camera_front_ = glm::normalize(direction);
+	UpdateView();
 }
-void Camera::moveCamera(glm::vec3 delta) {
-	cameraPos += delta;
-	updateView();
+void Camera::MoveCamera(const glm::vec3 delta) {
+	camera_pos_ += delta;
+	UpdateView();
 }
-void Camera::setFOV(float _fov) {
-	fov = _fov;
-	updateProjection(curr_size);
+void Camera::SetFov(const float fov) {
+	fov_ = fov;
+	UpdateProjection(curr_size_);
 }
-void Camera::updateView() {
-	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+void Camera::UpdateView() {
+	view_ = glm::lookAt(camera_pos_, camera_pos_ + camera_front_, camera_up_);
 }
-void Camera::updateProjection(glm::ivec2 size) {
-	curr_size = size;
-	projection = glm::perspective(
-			glm::radians(fov), static_cast<float>(size.x) / static_cast<float>(size.y), 0.1f, 100.0f);
+void Camera::UpdateProjection(glm::ivec2 size) {
+	curr_size_ = size;
+	projection_ = glm::perspective(
+			glm::radians(fov_), static_cast<float>(size.x) / static_cast<float>(size.y), 0.1f, 100.0f);
 }
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 

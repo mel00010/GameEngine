@@ -24,31 +24,31 @@
 
 #include <glm/glm.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 template<typename Renderer>
-Texture::Texture(Renderer& renderer,
-		cmrc::file file,
+Texture::Texture(const Renderer& renderer,
+		const cmrc::file file,
 		const ShaderPrograms shader_program,
 		const TextureType type) :
-		id(-1), type(TextureType::DIFFUSE) {
-	loadTexture(renderer, file, shader_program, type);
+		id_ { 0 }, type_(TextureType::DIFFUSE) {
+	LoadTexture(renderer, file, shader_program, type);
 }
 
 template<typename Renderer>
-GLuint Texture::loadTexture(Renderer& renderer,
-		cmrc::file file,
+GLuint Texture::LoadTexture(const Renderer& renderer,
+		const cmrc::file file,
 		const ShaderPrograms shader_program,
-		const TextureType _type) {
+		const TextureType type) {
 //	LOG_D("Opening " << file.path());
 	std::vector<uint8_t> file_contents(file.begin(), file.end());
-	path = file.path();
-	std::string ext;
-	if(path.rfind('.') == std::string::npos) {
-		ext = path;
+	path_ = file.path();
+	std::string ext { };
+	if(path_.rfind('.') == std::string::npos) {
+		ext = path_;
 	} else {
-		ext = path.substr(path.rfind('.'));
+		ext = path_.substr(path_.rfind('.'));
 	}
 
 	// New SDL surface and load the image
@@ -58,7 +58,7 @@ GLuint Texture::loadTexture(Renderer& renderer,
 	if(surface == 0) {
 		LOG_E("Error!  surface == 0");
 		LOG_E("file.path() = " << file.path());
-		LOG_E("texture_type = " << _type);
+		LOG_E("texture_type = " << type);
 
 		throw EXIT_FAILURE;
 	}
@@ -70,31 +70,31 @@ GLuint Texture::loadTexture(Renderer& renderer,
 	if ( (size.x & (size.x - 1)) != 0 ) { 		LOG_W("Non power-of-two texture loaded: " + file.path());	}
 	else if ( (size.y & (size.y - 1)) != 0 ) {	LOG_W("Non power-of-two texture loaded: " + file.path());	}
 
-	PixelFormat format = determinePixelFormat(surface->format);
+	PixelFormat format = DeterminePixelFormat(surface->format);
 
-	loadTextureFromMemory(renderer, size, format, surface->pixels, shader_program, _type);
+	LoadTextureFromMemory(renderer, size, format, surface->pixels, shader_program, type);
 
 	// Free SDL surface
 	SDL_FreeSurface(surface);
 
-	return id;
+	return id_;
 }
 
 template<typename Renderer>
-GLuint Texture::loadTextureFromMemory(Renderer& renderer,
-		glm::ivec2 size,
-		_3D::PixelFormat pixel_format,
-		void* buffer,
+GLuint Texture::LoadTextureFromMemory(const Renderer& renderer,
+		const glm::ivec2 size,
+		const _3D::PixelFormat pixel_format,
+		const void* buffer,
 		const ShaderPrograms shader_program,
 		const TextureType _type) {
-	if(path == "") {
-		path = "N/A";
+	if(path_ == "") {
+		path_ = "N/A";
 	}
-	type = _type;
-	id = renderer.createTexture(shader_program, pixel_format, size, buffer);
-	return id;
+	type_ = _type;
+	id_ = renderer.CreateTexture(shader_program, pixel_format, size, buffer);
+	return id_;
 }
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_TEXTURE_TPP_ */

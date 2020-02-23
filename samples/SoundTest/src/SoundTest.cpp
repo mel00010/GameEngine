@@ -31,100 +31,100 @@
 
 #include <thread>
 
-using namespace GameEngine;
+using namespace game_engine;
 
-namespace SoundTest {
+namespace sound_test {
 
-void SoundTest::registerCallbacks() {
-	registerKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = camera.cameraFront;
+void SoundTest::RegisterCallbacks() {
+	RegisterKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = camera_.camera_front_;
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp));
+	RegisterKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_));
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -camera.cameraFront;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -camera_.camera_front_;
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp));
+	RegisterKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_));
 		dir.y = 0.0f;
 		dir *= 0.125;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_SPACE, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = camera.cameraUp;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_SPACE, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = camera_.camera_up_;
 		dir *= 0.025;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_LSHIFT, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -camera.cameraUp;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_LSHIFT, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -camera_.camera_up_;
 		dir *= 0.025;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_RSHIFT, KeyEventType::HELD, [this]() {
-		glm::vec3 dir = -camera.cameraUp;
+	RegisterKeyboardEventCallback(SDL_SCANCODE_RSHIFT, KeyEventType::HELD, [this]() {
+		glm::vec3 dir = -camera_.camera_up_;
 		dir *= 0.025;
-		camera.moveCamera(dir);
+		camera_.MoveCamera(dir);
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		oof.play();
+	RegisterKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+		oof_.Play();
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_P, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		ouch.play();
+	RegisterKeyboardEventCallback(SDL_SCANCODE_P, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+		ouch_.Play();
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_R, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		rickroll.play();
+	RegisterKeyboardEventCallback(SDL_SCANCODE_R, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+		rickroll_.Play();
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_T, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		rickroll.pause();
+	RegisterKeyboardEventCallback(SDL_SCANCODE_T, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+		rickroll_.Pause();
 	});
-	registerKeyboardEventCallback(SDL_SCANCODE_Y, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		rickroll.resume();
+	RegisterKeyboardEventCallback(SDL_SCANCODE_Y, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+		rickroll_.Resume();
 	});
 
-	registerMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
-		if(renderer.isCursorDisabled()) {
-			camera.rotateCamera(static_cast<double>(delta.x)/10, -static_cast<double>(delta.y)/10);
+	RegisterMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
+		if(renderer_.IsCursorDisabled()) {
+			camera_.RotateCamera(static_cast<double>(delta.x)/10, -static_cast<double>(delta.y)/10);
 		}
 	});
-	registerWindowEventCallback([this](SDL_WindowEvent& ev) {
+	RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
 		switch(ev.event) {
 			case SDL_WINDOWEVENT_RESIZED:
-				camera.updateProjection(glm::ivec2(ev.data1, ev.data2));
+				camera_.UpdateProjection(glm::ivec2(ev.data1, ev.data2));
 		}
 	});
-	registerTimeoutCallback("ms_per_frame", 1000, [this]() {
-		LOG_D("ms/frame = " << frame_time_ms << " | fps = " << fps_avg);
+	RegisterTimeoutCallback("ms_per_frame", 1000, [this]() {
+		LOG_D("ms/frame = " << frame_time_ms_ << " | fps = " << fps_avg_);
 	}, true);
 }
 
 
-void SoundTest::setup() {
-	grid = _3D::Model(renderer, fs, "grid");
-	grid.rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
+void SoundTest::Setup() {
+	grid_ = _3D::Model(renderer_, fs_, "grid");
+	grid_.Rotate(glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f)));
 
-	camera.init(renderer.getWindowSize());
+	camera_.Init(renderer_.GetWindowSize());
 
-	oof = Sound::Sound(fs.open("oof.ogg"));
-	ouch = Sound::Sound(fs.open("ouch.ogg"));
-	rickroll = Sound::Music(fs.open("rickroll.ogg"));
+	oof_ = Sound::Sound(fs_.open("oof.ogg"));
+	ouch_ = Sound::Sound(fs_.open("ouch.ogg"));
+	rickroll_ = Sound::Music(fs_.open("rickroll.ogg"));
 }
 
-void SoundTest::render() {
-	renderer.setColor(ShaderPrograms::DEFAULT, glm::vec4(line_color, 1.0f));
-	camera.drawModel(renderer, grid);
+void SoundTest::Render() {
+	renderer_.SetColor(ShaderPrograms::DEFAULT, glm::vec4(line_color_, 1.0f));
+	camera_.DrawModel(renderer_, grid_);
 }
 
-void SoundTest::tick() {
+void SoundTest::Tick() {
 
 }
 

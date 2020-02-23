@@ -22,35 +22,35 @@
 
 #include <Log.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 bool EmbeddedIOHandler::Exists(const char* pFile) const {
 //	LOG_D("Testing for existence of " << pFile << ".  File " << (fs.exists(pFile) ? "exists" : "does not exist") << ".");
-	return fs.exists(pFile);
+	return fs_.exists(pFile);
 }
 char EmbeddedIOHandler::getOsSeparator() const {
 	return '/';
 }
 Assimp::IOStream* EmbeddedIOHandler::Open(const char* pFile, const char* pMode) {
 //	LOG_D("Opening file " << pFile);
-	cmrc::file file = fs.open(pFile);
+	cmrc::file file = fs_.open(pFile);
 	EmbeddedIOStream* ios = new EmbeddedIOStream(file);
-	io_streams.push_back(ios);
+	io_streams_.push_back(ios);
 	return ios;
 }
 void EmbeddedIOHandler::Close( Assimp::IOStream* pFile) {
 //	LOG_D("Closing file");
-	auto it = std::find(io_streams.begin(), io_streams.end(), pFile);
-	if (it == io_streams.end()) {
+	auto it = std::find(io_streams_.begin(), io_streams_.end(), pFile);
+	if (it == io_streams_.end()) {
 		return;
 	}
 	EmbeddedIOStream* file = *it;
-	io_streams.erase(it);
+	io_streams_.erase(it);
 	delete file;
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 

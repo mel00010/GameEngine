@@ -23,39 +23,39 @@
 #include "Cubemap.hpp"
 #include "Texture.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 template<typename Renderer>
-Cubemap::Cubemap(Renderer& renderer,
-		const ShaderPrograms shader_program,
-		cmrc::embedded_filesystem& fs,
-		const std::string& path) {
-	LOG_D("Cubemap id = " << id);
-	id = -1;
-	loadCubemap(renderer, shader_program, fs, path);
+Cubemap::Cubemap(const Renderer& renderer,
+		const cmrc::embedded_filesystem& fs,
+		const std::string& path,
+		const ShaderPrograms shader_program) {
+	LOG_D("Cubemap id_ = " << id_);
+	id_ = -1;
+	LoadCubemap(renderer, fs, path, shader_program);
 }
 
 template<typename Renderer>
-GLuint Cubemap::loadCubemap(Renderer& renderer,
-		const ShaderPrograms shader_program,
-		cmrc::embedded_filesystem& fs,
-		const std::string& path) {
-	renderer.useShader(shader_program);
+GLuint Cubemap::LoadCubemap(const Renderer& renderer,
+		const cmrc::embedded_filesystem& fs,
+		const std::string& path,
+		const ShaderPrograms shader_program) {
+	renderer.UseShader(shader_program);
 	struct CubeSurfaces {
 			SDL_Surface *right, *left, *top, *bottom, *back, *front;
 	};
-	CubeSurfaces surfaces;
-	surfaces.right = openImage(CubeFace::RIGHT, fs, path);
-	surfaces.left = openImage(CubeFace::LEFT, fs, path);
-	surfaces.top = openImage(CubeFace::TOP, fs, path);
-	surfaces.bottom =openImage(CubeFace::BOTTOM, fs, path);
-	surfaces.back = openImage(CubeFace::BACK, fs, path);
-	surfaces.front = openImage(CubeFace::FRONT, fs, path);
+	CubeSurfaces surfaces {};
+	surfaces.right = OpenImage(CubeFace::RIGHT, fs, path);
+	surfaces.left = OpenImage(CubeFace::LEFT, fs, path);
+	surfaces.top = OpenImage(CubeFace::TOP, fs, path);
+	surfaces.bottom =OpenImage(CubeFace::BOTTOM, fs, path);
+	surfaces.back = OpenImage(CubeFace::BACK, fs, path);
+	surfaces.front = OpenImage(CubeFace::FRONT, fs, path);
 
 	// Get dimensions
 	glm::ivec2 size(surfaces.right->w, surfaces.right->h);
-	PixelFormat format = Texture::determinePixelFormat(surfaces.right->format);
+	PixelFormat format = Texture::DeterminePixelFormat(surfaces.right->format);
 
 	CubemapBuffers buffers;
 	buffers.right = static_cast<uint8_t*>(surfaces.right->pixels);
@@ -65,7 +65,7 @@ GLuint Cubemap::loadCubemap(Renderer& renderer,
 	buffers.back = static_cast<uint8_t*>(surfaces.back->pixels);
 	buffers.front = static_cast<uint8_t*>(surfaces.front->pixels);
 
-	id = loadCubemapFromMemory(renderer, shader_program, size, format, buffers);
+	id_ = LoadCubemapFromMemory(renderer, size, format, buffers, shader_program);
 
 	// Free SDL surface
 	SDL_FreeSurface(surfaces.right);
@@ -75,24 +75,24 @@ GLuint Cubemap::loadCubemap(Renderer& renderer,
 	SDL_FreeSurface(surfaces.back);
 	SDL_FreeSurface(surfaces.front);
 
-	LOG_D("Cubemap id = " << id);
-	return id;
+	LOG_D("Cubemap id_ = " << id_);
+	return id_;
 }
 
 template<typename Renderer>
-GLuint Cubemap::loadCubemapFromMemory(Renderer& renderer,
-		const ShaderPrograms shader_program,
-		glm::ivec2 size,
-		_3D::PixelFormat pixel_format,
-		CubemapBuffers& buffers) {
-	if(path == "") {
-		path = "N/A";
+GLuint Cubemap::LoadCubemapFromMemory(const Renderer& renderer,
+		const glm::ivec2 size,
+		const _3D::PixelFormat pixel_format,
+		const CubemapBuffers& buffers,
+		const ShaderPrograms shader_program) {
+	if(path_ == "") {
+		path_ = "N/A";
 	}
-	id = renderer.createCubemap(shader_program, pixel_format, size, buffers);
-	LOG_D("Cubemap id = " << id);
-	return id;
+	id_ = renderer.CreateCubemap(shader_program, pixel_format, size, buffers);
+	LOG_D("Cubemap id_ = " << id_);
+	return id_;
 }
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_CUBEMAP_TPP_ */

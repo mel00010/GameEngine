@@ -1,89 +1,347 @@
+ch.hsr.ifs.cute.mockator.problems.InconsistentExpectationsProblem=Info
+ch.hsr.ifs.cute.mockator.problems.InconsistentExpectationsProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.mockator.problems.MissingTestDoubleStaticPolyProblem=Error
+ch.hsr.ifs.cute.mockator.problems.MissingTestDoubleStaticPolyProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.mockator.problems.MissingTestDoubleSubTypeProblem=Error
+ch.hsr.ifs.cute.mockator.problems.MissingTestDoubleSubTypeProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.mockator.problems.StaticPolyMissingMemFunsProblem=Error
+ch.hsr.ifs.cute.mockator.problems.StaticPolyMissingMemFunsProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.mockator.problems.SubtypeMissingMemFunsProblem=Error
+ch.hsr.ifs.cute.mockator.problems.SubtypeMissingMemFunsProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.mockator.problems.TraceFunctionProblem=Warning
+ch.hsr.ifs.cute.mockator.problems.TraceFunctionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.mockator.problems.WrapFunctionProblem=Info
+ch.hsr.ifs.cute.mockator.problems.WrapFunctionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+ch.hsr.ifs.cute.ui.problems.unregisteredTestMarker=Warning
+ch.hsr.ifs.cute.ui.problems.unregisteredTestMarker.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.ArrayProblem=Warning
+com.cevelop.charwars.problems.ArrayProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.CStrProblem=Warning
+com.cevelop.charwars.problems.CStrProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.CStringAliasProblem=Warning
+com.cevelop.charwars.problems.CStringAliasProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.CStringCleanupProblem=Warning
+com.cevelop.charwars.problems.CStringCleanupProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.CStringParameterProblem=Warning
+com.cevelop.charwars.problems.CStringParameterProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.CStringProblem=Warning
+com.cevelop.charwars.problems.CStringProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.charwars.problems.PointerParameterProblem=Warning
+com.cevelop.charwars.problems.PointerParameterProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.info.donotnestlambdas=Info
+com.cevelop.codeanalysator.autosar.info.donotnestlambdas.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.info.noimplicitlambdareturntype=Info
+com.cevelop.codeanalysator.autosar.info.noimplicitlambdareturntype.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.alwaysinitializeanobject=Warning
+com.cevelop.codeanalysator.autosar.problem.alwaysinitializeanobject.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.avoidconversationoperators=Warning
+com.cevelop.codeanalysator.autosar.problem.avoidconversationoperators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.avoidlossyconversions=Warning
+com.cevelop.codeanalysator.autosar.problem.avoidlossyconversions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.catchexceptionsbyreference=Warning
+com.cevelop.codeanalysator.autosar.problem.catchexceptionsbyreference.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.conditionmustbebool=Warning
+com.cevelop.codeanalysator.autosar.problem.conditionmustbebool.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donothidememberfunctions=Warning
+com.cevelop.codeanalysator.autosar.problem.donothidememberfunctions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotimplicitlycapturevariables=Warning
+com.cevelop.codeanalysator.autosar.problem.donotimplicitlycapturevariables.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotinitializeautousinginitializerlist=Warning
+com.cevelop.codeanalysator.autosar.problem.donotinitializeautousinginitializerlist.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotintroducevirtualfunctioninfinalclass=Warning
+com.cevelop.codeanalysator.autosar.problem.donotintroducevirtualfunctioninfinalclass.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotomitvirtspecifier=Warning
+com.cevelop.codeanalysator.autosar.problem.donotomitvirtspecifier.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotoutlivereferencecapturedobjects=Warning
+com.cevelop.codeanalysator.autosar.problem.donotoutlivereferencecapturedobjects.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotreturnreferencetoparameterpassedbyconstreference=Warning
+com.cevelop.codeanalysator.autosar.problem.donotreturnreferencetoparameterpassedbyconstreference.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotuseasm=Warning
+com.cevelop.codeanalysator.autosar.problem.donotuseasm.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotusedynamiccast=Warning
+com.cevelop.codeanalysator.autosar.problem.donotusedynamiccast.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotuseliteralvalues=Warning
+com.cevelop.codeanalysator.autosar.problem.donotuseliteralvalues.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotuseregister=Warning
+com.cevelop.codeanalysator.autosar.problem.donotuseregister.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotuseternaryconditionaloperatorassubexpression=Warning
+com.cevelop.codeanalysator.autosar.problem.donotuseternaryconditionaloperatorassubexpression.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotusetypedef=Warning
+com.cevelop.codeanalysator.autosar.problem.donotusetypedef.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.donotuseunion=Warning
+com.cevelop.codeanalysator.autosar.problem.donotuseunion.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.explicitconversionoperators=Warning
+com.cevelop.codeanalysator.autosar.problem.explicitconversionoperators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.explicitlydefineenumunderlyingbasetype=Warning
+com.cevelop.codeanalysator.autosar.problem.explicitlydefineenumunderlyingbasetype.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.hexvaluesmustbeuppercase=Warning
+com.cevelop.codeanalysator.autosar.problem.hexvaluesmustbeuppercase.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.initializenonefirstorallenumerators=Warning
+com.cevelop.codeanalysator.autosar.problem.initializenonefirstorallenumerators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.mandatorylambdaparameterlist=Warning
+com.cevelop.codeanalysator.autosar.problem.mandatorylambdaparameterlist.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.missingspecialmemberfunctions=Warning
+com.cevelop.codeanalysator.autosar.problem.missingspecialmemberfunctions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.noderivationfrommorethanonebaseclass=Warning
+com.cevelop.codeanalysator.autosar.problem.noderivationfrommorethanonebaseclass.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.nomorethantwolevelsofindirection=Warning
+com.cevelop.codeanalysator.autosar.problem.nomorethantwolevelsofindirection.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.novirtualassignementoperators=Warning
+com.cevelop.codeanalysator.autosar.problem.novirtualassignementoperators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.onlycomparepointertovirtualmemberfunctionwithnullpointer=Warning
+com.cevelop.codeanalysator.autosar.problem.onlycomparepointertovirtualmemberfunctionwithnullpointer.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.parenthesizelogicaloperators=Warning
+com.cevelop.codeanalysator.autosar.problem.parenthesizelogicaloperators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.redundantoperations=Warning
+com.cevelop.codeanalysator.autosar.problem.redundantoperations.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.switchmusthaveatleasttwocases=Warning
+com.cevelop.codeanalysator.autosar.problem.switchmusthaveatleasttwocases.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.useautosparingly=Warning
+com.cevelop.codeanalysator.autosar.problem.useautosparingly.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.usebracedinitialization=Warning
+com.cevelop.codeanalysator.autosar.problem.usebracedinitialization.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.usescopedenumclasses=Warning
+com.cevelop.codeanalysator.autosar.problem.usescopedenumclasses.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.autosar.problem.virtualfunctionshallhaveexactlyonespecifier=Warning
+com.cevelop.codeanalysator.autosar.problem.virtualfunctionshallhaveexactlyonespecifier.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.alwaysinitializeanobject=Warning
+com.cevelop.codeanalysator.cppcore.problem.alwaysinitializeanobject.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.avoidconversationoperators=Warning
+com.cevelop.codeanalysator.cppcore.problem.avoidconversationoperators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.avoidlossyconversions=Warning
+com.cevelop.codeanalysator.cppcore.problem.avoidlossyconversions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.declareloopvariableintheintializer=Warning
+com.cevelop.codeanalysator.cppcore.problem.declareloopvariableintheintializer.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.destructorhasnobody=Warning
+com.cevelop.codeanalysator.cppcore.problem.destructorhasnobody.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.destructorwithmissingdeletestatements=Warning
+com.cevelop.codeanalysator.cppcore.problem.destructorwithmissingdeletestatements.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.dontusevariablefortwounrelatedpurposes=Warning
+com.cevelop.codeanalysator.cppcore.problem.dontusevariablefortwounrelatedpurposes.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.missingspecialmemberfunctions=Warning
+com.cevelop.codeanalysator.cppcore.problem.missingspecialmemberfunctions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.nodestructor=Warning
+com.cevelop.codeanalysator.cppcore.problem.nodestructor.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.cppcore.problem.redundantoperations=Warning
+com.cevelop.codeanalysator.cppcore.problem.redundantoperations.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.misra.info.boolexpressionoperands=Info
+com.cevelop.codeanalysator.misra.info.boolexpressionoperands.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.misra.problem.avoidlossyconversions=Warning
+com.cevelop.codeanalysator.misra.problem.avoidlossyconversions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.misra.problem.boolexpressionoperands=Warning
+com.cevelop.codeanalysator.misra.problem.boolexpressionoperands.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.codeanalysator.misra.problem.declareloopvariableintheintializer=Warning
+com.cevelop.codeanalysator.misra.problem.declareloopvariableintheintializer.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.constificator.problems.MissingQualification=Warning
+com.cevelop.constificator.problems.MissingQualification.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",checkLocalVariables\=>false,checkFunctionParameters\=>false,checkMemberFunctions\=>false,checkDataMembers\=>false}
+com.cevelop.constificator.problems.PotentiallyMissingQualification=Info
+com.cevelop.constificator.problems.PotentiallyMissingQualification.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",checkLocalVariables\=>false,checkFunctionParameters\=>false,checkMemberFunctions\=>false,checkDataMembers\=>false}
+com.cevelop.elevator.problems.defaultctor=Warning
+com.cevelop.elevator.problems.defaultctor.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.elevator.problems.nullMacro=Warning
+com.cevelop.elevator.problems.nullMacro.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.elevator.problems.uninitialized=Warning
+com.cevelop.elevator.problems.uninitialized.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.164AvoidConversionOperators=Warning
+com.cevelop.gslator.problems.C.164AvoidConversionOperators.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.20RedundantOperations=Warning
+com.cevelop.gslator.problems.C.20RedundantOperations.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.21MissingSpecialMemberFunctions=Warning
+com.cevelop.gslator.problems.C.21MissingSpecialMemberFunctions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.31_01NoDestructor=Warning
+com.cevelop.gslator.problems.C.31_01NoDestructor.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.31_02DestructorHasNoBody=Warning
+com.cevelop.gslator.problems.C.31_02DestructorHasNoBody.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.31_03DestructorWithMissingDeleteStatements=Warning
+com.cevelop.gslator.problems.C.31_03DestructorWithMissingDeleteStatements.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.35BaseClassDestructor=Warning
+com.cevelop.gslator.problems.C.35BaseClassDestructor.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.37DestructorShouldBeNoExcept=Warning
+com.cevelop.gslator.problems.C.37DestructorShouldBeNoExcept.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.44NoexceptCtor=Warning
+com.cevelop.gslator.problems.C.44NoexceptCtor.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.45InClassInitialize=Warning
+com.cevelop.gslator.problems.C.45InClassInitialize.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.46DeclareSingleCtorExplicit=Warning
+com.cevelop.gslator.problems.C.46DeclareSingleCtorExplicit.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.47InitializeMemVarsInRightOrder=Warning
+com.cevelop.gslator.problems.C.47InitializeMemVarsInRightOrder.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.48PreferInClassInitializerToCtorInit=Warning
+com.cevelop.gslator.problems.C.48PreferInClassInitializerToCtorInit.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.49NoAssignmentsInCtor=Warning
+com.cevelop.gslator.problems.C.49NoAssignmentsInCtor.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.60_01CopyAssignmentNonVirtual=Warning
+com.cevelop.gslator.problems.C.60_01CopyAssignmentNonVirtual.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.60_02CopyAssignmentParameterByConstRef=Warning
+com.cevelop.gslator.problems.C.60_02CopyAssignmentParameterByConstRef.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.60_03CopyAssignmentReturnByNonConstRef=Warning
+com.cevelop.gslator.problems.C.60_03CopyAssignmentReturnByNonConstRef.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.63_01MoveAssignmentNonVirtual=Warning
+com.cevelop.gslator.problems.C.63_01MoveAssignmentNonVirtual.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.63_02MoveAssignmentReturnByNonConstRef=Warning
+com.cevelop.gslator.problems.C.63_02MoveAssignmentReturnByNonConstRef.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.66MoveOperationsNoExcept=Warning
+com.cevelop.gslator.problems.C.66MoveOperationsNoExcept.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.83ValueLikeTypesShouldHaveSwap=Warning
+com.cevelop.gslator.problems.C.83ValueLikeTypesShouldHaveSwap.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.84MakeSwapNoExcept=Warning
+com.cevelop.gslator.problems.C.84MakeSwapNoExcept.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.C.85NamespaceLevelSwapFunction=Warning
+com.cevelop.gslator.problems.C.85NamespaceLevelSwapFunction.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.ES.09AvoidALLCAPSnames=Warning
+com.cevelop.gslator.problems.ES.09AvoidALLCAPSnames.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",markMacros\=>false}
+com.cevelop.gslator.problems.ES.20AlwaysInitializeAnObject=Warning
+com.cevelop.gslator.problems.ES.20AlwaysInitializeAnObject.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.ES.26DontUseVariableForTwoUnrelatedPurposes=Warning
+com.cevelop.gslator.problems.ES.26DontUseVariableForTwoUnrelatedPurposes.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.ES.46AvoidLossyConversions=Warning
+com.cevelop.gslator.problems.ES.46AvoidLossyConversions.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",FpToInt\=>false,FpToIntFunc\=>false,IntToCharBig\=>false,IntToCharBigFunc\=>false,IntToCharSmll\=>false,IntToCharSmllFunc\=>false,Integer\=>false,IntegerFunc\=>false,Fp\=>false,FpFunc\=>false,ToUnsigned\=>false,ToUnsignedFunc\=>false}
+com.cevelop.gslator.problems.ES.49IfMustUseNamedCast=Warning
+com.cevelop.gslator.problems.ES.49IfMustUseNamedCast.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",enableTraditionalCast\=>false,enableTypeconstWithConstInit\=>false,enableReinterpretQuickFix\=>false}
+com.cevelop.gslator.problems.ES.50DontCastAwayConst=Warning
+com.cevelop.gslator.problems.ES.50DontCastAwayConst.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.ES.74DeclareLoopVariableInTheInitializer=Warning
+com.cevelop.gslator.problems.ES.74DeclareLoopVariableInTheInitializer.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.ES.75AvoidDoStatements=Warning
+com.cevelop.gslator.problems.ES.75AvoidDoStatements.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.gslator.problems.ES.76AvoidGoto=Warning
+com.cevelop.gslator.problems.ES.76AvoidGoto.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",enableMultibreakMarker\=>false}
+com.cevelop.intwidthfixator.problems.casts.not-fixed-width=Info
+com.cevelop.intwidthfixator.problems.casts.not-fixed-width.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.intwidthfixator.problems.functions.not-fixed-width=Info
+com.cevelop.intwidthfixator.problems.functions.not-fixed-width.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.intwidthfixator.problems.templates.not-fixed-width=Info
+com.cevelop.intwidthfixator.problems.templates.not-fixed-width.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.intwidthfixator.problems.typedefs.not-fixed-width=Info
+com.cevelop.intwidthfixator.problems.typedefs.not-fixed-width.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.intwidthfixator.problems.variables.not-fixed-width=Info
+com.cevelop.intwidthfixator.problems.variables.not-fixed-width.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.macronator.plugin.ObsoleteFunctionLikeMacro=Warning
+com.cevelop.macronator.plugin.ObsoleteFunctionLikeMacro.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.macronator.plugin.ObsoleteObjectLikeMacro=Warning
+com.cevelop.macronator.plugin.ObsoleteObjectLikeMacro.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.macronator.plugin.UnusedMacro=Warning
+com.cevelop.macronator.plugin.UnusedMacro.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.namespactor.checkers.problems.Typedef2Alias=Warning
+com.cevelop.namespactor.checkers.problems.Typedef2Alias.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.namespactor.checkers.problems.UDECBeforeInclude=Warning
+com.cevelop.namespactor.checkers.problems.UDECBeforeInclude.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.namespactor.checkers.problems.UDECInHeader=Warning
+com.cevelop.namespactor.checkers.problems.UDECInHeader.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.namespactor.checkers.problems.UDIRBeforeInclude=Warning
+com.cevelop.namespactor.checkers.problems.UDIRBeforeInclude.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.namespactor.checkers.problems.UDIRInHeader=Warning
+com.cevelop.namespactor.checkers.problems.UDIRInHeader.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.namespactor.checkers.problems.UDIRUnqualified=Warning
+com.cevelop.namespactor.checkers.problems.UDIRUnqualified.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.ArgumentMismatchProblem=Error
+com.cevelop.tdd.ArgumentMismatchProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingConstructorProblem=Error
+com.cevelop.tdd.MissingConstructorProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingFreeFunctionProblem=Error
+com.cevelop.tdd.MissingFreeFunctionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingFreeOperatorProblem=Error
+com.cevelop.tdd.MissingFreeOperatorProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingLocalVariableProblem=Error
+com.cevelop.tdd.MissingLocalVariableProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingMemberFunctionProblem=Error
+com.cevelop.tdd.MissingMemberFunctionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingMemberOperatorProblem=Error
+com.cevelop.tdd.MissingMemberOperatorProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingMemberVariableProblem=Error
+com.cevelop.tdd.MissingMemberVariableProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingNamespaceProblem=Error
+com.cevelop.tdd.MissingNamespaceProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.MissingTypeProblem=Error
+com.cevelop.tdd.MissingTypeProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+com.cevelop.tdd.VisibilityProblem=Error
+com.cevelop.tdd.VisibilityProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 eclipse.preferences.version=1
 org.eclipse.cdt.codan.checkers.errnoreturn=Warning
-org.eclipse.cdt.codan.checkers.errnoreturn.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"No return\\")",implicit\=>false}
+org.eclipse.cdt.codan.checkers.errnoreturn.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",implicit\=>false}
 org.eclipse.cdt.codan.checkers.errreturnvalue=Error
-org.eclipse.cdt.codan.checkers.errreturnvalue.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Unused return value\\")"}
+org.eclipse.cdt.codan.checkers.errreturnvalue.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.checkers.nocommentinside=Error
-org.eclipse.cdt.codan.checkers.nocommentinside.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Nesting comments\\")"}
-org.eclipse.cdt.codan.checkers.nolinecomment=-Error
-org.eclipse.cdt.codan.checkers.nolinecomment.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Line comments\\")"}
+org.eclipse.cdt.codan.checkers.nocommentinside.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+org.eclipse.cdt.codan.checkers.nolinecomment=Error
+org.eclipse.cdt.codan.checkers.nolinecomment.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.checkers.noreturn=Error
-org.eclipse.cdt.codan.checkers.noreturn.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"No return value\\")",implicit\=>false}
+org.eclipse.cdt.codan.checkers.noreturn.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",implicit\=>false}
 org.eclipse.cdt.codan.internal.checkers.AbstractClassCreation=Error
-org.eclipse.cdt.codan.internal.checkers.AbstractClassCreation.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Abstract class cannot be instantiated\\")"}
+org.eclipse.cdt.codan.internal.checkers.AbstractClassCreation.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.AmbiguousProblem=Error
-org.eclipse.cdt.codan.internal.checkers.AmbiguousProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Ambiguous problem\\")"}
+org.eclipse.cdt.codan.internal.checkers.AmbiguousProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.AssignmentInConditionProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.AssignmentInConditionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Assignment in condition\\")"}
+org.eclipse.cdt.codan.internal.checkers.AssignmentInConditionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.AssignmentToItselfProblem=Error
-org.eclipse.cdt.codan.internal.checkers.AssignmentToItselfProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Assignment to itself\\")"}
+org.eclipse.cdt.codan.internal.checkers.AssignmentToItselfProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.CStyleCastProblem=-Warning
 org.eclipse.cdt.codan.internal.checkers.CStyleCastProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"C-Style cast instead of C++ cast\\")"}
 org.eclipse.cdt.codan.internal.checkers.CaseBreakProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.CaseBreakProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"No break at end of case\\")",no_break_comment\=>"no break",last_case_param\=>false,empty_case_param\=>false,enable_fallthrough_quickfix_param\=>false}
+org.eclipse.cdt.codan.internal.checkers.CaseBreakProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",no_break_comment\=>"",last_case_param\=>false,empty_case_param\=>false,enable_fallthrough_quickfix_param\=>false}
 org.eclipse.cdt.codan.internal.checkers.CatchByReference=Warning
-org.eclipse.cdt.codan.internal.checkers.CatchByReference.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Catching by reference is recommended\\")",unknown\=>false,exceptions\=>()}
+org.eclipse.cdt.codan.internal.checkers.CatchByReference.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",unknown\=>false,exceptions\=>()}
 org.eclipse.cdt.codan.internal.checkers.CircularReferenceProblem=Error
-org.eclipse.cdt.codan.internal.checkers.CircularReferenceProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Circular inheritance\\")"}
+org.eclipse.cdt.codan.internal.checkers.CircularReferenceProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.ClassMembersInitialization=Warning
-org.eclipse.cdt.codan.internal.checkers.ClassMembersInitialization.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Class members should be properly initialized\\")",skip\=>true}
+org.eclipse.cdt.codan.internal.checkers.ClassMembersInitialization.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",skip\=>false}
 org.eclipse.cdt.codan.internal.checkers.CopyrightProblem=-Warning
 org.eclipse.cdt.codan.internal.checkers.CopyrightProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Lack of copyright information\\")",regex\=>".*Copyright.*"}
 org.eclipse.cdt.codan.internal.checkers.DecltypeAutoProblem=Error
-org.eclipse.cdt.codan.internal.checkers.DecltypeAutoProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Invalid 'decltype(auto)' specifier\\")"}
+org.eclipse.cdt.codan.internal.checkers.DecltypeAutoProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.FieldResolutionProblem=Error
-org.eclipse.cdt.codan.internal.checkers.FieldResolutionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Field cannot be resolved\\")"}
+org.eclipse.cdt.codan.internal.checkers.FieldResolutionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.FunctionResolutionProblem=Error
-org.eclipse.cdt.codan.internal.checkers.FunctionResolutionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Function cannot be resolved\\")"}
+org.eclipse.cdt.codan.internal.checkers.FunctionResolutionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.GotoStatementProblem=-Warning
 org.eclipse.cdt.codan.internal.checkers.GotoStatementProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Goto statement used\\")"}
 org.eclipse.cdt.codan.internal.checkers.InvalidArguments=Error
-org.eclipse.cdt.codan.internal.checkers.InvalidArguments.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Invalid arguments\\")"}
+org.eclipse.cdt.codan.internal.checkers.InvalidArguments.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.InvalidTemplateArgumentsProblem=Error
-org.eclipse.cdt.codan.internal.checkers.InvalidTemplateArgumentsProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Invalid template argument\\")"}
+org.eclipse.cdt.codan.internal.checkers.InvalidTemplateArgumentsProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.LabelStatementNotFoundProblem=Error
-org.eclipse.cdt.codan.internal.checkers.LabelStatementNotFoundProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Label statement not found\\")"}
+org.eclipse.cdt.codan.internal.checkers.LabelStatementNotFoundProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.MemberDeclarationNotFoundProblem=Error
-org.eclipse.cdt.codan.internal.checkers.MemberDeclarationNotFoundProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Member declaration not found\\")"}
+org.eclipse.cdt.codan.internal.checkers.MemberDeclarationNotFoundProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.MethodResolutionProblem=Error
-org.eclipse.cdt.codan.internal.checkers.MethodResolutionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Method cannot be resolved\\")"}
+org.eclipse.cdt.codan.internal.checkers.MethodResolutionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.MissCaseProblem=-Warning
 org.eclipse.cdt.codan.internal.checkers.MissCaseProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Missing cases in switch\\")"}
 org.eclipse.cdt.codan.internal.checkers.MissDefaultProblem=-Warning
 org.eclipse.cdt.codan.internal.checkers.MissDefaultProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Missing default in switch\\")",defaultWithAllEnums\=>false}
-org.eclipse.cdt.codan.internal.checkers.NamingConventionFunctionChecker=-Info
-org.eclipse.cdt.codan.internal.checkers.NamingConventionFunctionChecker.params={fileScope\=>inclusion\=>(),exclusion\=>("**/*_test.*","**/test_*","build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Name convention for function\\")",pattern\=>"^[a-z]",macro\=>true,exceptions\=>()}
-org.eclipse.cdt.codan.internal.checkers.NonVirtualDestructorProblem=-Warning
-org.eclipse.cdt.codan.internal.checkers.NonVirtualDestructorProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Class has a virtual method and non-virtual destructor\\")"}
+org.eclipse.cdt.codan.internal.checkers.NamingConventionFunctionChecker=Info
+org.eclipse.cdt.codan.internal.checkers.NamingConventionFunctionChecker.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",pattern\=>"",macro\=>false,exceptions\=>()}
+org.eclipse.cdt.codan.internal.checkers.NonVirtualDestructorProblem=Warning
+org.eclipse.cdt.codan.internal.checkers.NonVirtualDestructorProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.OverloadProblem=Error
-org.eclipse.cdt.codan.internal.checkers.OverloadProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Invalid overload\\")"}
+org.eclipse.cdt.codan.internal.checkers.OverloadProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.RedeclarationProblem=Error
-org.eclipse.cdt.codan.internal.checkers.RedeclarationProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Invalid redeclaration\\")"}
+org.eclipse.cdt.codan.internal.checkers.RedeclarationProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.RedefinitionProblem=Error
-org.eclipse.cdt.codan.internal.checkers.RedefinitionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Invalid redefinition\\")"}
-org.eclipse.cdt.codan.internal.checkers.ReturnStyleProblem=-Warning
-org.eclipse.cdt.codan.internal.checkers.ReturnStyleProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Return with parenthesis\\")"}
+org.eclipse.cdt.codan.internal.checkers.RedefinitionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
+org.eclipse.cdt.codan.internal.checkers.ReturnStyleProblem=Warning
+org.eclipse.cdt.codan.internal.checkers.ReturnStyleProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.ScanfFormatStringSecurityProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.ScanfFormatStringSecurityProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Format String Vulnerability\\")"}
+org.eclipse.cdt.codan.internal.checkers.ScanfFormatStringSecurityProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.StatementHasNoEffectProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.StatementHasNoEffectProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Statement has no effect\\")",macro\=>true,exceptions\=>()}
+org.eclipse.cdt.codan.internal.checkers.StatementHasNoEffectProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",macro\=>false,exceptions\=>()}
 org.eclipse.cdt.codan.internal.checkers.SuggestedParenthesisProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.SuggestedParenthesisProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Suggested parenthesis around expression\\")",paramNot\=>false}
+org.eclipse.cdt.codan.internal.checkers.SuggestedParenthesisProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",paramNot\=>false}
 org.eclipse.cdt.codan.internal.checkers.SuspiciousSemicolonProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.SuspiciousSemicolonProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Suspicious semicolon\\")",else\=>false,afterelse\=>false}
+org.eclipse.cdt.codan.internal.checkers.SuspiciousSemicolonProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",else\=>false,afterelse\=>false}
 org.eclipse.cdt.codan.internal.checkers.TypeResolutionProblem=Error
-org.eclipse.cdt.codan.internal.checkers.TypeResolutionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Type cannot be resolved\\")"}
+org.eclipse.cdt.codan.internal.checkers.TypeResolutionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.UnusedFunctionDeclarationProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.UnusedFunctionDeclarationProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Unused function declaration\\")",macro\=>true}
+org.eclipse.cdt.codan.internal.checkers.UnusedFunctionDeclarationProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",macro\=>false}
 org.eclipse.cdt.codan.internal.checkers.UnusedStaticFunctionProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.UnusedStaticFunctionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Unused static function\\")",macro\=>true}
+org.eclipse.cdt.codan.internal.checkers.UnusedStaticFunctionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",macro\=>false}
 org.eclipse.cdt.codan.internal.checkers.UnusedVariableDeclarationProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.UnusedVariableDeclarationProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Unused variable declaration in file scope\\")",macro\=>true,exceptions\=>("@(\#)","$Id")}
+org.eclipse.cdt.codan.internal.checkers.UnusedVariableDeclarationProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"",macro\=>false,exceptions\=>("@(\#)","$Id")}
 org.eclipse.cdt.codan.internal.checkers.UsingInHeaderProblem=-Warning
 org.eclipse.cdt.codan.internal.checkers.UsingInHeaderProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Using directive in header\\")"}
 org.eclipse.cdt.codan.internal.checkers.VariableResolutionProblem=Error
-org.eclipse.cdt.codan.internal.checkers.VariableResolutionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Symbol is not resolved\\")"}
+org.eclipse.cdt.codan.internal.checkers.VariableResolutionProblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}
 org.eclipse.cdt.codan.internal.checkers.VirtualMethodCallProblem=-Error
 org.eclipse.cdt.codan.internal.checkers.VirtualMethodCallProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Virtual method call in constructor/destructor\\")"}
 org.eclipse.cdt.qt.core.qtproblem=Warning
-org.eclipse.cdt.qt.core.qtproblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>false,RUN_ON_INC_BUILD\=>false,RUN_ON_FILE_OPEN\=>true,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>null}
+org.eclipse.cdt.qt.core.qtproblem.params={fileScope\=>inclusion\=>(),exclusion\=>("build/"),launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>""}

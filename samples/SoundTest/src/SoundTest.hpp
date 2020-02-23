@@ -28,30 +28,30 @@
 
 #include <cmrc/cmrc.hpp>
 
-CMRC_DECLARE(SoundTest);
+CMRC_DECLARE(sound_test);
 
-using namespace GameEngine;
+using namespace game_engine;
 
-namespace SoundTest {
+namespace sound_test {
 
-class SoundTest : public GameEngine::GameCore<SoundTest> {
+class SoundTest : public game_engine::GameCore<SoundTest> {
 	public:
-		const std::string program_name = "SoundTest";
-		void setup();
-		void tick();
-		void render();
-		void registerCallbacks();
+		static constexpr std::string_view program_name_ = "SoundTest";
+		void Setup();
+		void Tick();
+		void Render();
+		void RegisterCallbacks();
 
 	protected:
-		cmrc::embedded_filesystem fs = cmrc::SoundTest::get_filesystem();
+		cmrc::embedded_filesystem fs_ = cmrc::sound_test::get_filesystem();
 
-		glm::vec3 line_color = glm::vec3(1.0, 1.0, 0.0);
+		glm::vec3 line_color_ = glm::vec3(1.0, 1.0, 0.0);
 
-		_3D::Camera camera;
-		_3D::Model grid;
-		Sound::Sound oof;
-		Sound::Sound ouch;
-		Sound::Music rickroll;
+		_3D::Camera camera_;
+		_3D::Model grid_;
+		Sound::Sound oof_;
+		Sound::Sound ouch_;
+		Sound::Music rickroll_;
 };
 
 } /* namespace SoundTest */

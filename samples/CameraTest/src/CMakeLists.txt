@@ -2,33 +2,34 @@ add_executable(CameraTest "")
 target_sources(CameraTest
 	PRIVATE
 		main.cpp
-		CameraTestCore.cpp
+		CameraTest.cpp
 	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/CameraTestCore.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CameraTest.hpp
 )
 
 target_link_libraries(CameraTest
 	PUBLIC
-		GameEngine
-				
-		Logger
+		GameEngine::GameEngine
+
 		CameraTest::Resources
+
+		Logger::Logger
 )
 
 include(CMakeRC)
 
-cmrc_add_resource_library(CameraTest-Resources ALIAS CameraTest::Resources NAMESPACE CameraTest)
+cmrc_add_resource_library(CameraTest-Resources ALIAS CameraTest::Resources NAMESPACE camera_test)
 cmrc_add_resources(CameraTest-Resources
 	WHENCE resources
-	
+
 	resources/cube/cube.mtl
 	resources/cube/cube.obj
 	resources/cube/wall.jpg
-	
+
 	resources/grid/grid.mtl
 	resources/grid/grid.obj
 	resources/grid/grid.png
-	
+
 	resources/nanosuit/arm_dif.png
 	resources/nanosuit/arm_showroom_ddn.png
 	resources/nanosuit/arm_showroom_spec.png
@@ -50,33 +51,33 @@ cmrc_add_resources(CameraTest-Resources
 	resources/nanosuit/nanosuit.blend
 	resources/nanosuit/nanosuit.mtl
 	resources/nanosuit/nanosuit.obj
-	
+
 	resources/skybox/back.png
 	resources/skybox/bottom.png
 	resources/skybox/front.png
 	resources/skybox/left.png
 	resources/skybox/right.png
 	resources/skybox/top.png
-	
+
 	resources/orbital/back.png
 	resources/orbital/bottom.png
 	resources/orbital/front.png
 	resources/orbital/left.png
 	resources/orbital/right.png
 	resources/orbital/top.png
-	
+
 	resources/nebula/back.png
 	resources/nebula/bottom.png
 	resources/nebula/front.png
 	resources/nebula/left.png
 	resources/nebula/right.png
 	resources/nebula/top.png
-	
+
 	resources/axes/axes.mtl
 	resources/axes/axes.obj
 	resources/axes/red.png
 	resources/axes/green.png
 	resources/axes/blue.png
-	
-	
+
+
 )

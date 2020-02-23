@@ -21,34 +21,34 @@
 #define SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_
 
 #include <3D/Camera.hpp>
-#include <3D/Model.hpp>
+#include <3D/Cube.hpp>
 #include <GameCore.hpp>
 
 #include <cmrc/cmrc.hpp>
 
-CMRC_DECLARE(CubeTest);
+CMRC_DECLARE(cube_test);
 
-using namespace GameEngine;
+using namespace game_engine;
 
-namespace CubeTest {
+namespace cube_test {
 
-class CubeTestCore : public GameEngine::GameCore<CubeTestCore> {
+class CubeTestCore : public game_engine::GameCore<CubeTestCore> {
 	public:
-		const std::string program_name = "CubeTest";
-		void setup();
-		void tick();
-		void render();
-		void registerCallbacks();
+		static constexpr std::string_view program_name_ = "CubeTest";
+		void Setup();
+		void Tick();
+		void Render();
+		void RegisterCallbacks();
 
 	protected:
-		cmrc::embedded_filesystem fs = cmrc::CubeTest::get_filesystem();
+		cmrc::embedded_filesystem fs_ = cmrc::cube_test::get_filesystem();
 
-		glm::vec3 cube_color = glm::vec3(1.0, 1.0, 1.0);
+		glm::vec3 cube_color_ = glm::vec3(1.0, 1.0, 1.0);
 
-		_3D::Camera camera;
-		_3D::Model cube;
+		_3D::Camera camera_;
+		_3D::Cube cube_;
 };
 
-} /* namespace CubeTest */
+} /* namespace cube_test */
 
 #endif /* SAMPLES_CAMERATEST_SRC_CAMERATESTCORE_HPP_ */

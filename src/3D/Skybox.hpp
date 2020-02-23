@@ -19,31 +19,46 @@
  *****************************************************************************/
 #ifndef SRC_3D_SKYBOX_HPP_
 #define SRC_3D_SKYBOX_HPP_
+#include <utility>
 
 #include "Cube.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 class Skybox {
 	public:
-		Skybox() {}
+		Skybox() = default;
+		Skybox& operator=(const Skybox& rhs) = default;
+		Skybox(const Skybox& rhs) = default;
+		Skybox& operator=(Skybox&& rhs) noexcept = default;
+		Skybox(Skybox&& rhs) noexcept = default;
+		~Skybox() noexcept = default;
 
 		template<typename Renderer>
-		Skybox(Renderer& renderer, cmrc::embedded_filesystem& fs, const std::string& path);
+		Skybox(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path);
 
 		template<typename Renderer>
-		void loadSkybox(Renderer& renderer, cmrc::embedded_filesystem& fs, const std::string& path);
+		void LoadSkybox(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path);
 
 		template<typename Renderer>
-		void draw(Renderer& renderer);
+		void Draw(const Renderer& renderer, const ShaderPrograms shaders = ShaderPrograms::SKYBOX);
 
+		void swap(Skybox& other) noexcept {
+			using std::swap;
+
+			swap(other.cube_, cube_);
+		}
 	protected:
-		Cube cube;
+		Cube cube_;
 };
 
+inline void swap(Skybox& a, Skybox& b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Skybox.tpp"
 

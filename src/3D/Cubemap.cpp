@@ -20,38 +20,11 @@
 
 #include "Cubemap.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-Cubemap::Cubemap() :
-		id(-1) {
-};
-Cubemap::Cubemap(GLuint _id, std::string _path) :
-		id(_id), path(_path) {
-}
-
-Cubemap::Cubemap(const Cubemap& other) // copy constructor
-		: Cubemap(other.id, other.path){}
-
-Cubemap::Cubemap(Cubemap&& other) noexcept // move constructor
-		: Cubemap(other.id, other.path){
-	other.id = -1;
-	other.path = "";
-}
-
-Cubemap& Cubemap::operator=(const Cubemap& other) { // copy assignment
-	 return *this = Cubemap(other);
-}
-
-Cubemap& Cubemap::operator=(Cubemap&& other) noexcept { // move assignment
-	id = other.id;
-	std::swap(path, other.path);
-	return *this;
-}
-
-
-SDL_Surface* Cubemap::openImage(const CubeFace face, cmrc::embedded_filesystem& fs, const std::string& path) {
-	std::string file_name;
+SDL_Surface* Cubemap::OpenImage(const CubeFace face, const cmrc::embedded_filesystem& fs, const std::string& path) {
+	std::string file_name = "";
 	switch(face) {
 		case CubeFace::RIGHT:
 			file_name = "right";
@@ -93,10 +66,10 @@ SDL_Surface* Cubemap::openImage(const CubeFace face, cmrc::embedded_filesystem& 
 }
 std::ostream& operator<<(std::ostream& os, const Cubemap& cube) {
 	return os << "Cubemap {" << push_indent << "\n"
-			<< "GLuint id = "<< cube.id << "\n"
-			<< "std::string path = \"" << cube.path << "\"\n"
+			<< "GLuint id_ = "<< cube.id_ << "\n"
+			<< "std::string path_ = \"" << cube.path_ << "\"\n"
 			<< pop_indent << " }";
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */

@@ -11,23 +11,23 @@ target_link_libraries(SoundTest
 	PUBLIC
 		GameEngine
 		SoundTest::Resources
-		
-		Logger
+
+		Logger::Logger
 )
 include(CMakeRC)
 
-cmrc_add_resource_library(SoundTest-Resources ALIAS SoundTest::Resources NAMESPACE SoundTest)
+cmrc_add_resource_library(SoundTest-Resources ALIAS SoundTest::Resources NAMESPACE sound_test)
 cmrc_add_resources(SoundTest-Resources
 	WHENCE resources
-	
+
 	resources/cube/cube.mtl
 	resources/cube/cube.obj
 	resources/cube/wall.jpg
-	
+
 	resources/grid/grid.mtl
 	resources/grid/grid.obj
 	resources/grid/grid.png
-	
+
 	resources/nanosuit/arm_dif.png
 	resources/nanosuit/arm_showroom_ddn.png
 	resources/nanosuit/arm_showroom_spec.png
@@ -49,7 +49,7 @@ cmrc_add_resources(SoundTest-Resources
 	resources/nanosuit/nanosuit.blend
 	resources/nanosuit/nanosuit.mtl
 	resources/nanosuit/nanosuit.obj
-	
+
 	resources/oof.ogg
 	resources/ouch.ogg
 	resources/rickroll.ogg

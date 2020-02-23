@@ -24,24 +24,24 @@
 
 #include <iterator>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 size_t EmbeddedIOStream::Read(void* pvBuffer, size_t pSize, size_t pCount)  {
 //	LOG_D("Reading " << pCount << " items of size " << pSize << " (" << (pSize * pCount) << " bytes) "
 //			<< "from " << file.filename() << " at position " << position);
-	size_t requested_end = position + (pSize*pCount);
-	if(requested_end > file.size()) {
-		requested_end = file.size();
+	size_t requested_end = position_ + (pSize*pCount);
+	if(requested_end > file_.size()) {
+		requested_end = file_.size();
 	}
-	std::copy(file.begin() + position, file.begin() + requested_end, (char*) pvBuffer);
+	std::copy(file_.begin() + position_, file_.begin() + requested_end, static_cast<char*>(pvBuffer));
 //	std::string str;
 //	str.assign((char*)pvBuffer, pCount);
 //	LOG_D("Contents of pvBuffer = " << str);
 //	str.assign(file.begin(), pCount);
 //	LOG_D("Contents of file = " << str);
-	size_t old_pos = position;
-	position = requested_end;
+	size_t old_pos = position_;
+	position_ = requested_end;
 	return (requested_end - old_pos) / pSize;
 }
 size_t EmbeddedIOStream::Write(__attribute__((unused))const void* pvBuffer, __attribute__((unused))size_t pSize, __attribute__((unused))size_t pCount)  {
@@ -50,7 +50,7 @@ size_t EmbeddedIOStream::Write(__attribute__((unused))const void* pvBuffer, __at
 }
 aiReturn EmbeddedIOStream::Seek(size_t pOffset, aiOrigin pOrigin)  {
 //	LOG_D("Seeking to " << pOffset << " in file " << file.filename());
-	size_t req_pos = position;
+	size_t req_pos = position_;
 	switch(pOrigin) {
 		case aiOrigin_SET:
 			req_pos = pOffset;
@@ -59,25 +59,25 @@ aiReturn EmbeddedIOStream::Seek(size_t pOffset, aiOrigin pOrigin)  {
 			req_pos += pOffset;
 			break;
 		case aiOrigin_END:
-			req_pos = file.size() - pOffset;
+			req_pos = file_.size() - pOffset;
 			break;
 		case _AI_ORIGIN_ENFORCE_ENUM_SIZE:
 			break;
 	}
-	if(req_pos > file.size()) {
+	if(req_pos > file_.size()) {
 		return aiReturn_FAILURE;
 	}
-	position = req_pos;
+	position_ = req_pos;
 	return aiReturn_SUCCESS;
 }
 size_t EmbeddedIOStream::Tell() const  {
-	return position;
+	return position_;
 }
 size_t EmbeddedIOStream::FileSize() const {
 //	LOG_D("Getting file size of " << file.filename() << ".  File is " << file.size() << " bytes.");
-	return file.size();
+	return file_.size();
 }
 void EmbeddedIOStream::Flush() {}
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 } /* namespace _3D */

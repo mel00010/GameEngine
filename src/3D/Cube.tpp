@@ -22,43 +22,50 @@
 
 #include "Cube.hpp"
 
+#include "Model.hpp"
+
 CMRC_DECLARE(_3D);
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 template<typename Renderer>
-Cube::Cube(Renderer& renderer, ShaderPrograms shaders, cmrc::embedded_filesystem& fs,  const std::string& path) {
-	loadCube(renderer, shaders, fs, path);
+Cube::Cube(Renderer& renderer, const cmrc::embedded_filesystem& fs,
+		const std::string& path, const ShaderPrograms shaders) {
+	LoadCube(renderer, fs, path, shaders);
 }
 
 
 template<typename Renderer>
-void Cube::loadCube(Renderer& renderer, ShaderPrograms shaders, cmrc::embedded_filesystem& fs, const std::string& path) {
+void Cube::LoadCube(Renderer& renderer, const cmrc::embedded_filesystem& fs,
+		const std::string& path, const ShaderPrograms shaders) {
 	auto cube_fs = cmrc::_3D::get_filesystem();
 
-	cube_mesh.cube_map.loadCubemap(renderer, shaders, fs, path);
-	model.loadModel(renderer, cube_fs, "cube");
-	cube_mesh.vertices = model.meshes[0].vertices;
-	cube_mesh.indices = model.meshes[0].indices;
-}
+	cube_mesh_.cube_map_.LoadCubemap(renderer, fs, path, shaders);
+	Model temp_model;
+	temp_model.LoadModel(renderer, cube_fs, "cube");
+	cube_mesh_.vertices_ = temp_model.meshes_[0].vertices_;
+	cube_mesh_.indices_ = temp_model.meshes_[0].indices_;
 
-template<typename Renderer> void Cube::draw(Renderer& renderer, ShaderPrograms shaders) {
-	cube_mesh.draw(renderer, shaders);
-}
-
-template<typename Renderer> void Cube::CubeMesh::draw(Renderer& renderer, ShaderPrograms shaders) {
-	renderer.bindCubemap(shaders, "cube_map", cube_map, 0);
-	if(!renderer.has_vbo(handle)) {
-		handle = renderer.generateVBO(shaders, vertices, indices);
+	if(!renderer.HasVbo(cube_mesh_.handle_)) {
+		cube_mesh_.handle_ = renderer.GenerateVbo(shaders, cube_mesh_.vertices_, cube_mesh_.indices_);
 	}
+}
+
+template<typename Renderer> void Cube::Draw(const Renderer& renderer, const ShaderPrograms shaders) const {
+	cube_mesh_.Draw(renderer, shaders);
+}
+
+template<typename Renderer> void Cube::CubeMesh::Draw(const Renderer& renderer, const ShaderPrograms shaders) const {
+	renderer.BindCubemap(shaders, "cube_map", cube_map_, 0);
+	renderer.SetUniform(shaders, "color", glm::vec3(1.0, 1.0, 1.0));
 
 	// draw mesh
-	renderer.render(handle, Primitive::TRIANGLES);
+	renderer.Render(handle_, Primitive::TRIANGLES);
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 

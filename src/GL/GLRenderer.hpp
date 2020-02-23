@@ -26,76 +26,83 @@
 #include "GLPrimitive.hpp"
 #include "ShaderProgram.hpp"
 #include "GLWindowManager.hpp"
-#include "VBO.hpp"
-
+#include "Vbo.hpp"
 #include <3D/Texture.hpp>
-#include <Util/UUID.hpp>
+#include <Util/Uuid.hpp>
 
 #include <map>
 #include <vector>
 #include <variant>
 
-namespace GameEngine {
-namespace GL {
+namespace game_engine {
+namespace gl {
 
 class GLRenderer : public Renderer<GLRenderer, GLWindowManager> {
 	public:
-		void init(std::string program_name);
-		void useShader(const ShaderPrograms shader_program);
+		void Init(const std::string program_name);
+		void UseShader(const ShaderPrograms shader_program) const;
 
-		void render(const VBO_handle vbo_handle, _3D::Primitive mode);
+		void Render(const VboHandle vbo_handle, const _3D::Primitive mode) const;
 
-		VBO_handle generateVBO(const ShaderPrograms shader_program,
+		VboHandle GenerateVbo(const ShaderPrograms shader_program,
 				const std::vector<Vertex>& vertices,
 				const std::vector<GLuint>& indices);
-		VBO_handle updateVBO(const VBO_handle vbo_handle,
+		VboHandle UpdateVbo(const VboHandle vbo_handle,
 				const std::vector<Vertex>& vertices,
-				const std::vector<GLuint>& indices);
+				const std::vector<GLuint>& indices) const;
 
-		bool has_vbo(const VBO_handle vbo_handle);
+		bool HasVbo(const VboHandle vbo_handle) const;
 
-		void setMatrices(const ShaderPrograms shader_program, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
-		void bindTexture(const ShaderPrograms shader_program, const std::string& name, const _3D::Texture& texture, const GLuint texture_unit);
-		void bindCubemap(const ShaderPrograms shader_program, const std::string& name, const _3D::Cubemap& cube_map, const GLuint texture_unit);
-		void enable_blending();
-		void disable_blending();
-		void enable_depth_testing();
-		void disable_depth_testing();
-		void setColor(const ShaderPrograms shader_program, glm::vec3 color);
-		unsigned int createTexture(const ShaderPrograms shader_program, _3D::PixelFormat format, glm::ivec2 size, void* pixels);
-		unsigned int createCubemap(const ShaderPrograms shader_program, _3D::PixelFormat format, glm::ivec2 size, _3D::CubemapBuffers& buffers);
-		void setSwizzleMask(GLint swizzle_r, GLint swizzle_g, GLint swizzle_b, GLint swizzle_a);
-		void disable_byte_alignement_restriction();
-		void enable_byte_alignement_restriction();
-		void clear(glm::vec4 color);
-		void swap();
+		void SetMatrices(const ShaderPrograms shader_program, const glm::mat4& model,
+				const glm::mat4& view, const glm::mat4& projection) const;
+		void BindTexture(const ShaderPrograms shader_program, const std::string& name,
+				const _3D::Texture& texture, const GLuint texture_unit) const;
+		void BindCubemap(const ShaderPrograms shader_program, const std::string& name,
+				const _3D::Cubemap& cube_map, const GLuint texture_unit) const;
+		void EnableBlending() const;
+		void DisableBlending() const;
+		void EnableDepthTesting() const;
+		void DisableDepthTesting() const;
+		void SetColor(const ShaderPrograms shader_program, const glm::vec3 color) const;
+		unsigned int CreateTexture(const ShaderPrograms shader_program, const _3D::PixelFormat format,
+				const glm::ivec2 size, const void* pixels) const ;
+		unsigned int CreateCubemap(const ShaderPrograms shader_program, const _3D::PixelFormat format,
+				const glm::ivec2 size, const _3D::CubemapBuffers& buffers) const;
+		void SetSwizzleMask(const GLint swizzle_r, const GLint swizzle_g, const GLint swizzle_b, const GLint swizzle_a) const;
+		void DisableByteAlignementRestriction() const;
+		void EnableByteAlignementRestriction() const;
+		void Clear(glm::vec4 color) const;
+		void Swap() const;
 
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, bool value) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, int value) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, float value) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec2& value) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, float x, float y) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec3& value) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, float x, float y, float z) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec4& value) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, float x, float y, float z, float w) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat2& mat) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat3& mat) const;
-		void setUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat4& mat) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const bool value) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const int value) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const float value) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec2& value) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const float x, const float y) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec3& value) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const float x, const float y,
+				const float z) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::vec4& value) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const float x, const float y,
+				const float z, const float w) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat2& mat) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat3& mat) const;
+		void SetUniform(const ShaderPrograms shader_program, const std::string& name, const glm::mat4& mat) const;
 
-		ShaderProgram* default_shader = nullptr;
-		ShaderProgram* skybox_shader = nullptr;
-		ShaderProgram* text_shader = nullptr;
+		ShaderProgram* default_shader_ = nullptr;
+		ShaderProgram* cube_shader_ = nullptr;
+		ShaderProgram* skybox_shader_ = nullptr;
+		ShaderProgram* text_shader_ = nullptr;
 
-		std::map<VBO_handle, VBO> vbos;
+		std::map<VboHandle, Vbo> vbos_;
 
 	protected:
-		ShaderProgram* setupShader(const std::string& vertex, const std::string& fragment);
-		ShaderProgram* getShader(const ShaderPrograms shader_program) const;
+		ShaderProgram* SetupShader(const std::string& vertex, const std::string& fragment) const;
+		ShaderProgram* GetShader(const ShaderPrograms shader_program) const;
 };
 
-} /* namespace GL */
-} /* namespace GameEngine */
+} /* namespace gl */
+} /* namespace game_engine */
 
 #include "GLRenderer.tpp"
 

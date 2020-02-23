@@ -1,4 +1,5 @@
 add_library(GameEngine STATIC "")
+add_library(GameEngine::GameEngine ALIAS GameEngine)
 target_sources(GameEngine
 	PRIVATE
 		CallbackHandler.cpp
@@ -10,7 +11,7 @@ target_sources(GameEngine
 		${CMAKE_CURRENT_SOURCE_DIR}/InputHandler.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Renderer.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ShaderPrograms.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/VBO_handle.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/VboHandle.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Vertex.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/WindowManager.hpp
 )
@@ -19,20 +20,20 @@ cmrc_add_resource_library(GameEngine-Resources ALIAS GameEngine::Resources NAMES
 
 target_link_libraries(GameEngine
 	PUBLIC
-		2D
-		3D
-		GL
-		Sound
-		Util
-		
+		GameEngine::2D
+		GameEngine::3D
+		GameEngine::GL
+		GameEngine::Logging
+		GameEngine::Sound
+		GameEngine::Util
 		GameEngine::Resources
-		
-		Logger
-		boost_program_options
+
+		Logger::Logger
 		pthread
+		gflags::gflags
 )
 
-target_include_directories(GameEngine 
+target_include_directories(GameEngine
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/
 )
@@ -40,5 +41,7 @@ target_include_directories(GameEngine
 add_subdirectory(2D)
 add_subdirectory(3D)
 add_subdirectory(GL)
+add_subdirectory(Logging)
 add_subdirectory(Sound)
 add_subdirectory(Util)
+add_subdirectory(Vulkan)

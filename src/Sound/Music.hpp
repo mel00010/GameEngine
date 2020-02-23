@@ -26,38 +26,54 @@
 #include <cmrc/cmrc.hpp>
 
 #include <string>
+#include <utility>
 
-namespace GameEngine {
+namespace game_engine {
 namespace Sound {
 
 class Music {
 	public:
-		Music() {};
-		Music(const cmrc::file file) {
-			loadMusic(file);
+		Music() = default;
+		Music& operator=(const Music &rhs) = default;
+		Music(const Music &rhs) = default;
+		Music& operator=(Music &&rhs) noexcept = default;
+		Music(Music &&rhs) noexcept = default;
+
+		explicit Music(const cmrc::file file) {
+			LoadMusic(file);
 		}
-		~Music();
+		~Music() noexcept;
 
-		Mix_Music* loadMusic(const cmrc::file file);
-
-
-	public:
-		void play(size_t times = 1);
-		void pause();
-		void resume();
-		void halt();
-		int  setVolume(int volume);
-		bool isPaused();
-		bool isPlaying();
+		Mix_Music* LoadMusic(const cmrc::file file);
 
 
 	public:
-		std::string path = "";
-		Mix_Music* music = nullptr;
+		void Play(const size_t times = 1);
+		void Pause();
+		void Resume();
+		void Halt();
+		int  SetVolume(const int volume);
+		bool IsPaused();
+		bool IsPlaying();
+
+
+	public:
+		std::string path_ = "";
+		Mix_Music* music_ = nullptr;
+
+		void swap(Music &other) noexcept {
+			using std::swap;
+			swap(other.path_, path_);
+			swap(other.music_, music_);
+		}
 };
 
+inline void swap(Music &a, Music &b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace Sound */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 

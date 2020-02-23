@@ -25,8 +25,8 @@
 #include <GL/glew.h>
 #include <ostream>
 
-namespace GameEngine {
-namespace GL {
+namespace game_engine {
+namespace gl {
 
 enum class GLPrimitive : GLenum {
 	POINTS = GL_POINTS,
@@ -57,7 +57,7 @@ inline std::ostream& operator<<(std::ostream& os, const GLPrimitive p) {
 	return os;
 }
 
-inline GLPrimitive convert(const _3D::Primitive p) {
+inline GLPrimitive Convert(const _3D::Primitive p) {
 	switch(p) {
 		case _3D::Primitive::POINTS:			return GLPrimitive::POINTS;
 		case _3D::Primitive::LINES:				return GLPrimitive::LINES;
@@ -73,8 +73,8 @@ inline GLPrimitive convert(const _3D::Primitive p) {
 	return GLPrimitive::TRIANGLES;
 }
 
-} /* namespace GL */
-} /* namespace GameEngine */
+} /* namespace gl */
+} /* namespace game_engine */
 
 
 

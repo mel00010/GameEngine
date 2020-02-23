@@ -30,35 +30,35 @@
 #include <string>
 #include <vector>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _2D {
 
 template<typename Renderer>
-void TextRenderer::init(Renderer& renderer) {
+void TextRenderer::Init(Renderer& renderer) {
 	FT_Library ft;
 	FT_Face face;
 
-	if (FT_Init_FreeType(&ft)) {
+	if (FT_Init_FreeType(&ft) != 0) {
 		LOG_E("Freetype:  Could not init FreeType Library");
 		throw EXIT_FAILURE;
 	}
 
-	if (FT_New_Face(ft, "/usr/share/fonts/truetype/msttcorefonts/arial.ttf", 0, &face)) {
+	if (FT_New_Face(ft, "/usr/share/fonts/truetype/msttcorefonts/arial.ttf", 0, &face) != 0) {
 		LOG_E("Freetype: Failed to load font");
 		throw EXIT_FAILURE;
 	}
 	FT_Set_Pixel_Sizes(face, 0, 48);
-	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
+	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER) != 0) {
 		LOG_E("Freetype: Failed to load Glyph");
 		throw EXIT_FAILURE;
 	}
 
-	renderer.disable_byte_alignement_restriction();
+	renderer.DisableByteAlignementRestriction();
 
 	for (uint8_t c = 0; c < 128; c++) {
 
 		// Load character glyph
-		if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER) != 0) {
 			LOG_E("Freetype: Failed to load Glyph");
 			continue;
 		}
@@ -67,7 +67,7 @@ void TextRenderer::init(Renderer& renderer) {
 
 		// Generate texture
 		_3D::Texture texture;
-		texture.loadTextureFromMemory(
+		texture.LoadTextureFromMemory(
 				renderer,
 				glm::ivec2(bitmap.width, bitmap.rows),
 				_3D::PixelFormat {GL_RED, GL_RED},
@@ -83,91 +83,90 @@ void TextRenderer::init(Renderer& renderer) {
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
-		characters.insert(std::pair<GLchar, Character>(c, character));
+		characters_.insert(std::pair<GLchar, Character>(c, character));
 	}
-	renderer.disable_byte_alignement_restriction();
+	renderer.DisableByteAlignementRestriction();
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 
 	// Update VBO for each character
-	std::vector<Vertex> vertices = {
+	const std::vector<Vertex> vertices = {
 			Vertex(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)), // top right
 			Vertex(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)), // bottom right
 			Vertex(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)), // bottom left
 			Vertex(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f))  // top left
 	};
-	std::vector<GLuint> indices = {
+	const std::vector<GLuint> indices = {
 			0, 1, 3,
 			1, 2, 3
 	};
 
-	handle = renderer.generateVBO(ShaderPrograms::TEXT, vertices, indices);
-	valid = true;
+	handle_ = renderer.GenerateVbo(ShaderPrograms::TEXT, vertices, indices);
+	valid_ = true;
 }
 
 template<typename Renderer>
-void TextRenderer::renderTextRelativeToTopRight(Renderer& renderer,
+void TextRenderer::RenderTextRelativeToTopRight(const Renderer& renderer,
 		std::string text, float x, float y, float scale, glm::vec3 color) {
-	glm::ivec2 size = renderer.getWindowSize();
-	renderText(renderer, text, size.x - x, size.y - y, scale, color);
+	glm::ivec2 size = renderer.GetWindowSize();
+	RenderText(renderer, text, size.x - x, size.y - y, scale, color);
 }
 template<typename Renderer>
-void TextRenderer::renderText(Renderer& renderer,
+void TextRenderer::RenderText(const Renderer& renderer,
 		std::string text, float x, float y, float scale, glm::vec3 color) {
-	renderer.useShader(ShaderPrograms::TEXT);
-	renderer.enable_blending();
-	if(!valid) {
+	renderer.UseShader(ShaderPrograms::TEXT);
+	renderer.EnableBlending();
+	if(!valid_) {
 		LOG_E("Text renderer not valid!");
 		return;
 	}
 
-	glm::ivec2 size = renderer.getWindowSize();
+	glm::ivec2 size = renderer.GetWindowSize();
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(size.x), 0.0f, static_cast<float>(size.y));
-	renderer.setMatrices(ShaderPrograms::TEXT, glm::mat4(1), glm::mat4(1), projection);
+	renderer.SetMatrices(ShaderPrograms::TEXT, glm::mat4(1), glm::mat4(1), projection);
 
 	// Activate corresponding render state
-	renderer.setColor(ShaderPrograms::TEXT, glm::vec4(color, 1.0));
+	renderer.SetColor(ShaderPrograms::TEXT, glm::vec4(color, 1.0));
 	// Iterate through all characters
-	std::string::const_iterator c;
-	for (c = text.begin(); c != text.end(); c++) {
-		Character ch = characters[*c];
+	for (std::string::const_iterator c = text.begin(); c != text.end(); c++) {
+		Character ch = characters_[*c];
 
-		float xpos = x + ch.Bearing.x * scale;
-		float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		float xpos = x + ch.bearing.x * scale;
+		float ypos = y - (ch.size.y - ch.bearing.y) * scale;
 
-		float w = ch.Size.x * scale;
-		float h = ch.Size.y * scale;
+		float w = ch.size.x * scale;
+		float h = ch.size.y * scale;
 		std::vector<Vertex> vertices = {
 				Vertex(glm::vec3(xpos + w, ypos,     1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)), // top right
 				Vertex(glm::vec3(xpos + w, ypos + h, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)), // bottom right
 				Vertex(glm::vec3(xpos,     ypos + h, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)), // bottom left
 				Vertex(glm::vec3(xpos,     ypos,     1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f))  // top left
 		};
-		std::vector<GLuint> indices = {
+		const std::vector<GLuint> indices = {
 				0, 1, 3,
 				1, 2, 3
 		};
 		// Render glyph texture over quad
-		renderer.bindTexture(ShaderPrograms::TEXT, "texture_diffuse0", ch.Texture, 0);
+		renderer.BindTexture(ShaderPrograms::TEXT, "texture_diffuse0", ch.texture, 0);
 //		renderer.setSwizzleMask(GL_RED, GL_RED, GL_RED, GL_ONE);
 		// Update content of VBO memory
-		handle = renderer.updateVBO(handle, vertices, indices);
+		handle_ = renderer.UpdateVbo(handle_, vertices, indices);
 
 		// Render quad
-		renderer.render(handle, _3D::Primitive::TRIANGLES);
+		renderer.Render(handle_, _3D::Primitive::TRIANGLES);
 		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64)
+		x += (ch.advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64)
 	}
-	renderer.disable_blending();
+	renderer.DisableBlending();
 
 //	renderer.setSwizzleMask(GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA);
-	renderer.useShader(ShaderPrograms::DEFAULT);
+	renderer.UseShader(ShaderPrograms::DEFAULT);
 }
 
 
 } /* namespace _2D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_2D_TEXTRENDERER_TPP_ */

@@ -24,52 +24,52 @@
 
 #include <string>
 
-namespace GameEngine {
+namespace game_engine {
 namespace Sound {
 
 Sound::~Sound() {
-	if(chunk == nullptr) {
+	if(chunk_ == nullptr) {
 		return;
 	}
 	// Do not call SDL_Mix functions if Mix is not initialized
 	if(!Mix_Init(0)) {
 		return;
 	}
-	if(channel != -2) {
-		if(Mix_Playing(channel)) {
+	if(channel_ != -2) {
+		if (Mix_Playing(channel_) != 0) {
 			// If the chunk is playing, do not free it as it will cause "problems"
-			if(Mix_GetChunk(channel) == chunk) {
+			if(Mix_GetChunk(channel_) == chunk_) {
 				return;
 			}
 		}
 	}
-	Mix_FreeChunk(chunk);
+	Mix_FreeChunk(chunk_);
 }
 
-Mix_Chunk* Sound::loadSound(const cmrc::file file) {
+Mix_Chunk* Sound::LoadSound(const cmrc::file file) {
 	std::vector<uint8_t> file_contents(file.begin(), file.end());
-	path = file.path();
+	path_ = file.path();
 	/* Allocate one more channel */
 	Mix_AllocateChannels(Mix_AllocateChannels(-1) + 1);
-	chunk = Mix_LoadWAV_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
-	if (chunk == nullptr) {
+	chunk_ = Mix_LoadWAV_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
+	if (chunk_ == nullptr) {
 		LOG_E("Mix_LoadWav:  " << Mix_GetError());
 	}
-	return chunk;
+	return chunk_;
 }
 
-void Sound::play(size_t times) {
+void Sound::Play(const size_t times) {
 	if(times == 0) {
 		return;
 	}
-	if((channel = Mix_PlayChannel(-1, chunk, static_cast<int>(times - 1))) == -1) {
+	if((channel_ = Mix_PlayChannel(-1, chunk_, static_cast<int>(times - 1))) == -1) {
 		LOG_E("Mix_PlayChannel:  " << Mix_GetError());
 	}
 }
 
-int Sound::setVolume(int volume) {
-	return Mix_VolumeChunk(chunk, volume);
+int Sound::SetVolume(const int volume) {
+	return Mix_VolumeChunk(chunk_, volume);
 }
 } /* namespace Sound */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 

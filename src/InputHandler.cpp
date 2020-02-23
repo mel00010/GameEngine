@@ -20,59 +20,59 @@
 
 #include "InputHandler.hpp"
 
-namespace GameEngine {
+namespace game_engine {
 
-void InputHandler::setKeyStatus(SDL_Scancode key, bool status) {
-	key_status[key] = status;
+void InputHandler::SetKeyStatus(SDL_Scancode key, bool status) {
+	key_status_[key] = status;
 }
-bool InputHandler::getKeyStatus(SDL_Scancode key) {
-	return key_status[key];
+bool InputHandler::GetKeyStatus(SDL_Scancode key) {
+	return key_status_[key];
 }
-bool InputHandler::getKeyStatus(size_t key) {
-	return key_status[key];
-}
-
-void InputHandler::setMouseButtonStatus(uint8_t button, bool status) {
-	mouse_buttons_status[button] = status;
-}
-bool InputHandler::getMouseButtonStatus(uint8_t button) {
-	return mouse_buttons_status[button];
+bool InputHandler::GetKeyStatus(size_t key) {
+	return key_status_[key];
 }
 
-void InputHandler::setControllerButtonStatus(SDL_GameControllerButton button, bool status) {
-	controller_buttons_status[button] = status;
+void InputHandler::SetMouseButtonStatus(uint8_t button, bool status) {
+	mouse_buttons_status_[button] = status;
 }
-bool InputHandler::getControllerButtonStatus(SDL_GameControllerButton button) {
-	return controller_buttons_status[button];
-}
-
-void InputHandler::setJoyButtonStatus(uint8_t button, bool status) {
-	joystick_buttons_status[button] = status;
-}
-bool InputHandler::getJoyButtonStatus(uint8_t button) {
-	return joystick_buttons_status[button];
+bool InputHandler::GetMouseButtonStatus(uint8_t button) {
+	return mouse_buttons_status_[button];
 }
 
-void InputHandler::setMouseWheelPos(glm::ivec2 pos) {
-	mouse_wheel_pos = pos;
+void InputHandler::SetControllerButtonStatus(SDL_GameControllerButton button, bool status) {
+	controller_buttons_status_[button] = status;
 }
-void InputHandler::addToMouseWheelPos(glm::ivec2 delta) {
-	mouse_wheel_pos += delta;
-}
-glm::ivec2 InputHandler::getMouseWheelPos() {
-	return mouse_wheel_pos;
+bool InputHandler::GetControllerButtonStatus(SDL_GameControllerButton button) {
+	return controller_buttons_status_[button];
 }
 
-void InputHandler::setMousePos(glm::ivec2 pos) {
-	mouse_pos = pos;
+void InputHandler::SetJoyButtonStatus(uint8_t button, bool status) {
+	joystick_buttons_status_[button] = status;
 }
-void InputHandler::addToMousePos(glm::ivec2 delta) {
-	mouse_pos += delta;
-}
-glm::ivec2 InputHandler::getMousePos() {
-	return mouse_pos;
+bool InputHandler::GetJoyButtonStatus(uint8_t button) {
+	return joystick_buttons_status_[button];
 }
 
-} /* namespace GameEngine */
+void InputHandler::SetMouseWheelPos(glm::ivec2 pos) {
+	mouse_wheel_pos_ = pos;
+}
+void InputHandler::AddToMouseWheelPos(glm::ivec2 delta) {
+	mouse_wheel_pos_ += delta;
+}
+glm::ivec2 InputHandler::GetMouseWheelPos() {
+	return mouse_wheel_pos_;
+}
+
+void InputHandler::SetMousePos(glm::ivec2 pos) {
+	mouse_pos_ = pos;
+}
+void InputHandler::AddToMousePos(glm::ivec2 delta) {
+	mouse_pos_ += delta;
+}
+glm::ivec2 InputHandler::GetMousePos() {
+	return mouse_pos_;
+}
+
+} /* namespace game_engine */
 
 

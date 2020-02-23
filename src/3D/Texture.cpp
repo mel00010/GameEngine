@@ -29,41 +29,12 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <array>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-Texture::Texture() :
-		id(-1), type(TextureType::DIFFUSE) {
-
-};
-Texture::Texture(GLuint _id, TextureType _type, std::string _path) :
-		id(_id), type(_type), path(_path) {
-
-}
-
-Texture::Texture(const Texture& other) // copy constructor
-		: Texture(other.id, other.type, other.path){}
-
-Texture::Texture(Texture&& other) noexcept // move constructor
-		: Texture(other.id, other.type, other.path){
-	other.id = -1;
-	other.path = "";
-}
-
-Texture& Texture::operator=(const Texture& other) { // copy assignment
-	 return *this = Texture(other);
-}
-
-Texture& Texture::operator=(Texture&& other) noexcept { // move assignment
-	id = other.id;
-	type = other.type;
-	std::swap(path, other.path);
-	return *this;
-}
-
-
-enum Color {
+enum class Color : std::int8_t {
 		EMPTY = -1,
 		RED = 0,
 		GREEN = 1,
@@ -71,43 +42,43 @@ enum Color {
 		ALPHA = 3
 };
 
-bool isRed(Color color) {	return (color == RED);   }
-bool isGreen(Color color) {	return (color == GREEN); }
-bool isBlue(Color color) {	return (color == BLUE);  }
-bool isAlpha(Color color) {	return (color == ALPHA); }
-bool isEmpty(Color color) {	return (color == EMPTY); }
+bool IsRed(const Color color)   { return (color == Color::RED);   }
+bool IsGreen(const Color color) { return (color == Color::GREEN); }
+bool IsBlue(const Color color)  { return (color == Color::BLUE);  }
+bool IsAlpha(const Color color) { return (color == Color::ALPHA); }
+bool IsEmpty(const Color color) { return (color == Color::EMPTY); }
 
-PixelFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
+PixelFormat Texture::DeterminePixelFormat(const SDL_PixelFormat* format) {
 	PixelFormat f;
 
-	Color bytes[4] = {EMPTY, EMPTY, EMPTY, EMPTY};
+	std::array<Color, 4> bytes = { Color::EMPTY, Color::EMPTY, Color::EMPTY, Color::EMPTY };
 
-	if(format->Rmask & 0x000000FF) { bytes[0] = RED; }
-	if(format->Rmask & 0x0000FF00) { bytes[1] = RED; }
-	if(format->Rmask & 0x00FF0000) { bytes[2] = RED; }
-	if(format->Rmask & 0xFF000000) { bytes[3] = RED; }
+	if((format->Rmask & 0x000000FF) != 0) { bytes[0] = Color::RED; }
+	if((format->Rmask & 0x0000FF00) != 0) { bytes[1] = Color::RED; }
+	if((format->Rmask & 0x00FF0000) != 0) { bytes[2] = Color::RED; }
+	if((format->Rmask & 0xFF000000) != 0) { bytes[3] = Color::RED; }
 
-	if(format->Gmask & 0x000000FF) { bytes[0] = GREEN; }
-	if(format->Gmask & 0x0000FF00) { bytes[1] = GREEN; }
-	if(format->Gmask & 0x00FF0000) { bytes[2] = GREEN; }
-	if(format->Gmask & 0xFF000000) { bytes[3] = GREEN; }
+	if((format->Gmask & 0x000000FF) != 0) { bytes[0] = Color::GREEN; }
+	if((format->Gmask & 0x0000FF00) != 0) { bytes[1] = Color::GREEN; }
+	if((format->Gmask & 0x00FF0000) != 0) { bytes[2] = Color::GREEN; }
+	if((format->Gmask & 0xFF000000) != 0) { bytes[3] = Color::GREEN; }
 
-	if(format->Bmask & 0x000000FF) { bytes[0] = BLUE; }
-	if(format->Bmask & 0x0000FF00) { bytes[1] = BLUE; }
-	if(format->Bmask & 0x00FF0000) { bytes[2] = BLUE; }
-	if(format->Bmask & 0xFF000000) { bytes[3] = BLUE; }
+	if((format->Bmask & 0x000000FF) != 0) { bytes[0] = Color::BLUE; }
+	if((format->Bmask & 0x0000FF00) != 0) { bytes[1] = Color::BLUE; }
+	if((format->Bmask & 0x00FF0000) != 0) { bytes[2] = Color::BLUE; }
+	if((format->Bmask & 0xFF000000) != 0) { bytes[3] = Color::BLUE; }
 
-	if(format->Amask & 0x000000FF) { bytes[0] = ALPHA; }
-	if(format->Amask & 0x0000FF00) { bytes[1] = ALPHA; }
-	if(format->Amask & 0x00FF0000) { bytes[2] = ALPHA; }
-	if(format->Amask & 0xFF000000) { bytes[3] = ALPHA; }
+	if((format->Amask & 0x000000FF) != 0) { bytes[0] = Color::ALPHA; }
+	if((format->Amask & 0x0000FF00) != 0) { bytes[1] = Color::ALPHA; }
+	if((format->Amask & 0x00FF0000) != 0) { bytes[2] = Color::ALPHA; }
+	if((format->Amask & 0xFF000000) != 0) { bytes[3] = Color::ALPHA; }
 
-	if(     isRed(bytes[0])  && isGreen(bytes[1]) && isBlue(bytes[2])  && isAlpha(bytes[3])) { f.e_format = GL_RGBA; f.i_format = GL_RGBA; }
-	else if(isRed(bytes[0])  && isGreen(bytes[1]) && isBlue(bytes[2])  && isEmpty(bytes[3])) { f.e_format = GL_RGB;  f.i_format = GL_RGB;  }
-	else if(isBlue(bytes[0]) && isGreen(bytes[1]) && isRed(bytes[2])   && isAlpha(bytes[3])) { f.e_format = GL_BGRA; f.i_format = GL_RGBA; }
-	else if(isBlue(bytes[0]) && isGreen(bytes[1]) && isRed(bytes[2])   && isEmpty(bytes[3])) { f.e_format = GL_BGR;  f.i_format = GL_RGB;  }
-	else if(isRed(bytes[0])  && isGreen(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RG;   f.i_format = GL_RG;   }
-	else if(isRed(bytes[0])  && isEmpty(bytes[1]) && isEmpty(bytes[2]) && isEmpty(bytes[3])) { f.e_format = GL_RED;  f.i_format = GL_RED;  }
+	if(     IsRed(bytes[0])  && IsGreen(bytes[1]) && IsBlue(bytes[2])  && IsAlpha(bytes[3])) { f.e_format = GL_RGBA; f.i_format = GL_RGBA; }
+	else if(IsRed(bytes[0])  && IsGreen(bytes[1]) && IsBlue(bytes[2])  && IsEmpty(bytes[3])) { f.e_format = GL_RGB;  f.i_format = GL_RGB;  }
+	else if(IsBlue(bytes[0]) && IsGreen(bytes[1]) && IsRed(bytes[2])   && IsAlpha(bytes[3])) { f.e_format = GL_BGRA; f.i_format = GL_RGBA; }
+	else if(IsBlue(bytes[0]) && IsGreen(bytes[1]) && IsRed(bytes[2])   && IsEmpty(bytes[3])) { f.e_format = GL_BGR;  f.i_format = GL_RGB;  }
+	else if(IsRed(bytes[0])  && IsGreen(bytes[1]) && IsEmpty(bytes[2]) && IsEmpty(bytes[3])) { f.e_format = GL_RG;   f.i_format = GL_RG;   }
+	else if(IsRed(bytes[0])  && IsEmpty(bytes[1]) && IsEmpty(bytes[2]) && IsEmpty(bytes[3])) { f.e_format = GL_RED;  f.i_format = GL_RED;  }
 	else {
 		LOG_E("Unsupported pixel format in file!");
 		LOG_E("format->Rmask = " << hex(format->Rmask));
@@ -122,9 +93,9 @@ PixelFormat Texture::determinePixelFormat(SDL_PixelFormat* format) {
 
 std::ostream& operator<<(std::ostream& os, const Texture& text) {
 	return os << "Texture {" << push_indent << "\n"
-			<< "GLuint id = "<< text.id << "\n"
-			<< "TextureType type = " << text.type << "\n"
-			<< "std::string path = \"" << text.path << "\"\n"
+			<< "GLuint id_ = "<< text.id_ << "\n"
+			<< "TextureType type_ = " << text.type_ << "\n"
+			<< "std::string path_ = \"" << text.path_ << "\"\n"
 			<< pop_indent << " }";
 }
 std::ostream& operator<<(std::ostream& os, const TextureType type) {
@@ -138,4 +109,4 @@ std::ostream& operator<<(std::ostream& os, const TextureType type) {
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */

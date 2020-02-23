@@ -33,9 +33,10 @@
 #include <cmrc/cmrc.hpp>
 
 #include <string>
+#include <utility>
 
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 struct CubemapBuffers {
@@ -63,38 +64,49 @@ enum class CubeFace : GLuint {
 
 class Cubemap {
 	public:
-		Cubemap();
-		Cubemap(GLuint _id, std::string _path);
+		Cubemap() = default;
+		Cubemap& operator=(const Cubemap& rhs) = default;
+		Cubemap(const Cubemap& rhs) = default;
+		Cubemap& operator=(Cubemap&& rhs) noexcept = default;
+		Cubemap(Cubemap&& rhs) noexcept = default;
+		~Cubemap() noexcept = default;
+
+		Cubemap(const GLuint _id, const std::string _path) : id_(_id), path_(_path) {}
 
 		template< typename Renderer >
-		Cubemap( Renderer& renderer, const ShaderPrograms shader_program, cmrc::embedded_filesystem& fs, const std::string& path);
-
-		Cubemap(const Cubemap& other); // copy constructor
-		Cubemap(Cubemap&& other) noexcept; // move constructor
-		Cubemap& operator=(const Cubemap& other); // copy assignment
-		Cubemap& operator=(Cubemap&& other) noexcept;// move assignment
+		Cubemap( const Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path, const ShaderPrograms shader_program);
 
 		template<typename Renderer>
-		GLuint loadCubemap(Renderer& renderer, const ShaderPrograms shader_program, cmrc::embedded_filesystem& fs, const std::string& path);
+		GLuint LoadCubemap(const Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path, const ShaderPrograms shader_program);
 		template<typename Renderer>
-		GLuint loadCubemapFromMemory(Renderer& renderer, const ShaderPrograms shader_program, glm::ivec2 size,
-				_3D::PixelFormat pixel_format, CubemapBuffers& buffers);
+		GLuint LoadCubemapFromMemory(const Renderer& renderer, const glm::ivec2 size,
+				const _3D::PixelFormat pixel_format, const CubemapBuffers& buffers, const ShaderPrograms shader_program);
 
 
 	protected:
-		PixelFormat determinePixelFormat(SDL_PixelFormat* format);
-		SDL_Surface* openImage(const CubeFace face, cmrc::embedded_filesystem& fs, const std::string& path);
+		PixelFormat DeterminePixelFormat(const SDL_PixelFormat* format);
+		SDL_Surface* OpenImage(const CubeFace face, const cmrc::embedded_filesystem& fs, const std::string& path);
 
 
 	public:
-		GLuint id;
-		std::string path;
+		GLuint id_ { };
+		std::string path_ { };
+
+		void swap(Cubemap& other) noexcept {
+			using std::swap;
+			swap(other.id_, id_);
+			swap(other.path_, path_);
+		}
 };
 
 std::ostream& operator<<(std::ostream& os, const Cubemap& text);
 
+inline void swap(Cubemap& a, Cubemap& b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Cubemap.tpp"
 

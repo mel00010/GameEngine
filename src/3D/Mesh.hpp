@@ -27,44 +27,60 @@
 #include "Vertex.hpp"
 
 #include <Renderer.hpp>
-#include <VBO_handle.hpp>
+#include <VboHandle.hpp>
 
 #include <vector>
 #include <GL/glew.h>
+#include <utility>
 
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 class Mesh {
 	public:
-		Mesh() {}
-		Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures,
+		Mesh() noexcept = default;
+		Mesh& operator=(const Mesh& rhs) = default;
+		Mesh(const Mesh& rhs) = default;
+		Mesh& operator=(Mesh&& rhs) noexcept = default;
+		Mesh(Mesh&& rhs) noexcept = default;
+		~Mesh() noexcept = default;
+
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const std::vector<Texture>& textures,
 				const Primitive mode = Primitive::TRIANGLES);
-		template<typename Renderer> void setupMesh(Renderer& renderer, ShaderPrograms shaders);
 
-		template<typename Renderer> void draw(Renderer& renderer, ShaderPrograms shaders);
+		template<typename Renderer> void Init(Renderer& renderer, const ShaderPrograms shaders);
+		template<typename Renderer> void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
 
-	protected:
-
+		void swap(Mesh& other) noexcept	{
+			using std::swap;
+			swap(other.vertices_, vertices_);
+			swap(other.indices_, indices_);
+			swap(other.textures_, textures_);
+			swap(other.handle_, handle_);
+			swap(other.texture_strings_, texture_strings_);
+			swap(other.mode_, mode_);
+		}
 	public:
 		/*  Mesh Data  */
-		std::vector<Vertex> vertices;
-		std::vector<GLuint> indices;
-		std::vector<Texture> textures;
+		std::vector<Vertex> vertices_ { };
+		std::vector<GLuint> indices_ { };
+		std::vector<Texture> textures_ { };
 
 	protected:
-		VBO_handle handle;
-		std::vector<std::string> texture_strings;
-		Primitive mode = Primitive::TRIANGLES;
+		VboHandle handle_ { };
+		std::vector<std::string> texture_strings_ { };
+		Primitive mode_ { Primitive::TRIANGLES };
 
 		friend std::ostream& operator<<(std::ostream& os, const Mesh& m);
 };
 
-
+inline void swap(Mesh& a, Mesh& b) noexcept {
+	a.swap(b);
+}
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Mesh.tpp"
 

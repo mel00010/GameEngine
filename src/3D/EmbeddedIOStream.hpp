@@ -24,27 +24,28 @@
 
 #include <cmrc/cmrc.hpp>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 class EmbeddedIOHandler;
-} /* namespace GameEngine */
+} /* namespace game_engine */
 } /* namespace _3D */
 
 
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
 class EmbeddedIOStream : public Assimp::IOStream {
 	protected:
-		EmbeddedIOStream(cmrc::file _file) : file(_file), position(0) {}
+		explicit EmbeddedIOStream(cmrc::file file)
+				: file_(file), position_(0) {}
 		friend EmbeddedIOHandler;
 	public:
 		/** @brief Read from the file
 		 *
 		 * See fread() for more details
 		 * This fails for write-only files */
-		virtual size_t Read(void* pvBuffer,
+		size_t Read(void* pvBuffer,
 			size_t pSize,
 			size_t pCount) override;
 
@@ -53,7 +54,7 @@ class EmbeddedIOStream : public Assimp::IOStream {
 		*
 		* See fwrite() for more details
 		* This fails for read-only files */
-		virtual size_t Write(const void* pvBuffer,
+		size_t Write(const void* pvBuffer,
 			size_t pSize,
 			size_t pCount) override;
 
@@ -62,32 +63,32 @@ class EmbeddedIOStream : public Assimp::IOStream {
 		 *
 		 * Note that the offset is _negative_ for aiOrigin_END.
 		 * See fseek() for more details */
-		virtual aiReturn Seek(size_t pOffset,
+		aiReturn Seek(size_t pOffset,
 			aiOrigin pOrigin) override;
 
 		// -------------------------------------------------------------------
 		/** @brief Get the current position of the read/write cursor
 		 *
 		 * See ftell() for more details */
-		virtual size_t Tell() const override;
+		size_t Tell() const override;
 
 		// -------------------------------------------------------------------
 		/** @brief Returns filesize
 		 *  Returns the filesize. */
-		virtual size_t FileSize() const override;
+		size_t FileSize() const override;
 
 		// -------------------------------------------------------------------
 		/** @brief Flush the contents of the file buffer (for writers)
 		 *  See fflush() for more details.
 		 */
-		virtual void Flush() override;
+		void Flush() override;
 
 	protected:
-		cmrc::file file;
-		size_t position;
+		cmrc::file file_;
+		size_t position_;
 };
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 } /* namespace _3D */
 
 #endif /* SRC_3D_EMBEDDEDIOSTREAM_HPP_ */

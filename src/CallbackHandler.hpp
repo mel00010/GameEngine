@@ -29,12 +29,12 @@
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 
-namespace GameEngine {
+namespace game_engine {
 
 /**
  * @brief Defines the different execution times for a key event
  */
-enum class KeyEventType {
+enum class KeyEventType : std::uint8_t {
 	UP,  //!< Event occurs when key is raised
 	DOWN,//!< Event occurs when key is depressed
 	HELD //!< Event occurs once per tick while key is held down
@@ -43,7 +43,7 @@ enum class KeyEventType {
 /**
  * @brief Defines the different execution times for a button event
  */
-enum class ButtonEventType {
+enum class ButtonEventType : std::uint8_t {
 	UP,  //!< Event occurs when button is raised
 	DOWN,//!< Event occurs when button is depressed
 	HELD //!< Event occurs once per tick while button is held down
@@ -52,7 +52,7 @@ enum class ButtonEventType {
 /**
  * @brief Holds information necessary for a timeout callback
  */
-class TimeoutCallback {
+struct TimeoutCallback {
 	public:
 		/**
 		 * @brief A string identifying the callback
@@ -84,12 +84,12 @@ class CallbackHandler {
 		/**
 		 * @brief Process and dispatch all event callbacks
 		 */
-		void dispatchCallbacks();
+		void DispatchCallbacks();
 
 		/**
 		 * @brief Dispatch timeout events that are set to be executed
 		 */
-		void dispatchTimeoutEvents();
+		void DispatchTimeoutEvents();
 
 	public:
 		/**
@@ -97,14 +97,14 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerQuitEventCallback(std::function<void(SDL_QuitEvent&)> callback);
+		bool RegisterQuitEventCallback(std::function<void(SDL_QuitEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a window event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerWindowEventCallback(std::function<void(SDL_WindowEvent&)> callback);
+		bool RegisterWindowEventCallback(std::function<void(SDL_WindowEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a keyboard event
@@ -113,8 +113,8 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerKeyboardEventCallback(SDL_Scancode key,
-						::GameEngine::KeyEventType type,
+		bool RegisterKeyboardEventCallback(SDL_Scancode key,
+						KeyEventType type,
 						std::function<void(SDL_KeyboardEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a keyboard event
@@ -123,28 +123,28 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerKeyboardEventCallback(SDL_Scancode key,
-						::GameEngine::KeyEventType type,
+		bool RegisterKeyboardEventCallback(SDL_Scancode key,
+						KeyEventType type,
 						std::function<void(void)> callback);
 		/**
 		 * @brief Register a callback to be executed on a text editing event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerTextEditingEventCallback(std::function<void(SDL_TextEditingEvent&)> callback);
+		bool RegisterTextEditingEventCallback(std::function<void(SDL_TextEditingEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a text input event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerTextInputEventCallback(std::function<void(SDL_TextInputEvent&)> callback);
+		bool RegisterTextInputEventCallback(std::function<void(SDL_TextInputEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a mouse motion event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerMouseMotionEventCallback(
+		bool RegisterMouseMotionEventCallback(
 				std::function<void(SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 /* delta */)> callback);
 		/**
 		 * @brief Register a callback to be executed on a mouse button event
@@ -153,7 +153,7 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerMouseButtonEventCallback(uint8_t button,
+		bool RegisterMouseButtonEventCallback(uint8_t button,
 				ButtonEventType type,
 				std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)> callback);
 		/**
@@ -163,7 +163,7 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerMouseButtonEventCallback(uint8_t button,
+		bool RegisterMouseButtonEventCallback(uint8_t button,
 				ButtonEventType type,
 				std::function<void(void)> callback);
 		/**
@@ -171,32 +171,32 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerImmediateMouseWheelEventCallback(std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)> callback);
+		bool RegisterImmediateMouseWheelEventCallback(std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)> callback);
 		/**
 		 * @brief Register a callback to be executed on a mouse wheel event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerMouseWheelEventCallback(std::function<void(glm::ivec2 /* delta */)> callback);
+		bool RegisterMouseWheelEventCallback(std::function<void(glm::ivec2 /* delta */)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a joystick axis event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerJoyAxisEventCallback(std::function<void(SDL_JoyAxisEvent&)> callback);
+		bool RegisterJoyAxisEventCallback(std::function<void(SDL_JoyAxisEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a joystick ball event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerJoyBallEventCallback(	std::function<void(SDL_JoyBallEvent&)> callback);
+		bool RegisterJoyBallEventCallback(	std::function<void(SDL_JoyBallEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a joystick hat event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerJoyHatEventCallback(std::function<void(SDL_JoyHatEvent&)> callback);
+		bool RegisterJoyHatEventCallback(std::function<void(SDL_JoyHatEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a joystick button event
 		 * @param button Button to bind the callback to
@@ -204,7 +204,7 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerJoyButtonEventCallback(
+		bool RegisterJoyButtonEventCallback(
 				uint8_t button,
 				ButtonEventType type,
 				std::function<void(SDL_JoyButtonEvent&)> callback);
@@ -213,20 +213,20 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerJoyDeviceAddedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback);
+		bool RegisterJoyDeviceAddedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a joystick device removal event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerJoyDeviceRemovedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback);
+		bool RegisterJoyDeviceRemovedEventCallback(std::function<void(SDL_JoyDeviceEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a controller axis event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerControllerAxisEventCallback(std::function<void(SDL_ControllerAxisEvent&)> callback);
+		bool RegisterControllerAxisEventCallback(std::function<void(SDL_ControllerAxisEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a controller button event
 		 * @param button Button to bind the callback to
@@ -234,7 +234,7 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerControllerButtonEventCallback(
+		bool RegisterControllerButtonEventCallback(
 				SDL_GameControllerButton button,
 				ButtonEventType type,
 				std::function<void(SDL_ControllerButtonEvent&)> callback);
@@ -243,54 +243,54 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerControllerDeviceAddedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback);
+		bool RegisterControllerDeviceAddedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a controller device removal event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerControllerDeviceRemovedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback);
+		bool RegisterControllerDeviceRemovedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback);
 		/**
 		 * @brief Register a callback to be executed on a controller device remap event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerControllerDeviceRemappedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback);
+		bool RegisterControllerDeviceRemappedEventCallback(std::function<void(SDL_ControllerDeviceEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a finger event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerFingerEventCallback(std::function<void(SDL_TouchFingerEvent&)> callback);
+		bool RegisterFingerEventCallback(std::function<void(SDL_TouchFingerEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a dollar gesture event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerDollarGestureEventCallback(std::function<void(SDL_DollarGestureEvent&)> callback);
+		bool RegisterDollarGestureEventCallback(std::function<void(SDL_DollarGestureEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a multigesture event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerMultiGestureEventCallback(std::function<void(SDL_MultiGestureEvent&)> callback);
+		bool RegisterMultiGestureEventCallback(std::function<void(SDL_MultiGestureEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a drop event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerDropEventCallback(std::function<void(SDL_DropEvent&)> callback);
+		bool RegisterDropEventCallback(std::function<void(SDL_DropEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed on a audio device event
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerAudioDeviceEventCallback(std::function<void(SDL_AudioDeviceEvent&)> callback);
+		bool RegisterAudioDeviceEventCallback(std::function<void(SDL_AudioDeviceEvent&)> callback);
 
 		/**
 		 * @brief Register a callback to be executed if an event satisfies event_matcher
@@ -299,7 +299,7 @@ class CallbackHandler {
 		 * @param callback Function to be executed
 		 * @return Returns true if callback is registered
 		 */
-		bool registerGenericEventCallback(
+		bool RegisterGenericEventCallback(
 				std::function<bool(SDL_Event&)> event_matcher,
 				std::function<void(SDL_Event&)> callback);
 
@@ -311,76 +311,76 @@ class CallbackHandler {
 		 * @param repeat Boolean representing whether the callback should repeat
 		 * @return Returns true if callback is registered
 		 */
-		bool registerTimeoutCallback(std::string identifier, size_t ms,
+		bool RegisterTimeoutCallback(std::string identifier, size_t ms,
 				std::function<void(void)> callback, bool repeat = false);
 		/**
 		 * @brief Unregister a callback by identifier
 		 * @param identifier String identifier of the callback to unregister
 		 * @return Always returns false
 		 */
-		bool unregisterTimeoutCallback(std::string identifier);
+		bool UnregisterTimeoutCallback(std::string identifier);
 
 	private:
 		/**
 		 * @brief List of all window event callback functions
 		 */
-		std::list<std::function<void(SDL_WindowEvent&)>> window_event_callbacks;
+		std::list<std::function<void(SDL_WindowEvent&)>> window_event_callbacks_;
 
 		/**
 		 * @brief Array of lists of key up event callback functions
 		 */
-		std::array<std::list<std::function<void(SDL_KeyboardEvent&)>>, 512> key_up_callbacks;
+		std::array<std::list<std::function<void(SDL_KeyboardEvent&)>>, 512> key_up_callbacks_;
 		/**
 		 * @brief Array of lists of key down event callback functions
 		 */
-		std::array<std::list<std::function<void(SDL_KeyboardEvent&)>>, 512> key_down_callbacks;
+		std::array<std::list<std::function<void(SDL_KeyboardEvent&)>>, 512> key_down_callbacks_;
 		/**
 		 * @brief Array of lists of key held event callback functions
 		 */
-		std::array<std::list<std::function<void(void)>>, 512> key_held_callbacks;
+		std::array<std::list<std::function<void(void)>>, 512> key_held_callbacks_;
 
 		/**
 		 * @brief List of mouse move event callback functions
 		 */
-		std::list<std::function<void(SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 /* delta */)>> m_move_callbacks;
+		std::list<std::function<void(SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 /* delta */)>> m_move_callbacks_;
 		/**
 		 * @brief Array of lists of mouse button up event callback functions
 		 */
-		std::array<std::list<std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)>>, SDL_BUTTON_X2 + 1> m_button_up_callbacks;
+		std::array<std::list<std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)>>, SDL_BUTTON_X2 + 1> m_button_up_callbacks_;
 		/**
 		 * @brief Array of lists of mouse button down event callback functions
 		 */
-		std::array<std::list<std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)>>, SDL_BUTTON_X2 + 1> m_button_down_callbacks;
+		std::array<std::list<std::function<void(SDL_MouseButtonEvent&, glm::ivec2 /* pos */)>>, SDL_BUTTON_X2 + 1> m_button_down_callbacks_;
 		/**
 		 * @brief Array of lists of mouse button held event callback functions
 		 */
-		std::array<std::list<std::function<void(void)>>, SDL_BUTTON_X2 + 1> m_button_held_callbacks;
+		std::array<std::list<std::function<void(void)>>, SDL_BUTTON_X2 + 1> m_button_held_callbacks_;
 		/**
 		 * @brief List of immediate mouse wheel event callback functions
 		 */
-		std::list<std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)>> m_immediate_wheel_callbacks;
+		std::list<std::function<void(SDL_MouseWheelEvent&, glm::ivec2 /* delta */)>> m_immediate_wheel_callbacks_;
 		/**
 		 * @brief List of mouse wheel event callback functions
 		 */
-		std::list<std::function<void(glm::ivec2 /* delta */)>> m_wheel_callbacks;
+		std::list<std::function<void(glm::ivec2 /* delta */)>> m_wheel_callbacks_;
 
 		/**
 		 * @brief List of timeout callback objects
 		 */
-		std::list<TimeoutCallback> timeout_callbacks;
+		std::list<TimeoutCallback> timeout_callbacks_;
 
 		/**
 		 * @brief List of event callbacks and their event matchers
 		 */
-		std::list<std::pair<std::function<bool(SDL_Event&)>, std::function<void(SDL_Event&)>>> event_callbacks;
+		std::list<std::pair<std::function<bool(SDL_Event&)>, std::function<void(SDL_Event&)>>> event_callbacks_;
 
 		/**
 		 * @brief Helper class handling HID input
 		 */
-		InputHandler handler;
+		InputHandler handler_;
 };
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 

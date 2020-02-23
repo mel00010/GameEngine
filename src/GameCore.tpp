@@ -23,9 +23,9 @@
 
 
 
-namespace GameEngine {
+namespace game_engine {
 
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_GAMECORE_TPP_ */
 

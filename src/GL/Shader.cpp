@@ -27,14 +27,14 @@
 #include <fstream>
 #include <streambuf>
 
-namespace GameEngine {
-namespace GL {
+namespace game_engine {
+namespace gl {
 
 Shader::Shader(std::string _source, ShaderType _type) :
 		source(_source), type(_type), shader(0), valid(false) {
 }
 
-Shader::~Shader() {
+Shader::~Shader() noexcept {
 	if (isValid()) {
 //		LOG_D("shader = " << shader);
 		glDeleteShader(shader);
@@ -42,7 +42,7 @@ Shader::~Shader() {
 	valid = false;
 }
 
-bool Shader::init() {
+bool Shader::Init() {
 	if (isValid()) {
 		return isValid();
 	}
@@ -80,5 +80,5 @@ GLuint Shader::getShaderHandle() {
 	return shader;
 }
 
-} /* namespace GL */
-} /* namespace GameEngine */
+} /* namespace gl */
+} /* namespace game_engine */

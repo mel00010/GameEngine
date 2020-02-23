@@ -29,9 +29,10 @@
 #include <memory>
 #include <ostream>
 #include <string>
+#include <utility>
 
-namespace GameEngine {
-namespace GL {
+namespace game_engine {
+namespace gl {
 
 enum class ShaderType : GLenum {
 		VERTEX = GL_VERTEX_SHADER,
@@ -55,28 +56,46 @@ inline std::ostream& operator<<(std::ostream& os, const ShaderType type) {
 
 class Shader {
 	public:
-		Shader(const cmrc::file file, ShaderType _type) :
-				type(_type), shader(glCreateShader(static_cast<GLenum>(_type))),
-				valid(false) {
-			source = std::string(file.begin(), file.end());
-		}
+		Shader() noexcept = default;
+		Shader& operator=(const Shader& rhs) = default;
+		Shader(const Shader& rhs) = default;
+		Shader& operator=(Shader&& rhs) noexcept = default;
+		Shader(Shader&& rhs) noexcept = default;
+
+		Shader(const cmrc::file file, ShaderType _type)
+			: source { std::string(file.begin(), file.end()) }, type(_type),
+			shader(glCreateShader(static_cast<GLenum>(_type))) {}
 		Shader(std::string source, ShaderType type);
-		~Shader();
-		bool init();
+		~Shader() noexcept;
+		bool Init();
 
 	public:
 		bool isValid() const;
 		ShaderType getShaderType();
 		GLuint getShaderHandle();
-	private:
-		std::string source;
-		ShaderType type;
-		GLuint shader;
-		bool valid;
+
+		void swap(Shader& other) noexcept {
+			using std::swap;
+			swap(other.source, source);
+			swap(other.type, type);
+			swap(other.shader, shader);
+			swap(other.valid, valid);
+		}
+	protected:
+		std::string source { };
+		ShaderType type { };
+		GLuint shader { };
+		bool valid { };
+
+
 };
 
-} /* namespace GL */
-} /* namespace GameEngine */
+inline void swap(Shader& a, Shader& b) noexcept {
+	a.swap(b);
+}
+
+} /* namespace gl */
+} /* namespace game_engine */
 
 
 #endif /* SRC_GL_SHADER_HPP_ */

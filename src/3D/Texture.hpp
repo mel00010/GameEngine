@@ -33,12 +33,13 @@
 #include <cmrc/cmrc.hpp>
 
 #include <string>
+#include <utility>
 
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-enum class TextureType {
+enum class TextureType : std::uint8_t {
 	DIFFUSE,
 	SPECULAR,
 	NORMAL,
@@ -46,45 +47,63 @@ enum class TextureType {
 };
 std::ostream& operator<<(std::ostream& os, const TextureType type);
 
-
 class Texture {
 	public:
-		Texture();
-		Texture(GLuint _id, TextureType _type, std::string _path);
+		Texture() noexcept = default;
+		Texture& operator=(const Texture& rhs) = default;
+		Texture(const Texture& rhs) = default;
+		Texture& operator=(Texture&& rhs) noexcept = default;
+		Texture(Texture&& rhs) noexcept = default;
+		~Texture() noexcept = default;
 
-		template< typename Renderer >
-		Texture( Renderer& renderer, cmrc::file file, const ShaderPrograms shader_program, const TextureType type);
+		Texture(const GLuint id, const TextureType type, const std::string path) : id_(id), type_(type), path_(path) {}
 
-		Texture(const Texture& other); // copy constructor
-		Texture(Texture&& other) noexcept; // move constructor
-		Texture& operator=(const Texture& other); // copy assignment
-		Texture& operator=(Texture&& other) noexcept;// move assignment
 
 		template<typename Renderer>
-		GLuint loadTexture(Renderer& renderer, cmrc::file file,
+		Texture(const Renderer& renderer,
+				 const cmrc::file file,
+				 const ShaderPrograms shader_program,
+				 const TextureType type);
+
+		template<typename Renderer>
+		GLuint LoadTexture(const Renderer& renderer,
+				const cmrc::file file,
 				const ShaderPrograms shader_program,
 				const TextureType _type = TextureType::DIFFUSE);
 		template<typename Renderer>
-		GLuint loadTextureFromMemory(Renderer& renderer, glm::ivec2 size, _3D::PixelFormat pixel_format,
-				void* buffer,
+		GLuint LoadTextureFromMemory(const Renderer& renderer,
+				const glm::ivec2 size,
+				const _3D::PixelFormat pixel_format,
+				const void* buffer,
 				const ShaderPrograms shader_program,
 				const TextureType _type = TextureType::DIFFUSE);
 
-
+		void swap(Texture& other) noexcept {
+			using std::swap;
+			swap(other.id_, id_);
+			swap(other.type_, type_);
+			swap(other.path_, path_);
+		}
 	protected:
-		static PixelFormat determinePixelFormat(SDL_PixelFormat* format);
+		static PixelFormat DeterminePixelFormat(const SDL_PixelFormat* format);
 		friend class Cubemap;
 
 	public:
-		unsigned int id;
-		TextureType type;
-		std::string path;
+		unsigned int id_ { };
+		TextureType type_ { };
+		std::string path_ { };
+
+
 };
 
 std::ostream& operator<<(std::ostream& os, const Texture& text);
 
+inline void swap(Texture& a, Texture& b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #include "Texture.tpp"
 

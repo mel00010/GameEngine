@@ -21,71 +21,71 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include <Util/UUID.hpp>
+#include <Util/Uuid.hpp>
 #include <ostream>
 
-using namespace GameEngine;
+using game_engine::util::Uuid;
 
 TEST(Util, UUID) {
-	EXPECT_TRUE (UUID(0, 0) == UUID(0, 0));
-	EXPECT_FALSE(UUID(0, 0) == UUID(0, 1));
-	EXPECT_FALSE(UUID(0, 0) == UUID(1, 0));
-	EXPECT_FALSE(UUID(0, 1) == UUID(0, 0));
-	EXPECT_FALSE(UUID(1, 0) == UUID(0, 0));
-	EXPECT_FALSE(UUID()     == UUID(0, 0));
+	EXPECT_TRUE (Uuid(0, 0) == Uuid(0, 0));
+	EXPECT_FALSE(Uuid(0, 0) == Uuid(0, 1));
+	EXPECT_FALSE(Uuid(0, 0) == Uuid(1, 0));
+	EXPECT_FALSE(Uuid(0, 1) == Uuid(0, 0));
+	EXPECT_FALSE(Uuid(1, 0) == Uuid(0, 0));
+	EXPECT_FALSE(Uuid()     == Uuid(0, 0));
 
-	EXPECT_FALSE(UUID(0, 0) != UUID(0, 0));
-	EXPECT_TRUE (UUID(0, 0) != UUID(0, 1));
-	EXPECT_TRUE (UUID(0, 0) != UUID(1, 0));
-	EXPECT_TRUE (UUID(0, 1) != UUID(0, 0));
-	EXPECT_TRUE (UUID(1, 0) != UUID(0, 0));
-	EXPECT_TRUE (UUID()     != UUID(0, 0));
+	EXPECT_FALSE(Uuid(0, 0) != Uuid(0, 0));
+	EXPECT_TRUE (Uuid(0, 0) != Uuid(0, 1));
+	EXPECT_TRUE (Uuid(0, 0) != Uuid(1, 0));
+	EXPECT_TRUE (Uuid(0, 1) != Uuid(0, 0));
+	EXPECT_TRUE (Uuid(1, 0) != Uuid(0, 0));
+	EXPECT_TRUE (Uuid()     != Uuid(0, 0));
 
-	EXPECT_FALSE(UUID(0, 0) <  UUID(0, 0));
-	EXPECT_TRUE (UUID(0, 0) <  UUID(0, 1));
-	EXPECT_TRUE (UUID(0, 0) <  UUID(1, 0));
-	EXPECT_FALSE(UUID(0, 1) <  UUID(0, 0));
-	EXPECT_FALSE(UUID(1, 0) <  UUID(0, 0));
+	EXPECT_FALSE(Uuid(0, 0) <  Uuid(0, 0));
+	EXPECT_TRUE (Uuid(0, 0) <  Uuid(0, 1));
+	EXPECT_TRUE (Uuid(0, 0) <  Uuid(1, 0));
+	EXPECT_FALSE(Uuid(0, 1) <  Uuid(0, 0));
+	EXPECT_FALSE(Uuid(1, 0) <  Uuid(0, 0));
 
-	EXPECT_TRUE (UUID(0, 0) <= UUID(0, 0));
-	EXPECT_TRUE (UUID(0, 0) <= UUID(0, 1));
-	EXPECT_TRUE (UUID(0, 0) <= UUID(1, 0));
-	EXPECT_FALSE(UUID(0, 1) <= UUID(0, 0));
-	EXPECT_FALSE(UUID(1, 0) <= UUID(0, 0));
+	EXPECT_TRUE (Uuid(0, 0) <= Uuid(0, 0));
+	EXPECT_TRUE (Uuid(0, 0) <= Uuid(0, 1));
+	EXPECT_TRUE (Uuid(0, 0) <= Uuid(1, 0));
+	EXPECT_FALSE(Uuid(0, 1) <= Uuid(0, 0));
+	EXPECT_FALSE(Uuid(1, 0) <= Uuid(0, 0));
 
-	EXPECT_FALSE(UUID(0, 0) >  UUID(0, 0));
-	EXPECT_FALSE(UUID(0, 0) >  UUID(0, 1));
-	EXPECT_FALSE(UUID(0, 0) >  UUID(1, 0));
-	EXPECT_TRUE (UUID(0, 1) >  UUID(0, 0));
-	EXPECT_TRUE (UUID(1, 0) >  UUID(0, 0));
+	EXPECT_FALSE(Uuid(0, 0) >  Uuid(0, 0));
+	EXPECT_FALSE(Uuid(0, 0) >  Uuid(0, 1));
+	EXPECT_FALSE(Uuid(0, 0) >  Uuid(1, 0));
+	EXPECT_TRUE (Uuid(0, 1) >  Uuid(0, 0));
+	EXPECT_TRUE (Uuid(1, 0) >  Uuid(0, 0));
 
-	EXPECT_TRUE (UUID(0, 0) >= UUID(0, 0));
-	EXPECT_FALSE(UUID(0, 0) >= UUID(0, 1));
-	EXPECT_FALSE(UUID(0, 0) >= UUID(1, 0));
-	EXPECT_TRUE (UUID(0, 1) >= UUID(0, 0));
-	EXPECT_TRUE (UUID(1, 0) >= UUID(0, 0));
+	EXPECT_TRUE (Uuid(0, 0) >= Uuid(0, 0));
+	EXPECT_FALSE(Uuid(0, 0) >= Uuid(0, 1));
+	EXPECT_FALSE(Uuid(0, 0) >= Uuid(1, 0));
+	EXPECT_TRUE (Uuid(0, 1) >= Uuid(0, 0));
+	EXPECT_TRUE (Uuid(1, 0) >= Uuid(0, 0));
 
 
-	EXPECT_EQ(UUID(0, 0), UUID(0, 0));
+	EXPECT_EQ(Uuid(0, 0), Uuid(0, 0));
 
-	EXPECT_NE(UUID(0, 0), UUID(0, 1));
-	EXPECT_NE(UUID(0, 0), UUID(1, 0));
-	EXPECT_NE(UUID(0, 1), UUID(0, 0));
-	EXPECT_NE(UUID(1, 0), UUID(0, 0));
-	EXPECT_NE(UUID(),     UUID(0, 0));
-	EXPECT_NE(UUID(),     UUID());
+	EXPECT_NE(Uuid(0, 0), Uuid(0, 1));
+	EXPECT_NE(Uuid(0, 0), Uuid(1, 0));
+	EXPECT_NE(Uuid(0, 1), Uuid(0, 0));
+	EXPECT_NE(Uuid(1, 0), Uuid(0, 0));
+	EXPECT_NE(Uuid(),     Uuid(0, 0));
+	EXPECT_NE(Uuid(),     Uuid());
 
-	EXPECT_LT(UUID(0, 0), UUID(0, 1));
-	EXPECT_LT(UUID(0, 0), UUID(1, 0));
+	EXPECT_LT(Uuid(0, 0), Uuid(0, 1));
+	EXPECT_LT(Uuid(0, 0), Uuid(1, 0));
 
-	EXPECT_LE(UUID(0, 0), UUID(0, 0));
-	EXPECT_LE(UUID(0, 0), UUID(0, 1));
-	EXPECT_LE(UUID(0, 0), UUID(1, 0));
+	EXPECT_LE(Uuid(0, 0), Uuid(0, 0));
+	EXPECT_LE(Uuid(0, 0), Uuid(0, 1));
+	EXPECT_LE(Uuid(0, 0), Uuid(1, 0));
 
-	EXPECT_GT(UUID(0, 1), UUID(0, 0));
-	EXPECT_GT(UUID(1, 0), UUID(0, 0));
+	EXPECT_GT(Uuid(0, 1), Uuid(0, 0));
+	EXPECT_GT(Uuid(1, 0), Uuid(0, 0));
 
-	EXPECT_GE(UUID(0, 0), UUID(0, 0));
-	EXPECT_GE(UUID(0, 1), UUID(0, 0));
-	EXPECT_GE(UUID(1, 0), UUID(0, 0));
+	EXPECT_GE(Uuid(0, 0), Uuid(0, 0));
+	EXPECT_GE(Uuid(0, 1), Uuid(0, 0));
+	EXPECT_GE(Uuid(1, 0), Uuid(0, 0));
 }

@@ -22,10 +22,10 @@
 
 #include <ostream>
 
-namespace GameEngine {
+namespace game_engine {
 namespace _3D {
 
-enum class Primitive {
+enum class Primitive : std::uint8_t {
 	POINTS,
 	LINES,
 	LINE_STRIP,
@@ -55,6 +55,6 @@ inline std::ostream& operator<<(std::ostream& os, const Primitive p) {
 }
 
 } /* namespace _3D */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 #endif /* SRC_3D_PRIMITIVE_HPP_ */

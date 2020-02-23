@@ -26,33 +26,49 @@
 #include <cmrc/cmrc.hpp>
 
 #include <string>
+#include <utility>
 
 
-namespace GameEngine {
+namespace game_engine {
 namespace Sound {
 
 class Sound {
 	public:
-		Sound() {};
-		Sound(const cmrc::file file) {
-			loadSound(file);
+		Sound& operator=(const Sound &rhs) = default;
+		Sound(const Sound &rhs) = default;
+		Sound& operator=(Sound &&rhs) noexcept = default;
+		Sound(Sound &&rhs) noexcept = default;
+		Sound() = default;
+		explicit Sound(const cmrc::file file) {
+			LoadSound(file);
 		}
-		~Sound();
+		~Sound() noexcept;
 
-		Mix_Chunk* loadSound(const cmrc::file file);
+		Mix_Chunk* LoadSound(const cmrc::file file);
 
 
 	public:
-		void play(size_t times = 1);
-		int  setVolume(int volume);
+		void Play(const size_t times = 1);
+		int SetVolume(const int volume);
+
+		void swap(Sound &other) noexcept {
+			using std::swap;
+			swap(other.path_, path_);
+			swap(other.channel_, channel_);
+			swap(other.chunk_, chunk_);
+		}
 	public:
-		std::string path = "";
-		int channel = -2;
-		Mix_Chunk* chunk = nullptr;
+		std::string path_ = "";
+		int channel_ = -2;
+		Mix_Chunk* chunk_ = nullptr;
 };
 
+inline void swap(Sound &a, Sound &b) noexcept {
+	a.swap(b);
+}
+
 } /* namespace Sound */
-} /* namespace GameEngine */
+} /* namespace game_engine */
 
 
 #endif /* SRC_SOUND_SOUND_HPP_ */

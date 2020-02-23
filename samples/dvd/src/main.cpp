@@ -18,8 +18,8 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "DVDCore.hpp"
+#include "DvdCore.hpp"
 
-int main(void) {
-	DVD::DVDCore::getInstance().runLoop();
+int main(int argc, char** argv) {
+	dvd::DvdCore::Main(&argc, &argv);
 }
