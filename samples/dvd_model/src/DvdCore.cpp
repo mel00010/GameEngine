@@ -18,76 +18,81 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-//#define GLM_FORCE_SWIZZLE
-
 #include "DvdCore.hpp"
 
-#include <GL/Shader.hpp>
-
-#include <Log.hpp>
-
 #include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/random.hpp>
-#include <glm/gtx/color_space.hpp>
-
+// clang-format off
 #include <ft2build.h>
 #include FT_FREETYPE_H
+// clang-format on
+
+#include "LoggerV2/Log.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/random.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/color_space.hpp>
+
+#include "GL/Shader.hpp"
 
 #include <algorithm>
 #include <functional>
 
-#include <GameCore.hpp>
+#include "GameCore.hpp"
 
 using namespace game_engine;
 
 namespace dvd {
 
 void DvdCore::RegisterCallbacks() {
-	RegisterKeyboardEventCallback(SDL_SCANCODE_R,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { this->Reset(); });
-	RegisterKeyboardEventCallback(SDL_SCANCODE_A,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { AddDvd(); });
-	RegisterKeyboardEventCallback(SDL_SCANCODE_D,			KeyEventType::DOWN, [this](SDL_KeyboardEvent&) { RemoveDvd(); });
-	RegisterKeyboardEventCallback(SDL_SCANCODE_PAGEUP,		KeyEventType::HELD, [this]() { scroll_factor_ *= 1.0 + (0.0525/scroll_factor_); });
-	RegisterKeyboardEventCallback(SDL_SCANCODE_PAGEDOWN,	KeyEventType::HELD, [this]() { scroll_factor_ *= 1.0 - (scroll_factor_/18.095); });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_R, KeyEventType::DOWN,
+                                [this](SDL_KeyboardEvent&) { this->Reset(); });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::DOWN,
+                                [this](SDL_KeyboardEvent&) { AddDvd(); });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::DOWN,
+                                [this](SDL_KeyboardEvent&) { RemoveDvd(); });
+  RegisterKeyboardEventCallback(
+      SDL_SCANCODE_PAGEUP, KeyEventType::HELD,
+      [this]() { scroll_factor_ *= 1.0 + (0.0525 / scroll_factor_); });
+  RegisterKeyboardEventCallback(
+      SDL_SCANCODE_PAGEDOWN, KeyEventType::HELD,
+      [this]() { scroll_factor_ *= 1.0 - (scroll_factor_ / 18.095); });
 
-	RegisterMouseWheelEventCallback([this](glm::ivec2 delta) {
-		size_t curr_time = SDL_GetTicks();
-		ModifySpeed(static_cast<double>(delta.y) * scroll_factor_ * 0.1);
-		if((curr_time > (prev_time_ + 10)) || (counter_ == 10)) {
-			prev_time_ = curr_time;
-			counter_ = 0;
-		}
-		counter_++;
-	});
+  RegisterMouseWheelEventCallback([this](glm::ivec2 delta) {
+    size_t curr_time = SDL_GetTicks();
+    ModifySpeed(static_cast<double>(delta.y) * scroll_factor_ * 0.1);
+    if ((curr_time > (prev_time_ + 10)) || (counter_ == 10)) {
+      prev_time_ = curr_time;
+      counter_ = 0;
+    }
+    counter_++;
+  });
 
-	RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
-		switch(ev.event) {
-			case SDL_WINDOWEVENT_RESIZED:
-				SetScale(glm::dvec2(ev.data1, ev.data2) / glm::dvec2(1920, 1080));
-		}
-	});
-	RegisterTimeoutCallback("ms_per_frame", 1000, [this]() {
-		LOG_D("ms/frame = " << frame_time_ms_ << " | fps = " << fps_avg_);
-	}, true);
-
+  RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
+    switch (ev.event) {
+      case SDL_WINDOWEVENT_RESIZED:
+        SetScale(glm::dvec2(ev.data1, ev.data2) / glm::dvec2(1920, 1080));
+    }
+  });
+  RegisterTimeoutCallback(
+      "ms_per_frame", 1000,
+      [this]() {
+        log_.Debug("ms/frame = {} | fps = {}", frame_time_ms_, fps_avg_);
+      },
+      true);
 }
 
 void DvdCore::Setup() {
-	SetSpeed(2.0f);
-	AddDvd();
+  SetSpeed(2.0f);
+  AddDvd();
 }
 
 void DvdCore::Render() {
-	for(auto& i : dvds_) {
-		i.Draw(renderer_, static_cast<float>(fps_));
-	}
+  for (auto& i : dvds_) {
+    i.Draw(renderer_, static_cast<float>(fps_));
+  }
 }
 
-void DvdCore::Tick() {
-
-}
+void DvdCore::Tick() {}
 
 } /* namespace dvd */
-

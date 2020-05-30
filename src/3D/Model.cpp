@@ -18,14 +18,14 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "Model.hpp"
-#include "Vertex.hpp"
-
-#include <Log.hpp>
+#include "3D/Model.hpp"
 
 #include <assimp/Importer.hpp>
-#include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
+#include "LoggerV2/Log.hpp"
+#include "Vertex.hpp"
 
 namespace game_engine {
 namespace _3D {
@@ -33,32 +33,28 @@ namespace _3D {
 std::vector<Texture> Model::textures_loaded_;
 
 std::ostream& operator<<(std::ostream& os, Model m) {
-	os << "Model {" << std::endl << push_indent;
+  os << "Model {" << std::endl;
 
-	os << "glm::mat4 model_ = " << push_indent << m.model_ << pop_indent << std::endl;
+  os << "glm::mat4 model_ = " << m.model_ << std::endl;
 
-	os << "std::vector<Texture> textures_loaded_ = { " << std::endl;
-	os << push_indent;
-	for (auto& i : m.textures_loaded_) {
-		os << i << ", " << std::endl;
-	}
-	os << pop_indent;
-	os << "}" << std::endl;
+  os << "std::vector<Texture> textures_loaded_ = { " << std::endl;
+  for (auto& i : m.textures_loaded_) {
+    os << i << ", " << std::endl;
+  }
+  os << "}" << std::endl;
 
-	os << "std::vector<Mesh> meshes_ = {" << std::endl;
-	os << push_indent;
-	for (auto& i : m.meshes_) {
-		os << i << ", " << std::endl;
-	}
-	os << pop_indent;
-	os << "}" << std::endl;
-	os << "cmrc::embedded_filesystem* fs_ = " << m.fs_ << std::endl;
-	os << "std::string directory_ = \"" << m.directory_ << "\"" << std::endl;
-	os << "std::string folder_ = \"" << m.folder_ << "\"" << std::endl;
-	os << "bool gamma_correction_ = " << m.gamma_correction_ << std::endl;
+  os << "std::vector<Mesh> meshes_ = {" << std::endl;
+  for (auto& i : m.meshes_) {
+    os << i << ", " << std::endl;
+  }
+  os << "}" << std::endl;
+  os << "cmrc::embedded_filesystem* fs_ = " << m.fs_ << std::endl;
+  os << "std::string directory_ = \"" << m.directory_ << "\"" << std::endl;
+  os << "std::string folder_ = \"" << m.folder_ << "\"" << std::endl;
+  os << "bool gamma_correction_ = " << m.gamma_correction_ << std::endl;
 
-	os << pop_indent << "}";
-	return os;
+  os << "}";
+  return os;
 }
 
 } /* namespace _3D */

@@ -20,54 +20,55 @@
 #ifndef SRC_GL_GLWINDOWMANAGER_HPP_
 #define SRC_GL_GLWINDOWMANAGER_HPP_
 
-#include <WindowManager.hpp>
-
-#include <glm/glm.hpp>
 #include <SDL2/SDL.h>
+#include <glm/glm.hpp>
+
+#include "WindowManager.hpp"
 
 namespace game_engine {
 namespace gl {
 
 class GLWindowManager : public WindowManager<GLWindowManager> {
-	public:
-		void Init(std::string program_name);
-		SDL_Window* GetWindow();
-		void SetWindow(SDL_Window* p);
+ public:
+  void Init(std::string program_name);
+  SDL_Window* GetWindow();
+  void SetWindow(SDL_Window* p);
 
-		static glm::ivec2 GetWindowSize();
+  static glm::ivec2 GetWindowSize();
 
-		void SetFullscreen(bool enable = false);
-		bool IsFullscreen();
-		void ToggleFullscreen();
+  void SetFullscreen(bool enable = false);
+  bool IsFullscreen();
+  void ToggleFullscreen();
 
-		void SetVSyncEnabled(bool enable = false);
-		bool IsVSyncEnabled();
-		void EnableVSync();
-		void DisableVSync();
-		void ToggleVSync();
+  void SetVSyncEnabled(bool enable = false);
+  bool IsVSyncEnabled();
+  void EnableVSync();
+  void DisableVSync();
+  void ToggleVSync();
 
-		void Quit();
-		bool IsCursorDisabled();
-		void DisableCursor(bool disabled = true);
-		bool ToggleCursor();
+  void Quit();
+  bool IsCursorDisabled();
+  void DisableCursor(bool disabled = true);
+  bool ToggleCursor();
 
-		void RedrawWindowBounds(glm::ivec2 size);
+  void RedrawWindowBounds(glm::ivec2 size);
 
-	public:
-		static SDL_Window* window_;
+ public:
+  static SDL_Window* window_;
 
-	protected:
-		bool cursor_disabled_ = false;
-		bool is_screen_fullscreen_ = false;
-		bool vsync_enabled_ = false;
+ protected:
+  bool cursor_disabled_ = false;
+  bool is_screen_fullscreen_ = false;
+  bool vsync_enabled_ = false;
 
-		SDL_DisplayMode native_;
-		SDL_DisplayMode current_;
+  SDL_DisplayMode native_;
+  SDL_DisplayMode current_;
+
+ private:
+  logging::Log log_ = logging::Log("main");
 };
 
 } /* namespace gl */
 } /* namespace game_engine */
-
-
 
 #endif /* SRC_GL_GLWINDOWMANAGER_HPP_ */

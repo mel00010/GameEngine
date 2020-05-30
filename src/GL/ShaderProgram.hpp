@@ -20,12 +20,11 @@
 #ifndef SRC_GL_SHADERPROGRAM_HPP_
 #define SRC_GL_SHADERPROGRAM_HPP_
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-
 #include <memory>
 #include <vector>
 
+#include <GL/glew.h>
+#include <glm/glm.hpp>
 
 namespace game_engine {
 namespace gl {
@@ -33,57 +32,60 @@ namespace gl {
 class Shader;
 
 class ShaderProgram {
-	public:
-		ShaderProgram& operator=(const ShaderProgram &rhs) = default;
-		ShaderProgram(const ShaderProgram &rhs) = default;
-		ShaderProgram& operator=(ShaderProgram &&rhs) noexcept = default;
-		ShaderProgram(ShaderProgram &&rhs) noexcept = default;
-		ShaderProgram() noexcept = default;
-		~ShaderProgram() noexcept = default;
-	public:
-		void AttachShader(Shader& shader);
+ public:
+  ShaderProgram& operator=(const ShaderProgram& rhs) = default;
+  ShaderProgram(const ShaderProgram& rhs) = default;
+  ShaderProgram& operator=(ShaderProgram&& rhs) noexcept = default;
+  ShaderProgram(ShaderProgram&& rhs) noexcept = default;
+  ShaderProgram() = default;
+  ~ShaderProgram() noexcept = default;
 
-		bool Link();
-		bool Init();
-	public:
-		bool IsValid() const;
-		void SetValid(bool validity = false);
+ public:
+  void AttachShader(Shader& shader);
 
-		GLuint GetProgramHandle();
-		GLuint GetPh();
+  bool Link();
+  bool Init();
 
-		void UseProgram() const ;
-		void Use() const ;
+ public:
+  bool IsValid() const;
+  void SetValid(bool validity = false);
 
-		void SetBool(const std::string &name, bool value) const;
-		void SetInt(const std::string &name, int value) const;
-		void SetFloat(const std::string &name, float value) const;
-		void SetVec2(const std::string &name, const glm::vec2 &value) const;
-		void SetVec2(const std::string &name, float x, float y) const;
-		void SetVec3(const std::string &name, const glm::vec3 &value) const;
-		void SetVec3(const std::string &name, float x, float y, float z) const;
-		void SetVec4(const std::string &name, const glm::vec4 &value) const;
-		void SetVec4(const std::string &name, float x, float y, float z, float w) const;
-		void SetMat2(const std::string &name, const glm::mat2 &mat) const;
-		void SetMat3(const std::string &name, const glm::mat3 &mat) const;
-		void SetMat4(const std::string &name, const glm::mat4 &mat) const;
+  GLuint GetProgramHandle();
+  GLuint GetPh();
 
-		void swap(ShaderProgram &other) noexcept {
-			using std::swap;
-			swap(other.program_, program_);
-			swap(other.valid_, valid_);
-			swap(other.shaders_, shaders_);
-		}
-	private:
-		GLuint program_ = 0;
-		bool valid_ = false;
+  void UseProgram() const;
+  void Use() const;
 
-		std::vector<Shader*> shaders_ { };
+  void SetBool(const std::string& name, bool value) const;
+  void SetInt(const std::string& name, int value) const;
+  void SetFloat(const std::string& name, float value) const;
+  void SetVec2(const std::string& name, const glm::vec2& value) const;
+  void SetVec2(const std::string& name, float x, float y) const;
+  void SetVec3(const std::string& name, const glm::vec3& value) const;
+  void SetVec3(const std::string& name, float x, float y, float z) const;
+  void SetVec4(const std::string& name, const glm::vec4& value) const;
+  void SetVec4(const std::string& name, float x, float y, float z,
+               float w) const;
+  void SetMat2(const std::string& name, const glm::mat2& mat) const;
+  void SetMat3(const std::string& name, const glm::mat3& mat) const;
+  void SetMat4(const std::string& name, const glm::mat4& mat) const;
+
+  void swap(ShaderProgram& other) noexcept {
+    using std::swap;
+    swap(other.program_, program_);
+    swap(other.valid_, valid_);
+    swap(other.shaders_, shaders_);
+  }
+
+ private:
+  GLuint program_ = 0;
+  bool valid_ = false;
+
+  std::vector<Shader*> shaders_{};
+  logging::Log log_ = logging::Log("main");
 };
 
-inline void swap(ShaderProgram &a, ShaderProgram &b) noexcept {
-	a.swap(b);
-}
+inline void swap(ShaderProgram& a, ShaderProgram& b) noexcept { a.swap(b); }
 
 } /* namespace gl */
 } /* namespace game_engine */

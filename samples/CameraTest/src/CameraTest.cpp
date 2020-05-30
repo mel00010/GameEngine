@@ -20,142 +20,167 @@
 
 #include "CameraTest.hpp"
 
-#include <Log.hpp>
-
-#include <3D/Model.hpp>
-#include <3D/Skybox.hpp>
-
-#include <GL/Shader.hpp>
-#include <GL/ShaderProgram.hpp>
+#include <cmath>
+#include <limits>
+#include <string>
 
 #include <cmrc/cmrc.hpp>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 
-#include <gflags/gflags.h>
+#include "LoggerV2/Client.hpp"
+#include "LoggerV2/Log.hpp"
+#include "LoggerV2/Telemetry.hpp"
+#include "absl/flags/flag.h"
 
-DEFINE_bool(test_bool, false, "Test bool");
+#include "3D/Model.hpp"
+#include "3D/Skybox.hpp"
+#include "GL/Shader.hpp"
+#include "GL/ShaderProgram.hpp"
+
+ABSL_FLAG(bool, test_bool, false, "Test bool");
 
 using namespace game_engine;
 
 namespace camera_test {
 
 void CameraTest::RegisterCallbacks() {
-	RegisterKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { camera_.camera_front_ };
-		dir.y = 0.0f;
-		dir *= kCameraMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { -glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_)) };
-		dir.y = 0.0f;
-		dir *= kCameraMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { -camera_.camera_front_ };
-		dir.y = 0.0f;
-		dir *= kCameraMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_)) };
-		dir.y = 0.0f;
-		dir *= kCameraMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_SPACE, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { camera_.camera_up_ };
-		dir *= kCameraVertMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_LSHIFT, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { -camera_.camera_up_ };
-		dir *= kCameraVertMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_RSHIFT, KeyEventType::HELD, [this]() {
-		glm::vec3 dir { -camera_.camera_up_ };
-		dir *= kCameraVertMoveMultiplier;
-		camera_.MoveCamera(dir);
-	});
-	RegisterMouseMotionEventCallback([this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
-		if(renderer_.IsCursorDisabled()) {
-			camera_.RotateCamera(static_cast<double>(delta.x)/kCameraRotationFactor,
-					-static_cast<double>(delta.y)/kCameraRotationFactor);
-		}
-	});
-	RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
-		switch(ev.event) {
-			case SDL_WINDOWEVENT_RESIZED:
-				camera_.UpdateProjection(glm::ivec2(ev.data1, ev.data2));
-		}
-	});
-	RegisterTimeoutCallback("ms_per_frame", kFrameDebugPrintIntervalMs, [this]() {
-		LOG_D("ms/frame = " << frame_time_ms_ << " | fps = " << fps_avg_);
-	}, true);
-	RegisterKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		nanosuits_.push_back(_3D::Model(renderer_, fs_, "nanosuit"));
-		nanosuits_.back().Move(glm::ballRand(kNanosuitMoveRandRadius));
-		nanosuits_.back().Scale(kNanosuitScale);
-	});
+  RegisterKeyboardEventCallback(SDL_SCANCODE_W, KeyEventType::HELD, [this]() {
+    glm::vec3 dir{camera_.camera_front_};
+    dir.y = 0.0f;
+    dir *= kCameraMoveMultiplier;
+    camera_.MoveCamera(dir);
+  });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_A, KeyEventType::HELD, [this]() {
+    glm::vec3 dir{
+        -glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_))};
+    dir.y = 0.0f;
+    dir *= kCameraMoveMultiplier;
+    camera_.MoveCamera(dir);
+  });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_S, KeyEventType::HELD, [this]() {
+    glm::vec3 dir{-camera_.camera_front_};
+    dir.y = 0.0f;
+    dir *= kCameraMoveMultiplier;
+    camera_.MoveCamera(dir);
+  });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_D, KeyEventType::HELD, [this]() {
+    glm::vec3 dir{
+        glm::normalize(glm::cross(camera_.camera_front_, camera_.camera_up_))};
+    dir.y = 0.0f;
+    dir *= kCameraMoveMultiplier;
+    camera_.MoveCamera(dir);
+  });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_SPACE, KeyEventType::HELD,
+                                [this]() {
+                                  glm::vec3 dir{camera_.camera_up_};
+                                  dir *= kCameraVertMoveMultiplier;
+                                  camera_.MoveCamera(dir);
+                                });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_LSHIFT, KeyEventType::HELD,
+                                [this]() {
+                                  glm::vec3 dir{-camera_.camera_up_};
+                                  dir *= kCameraVertMoveMultiplier;
+                                  camera_.MoveCamera(dir);
+                                });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_RSHIFT, KeyEventType::HELD,
+                                [this]() {
+                                  glm::vec3 dir{-camera_.camera_up_};
+                                  dir *= kCameraVertMoveMultiplier;
+                                  camera_.MoveCamera(dir);
+                                });
+  RegisterMouseMotionEventCallback(
+      [this](SDL_MouseMotionEvent&, glm::ivec2 /* pos */, glm::ivec2 delta) {
+        if (renderer_.IsCursorDisabled()) {
+          camera_.RotateCamera(
+              static_cast<double>(delta.x) / kCameraRotationFactor,
+              -static_cast<double>(delta.y) / kCameraRotationFactor);
+        }
+      });
+  RegisterWindowEventCallback([this](SDL_WindowEvent& ev) {
+    switch (ev.event) {
+      case SDL_WINDOWEVENT_RESIZED:
+        camera_.UpdateProjection(glm::ivec2(ev.data1, ev.data2));
+    }
+  });
+  RegisterKeyboardEventCallback(
+      SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
+        nanosuits_.push_back(_3D::Model(renderer_, fs_, "nanosuit"));
+        nanosuits_.back().Move(glm::ballRand(kNanosuitMoveRandRadius));
+        nanosuits_.back().Scale(kNanosuitScale);
+      });
 }
 
-
 void CameraTest::Setup() {
-	cube_ = _3D::Model(renderer_, fs_, "cube");
-	cube_.Move(kCubePosition);
-	cube_.Scale(kCubeScale);
+  log_module_ = log_trace_.RegisterModule("CameraTest").value();
+  t_camera_pitch_ =
+      log_telem_.Create("Camera/Pitch", -90.0, -100, 90, 100, true).value();
+  t_camera_yaw_ =
+      log_telem_.Create("Camera/Yaw", 0, -1, 360, 370, true).value();
+  t_camera_x_ =
+      log_telem_.Create("Camera/Pos/X", -10, -10000, 10, 10000, true).value();
+  t_camera_y_ =
+      log_telem_.Create("Camera/Pos/Y", -10, -10000, 10, 10000, true).value();
+  t_camera_z_ =
+      log_telem_.Create("Camera/Pos/Z", -10, -10000, 10, 10000, true).value();
+  //  cube_ = _3D::Model(renderer_, fs_, "cube");
+  //  cube_.Move(kCubePosition);
+  //  cube_.Scale(kCubeScale);
 
-	axes_ = _3D::Model(renderer_, fs_, "axes");
-	axes_.Scale(kAxesScale);
+  axes_ = _3D::Model(renderer_, fs_, "axes");
+  axes_.Scale(kAxesScale);
 
-	nanosuits_.push_back(_3D::Model(renderer_, fs_, "nanosuit"));
-	nanosuits_.back().Move(glm::vec3(1.0, 0.0, 0.0));
-	nanosuits_.back().Scale(kNanosuitScale);
+  //  nanosuits_.push_back(_3D::Model(renderer_, fs_, "nanosuit"));
+  //  nanosuits_.back().Move(glm::vec3(1.0, 0.0, 0.0));
+  //  nanosuits_.back().Scale(kNanosuitScale);
 
-	grid_ = _3D::Model(renderer_, fs_, "grid");
-	grid_.Rotate(kGridRotation);
+  grid_ = _3D::Model(renderer_, fs_, "grid");
+  grid_.Rotate(kGridRotation);
 
-	camera_.Init(renderer_.GetWindowSize());
+  camera_.Init(renderer_.GetWindowSize());
+  //  skybox_ = _3D::Skybox(renderer_, fs_, "nebula");
+}
 
-	skybox_ = _3D::Skybox(renderer_, fs_, "nebula");
+inline double WrapAngle(double angle) {
+  return angle - 360.0 * floor(angle / 360.0);
 }
 
 void CameraTest::Render() {
-	camera_.DrawModel(renderer_, skybox_, ShaderPrograms::SKYBOX);
+  t_camera_pitch_.Add(camera_.pitch_);
+  t_camera_yaw_.Add(WrapAngle(camera_.yaw_));
+  t_camera_x_.Add(camera_.camera_pos_.x);
+  t_camera_y_.Add(camera_.camera_pos_.y);
+  t_camera_z_.Add(camera_.camera_pos_.z);
 
-	cube_.Rotate(kCubeRotation);
-	renderer_.SetColor(ShaderPrograms::DEFAULT, kCubeColor);
-	camera_.DrawModel(renderer_, cube_, ShaderPrograms::DEFAULT);
+  //  camera_.DrawModel(renderer_, skybox_, ShaderPrograms::SKYBOX);
 
-	renderer_.SetColor(ShaderPrograms::DEFAULT, kGridColor);
-	camera_.DrawModel(renderer_, grid_, ShaderPrograms::DEFAULT);
+  //  cube_.Rotate(kCubeRotation);
+  //  renderer_.SetColor(ShaderPrograms::DEFAULT, kCubeColor);
+  //  camera_.DrawModel(renderer_, cube_, ShaderPrograms::DEFAULT);
 
-	renderer_.SetColor(ShaderPrograms::DEFAULT, kNanosuitColor);
-	for(auto& i : nanosuits_) {
-		camera_.DrawModel(renderer_, i, ShaderPrograms::DEFAULT);
-	}
-	renderer_.DisableDepthTesting();
+  renderer_.SetColor(ShaderPrograms::DEFAULT, kGridColor);
+  camera_.DrawModel(renderer_, grid_, ShaderPrograms::DEFAULT);
 
-	const glm::mat4 view { camera_.view_ };
-	const glm::mat4 projection { camera_.projection_ };
+  //  renderer_.SetColor(ShaderPrograms::DEFAULT, kNanosuitColor);
+  //  for (auto& i : nanosuits_) {
+  //    camera_.DrawModel(renderer_, i, ShaderPrograms::DEFAULT);
+  //  }
+  renderer_.DisableDepthTesting();
 
-	camera_.view_ = glm::mat4(glm::mat3(view));
-	camera_.projection_ = glm::mat4(1.0);
+  const glm::mat4 view{camera_.view_};
+  const glm::mat4 projection{camera_.projection_};
 
-	renderer_.SetColor(ShaderPrograms::DEFAULT, kAxesColor);
-	camera_.DrawModel(renderer_, axes_, ShaderPrograms::DEFAULT);
+  camera_.view_ = glm::mat4(glm::mat3(view));
+  camera_.projection_ = glm::mat4(1.0);
 
-	camera_.view_ = view;
-	camera_.projection_ = projection;
-	renderer_.EnableDepthTesting();
+  renderer_.SetColor(ShaderPrograms::DEFAULT, kAxesColor);
+  camera_.DrawModel(renderer_, axes_, ShaderPrograms::DEFAULT);
+
+  camera_.view_ = view;
+  camera_.projection_ = projection;
+  renderer_.EnableDepthTesting();
 }
 
-void CameraTest::Tick() {
+void CameraTest::Tick() {}
 
-}
-
-} /* namespace CameraTest */
+}  // namespace camera_test

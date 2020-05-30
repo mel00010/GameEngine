@@ -20,66 +20,45 @@
 #ifndef SRC_WINDOWMANAGER_HPP_
 #define SRC_WINDOWMANAGER_HPP_
 
-#include "Util/Crtp.hpp"
+#include <string>
 
 #include <glm/glm.hpp>
-#include <string>
+
+#include "Util/Crtp.hpp"
 
 namespace game_engine {
 
-template <typename Derived> class WindowManager : Crtp<WindowManager, Derived> {
-	public:
-		void Init(std::string program_name) {
-			this->Underlying().Init(program_name);
-		}
-		static glm::ivec2 GetWindowSize() {
-			return Derived::GetWindowSize();
-		}
+template <typename Derived>
+class WindowManager : Crtp<WindowManager, Derived> {
+ public:
+  void Init(std::string program_name) { this->Underlying().Init(program_name); }
+  static glm::ivec2 GetWindowSize() { return Derived::GetWindowSize(); }
 
-		void SetFullscreen(bool enable = false) {
-			this->Underlying().SetFullscreen(enable);
-		}
-		bool IsFullscreen() {
-			return this->Underlying().IsFullscreen();
-		}
-		void ToggleFullscreen() {
-			this->Underlying().ToggleFullscreen();
-		}
+  void SetFullscreen(bool enable = false) {
+    this->Underlying().SetFullscreen(enable);
+  }
+  bool IsFullscreen() { return this->Underlying().IsFullscreen(); }
+  void ToggleFullscreen() { this->Underlying().ToggleFullscreen(); }
 
-		void SetVSyncEnabled(bool enable = false) {
-			this->Underlying().SetVSyncEnabled(enable);
-		}
-		bool IsVSyncEnabled() {
-			return this->Underlying().IsVSyncEnabled();
-		}
-		void EnableVSync() {
-			this->Underlying().EnableVSync();
-		}
-		void DisableVSync() {
-			this->Underlying().DisableVSync();
-		}
-		void ToggleVSync() {
-			this->Underlying().ToggleVSync();
-		}
+  void SetVSyncEnabled(bool enable = false) {
+    this->Underlying().SetVSyncEnabled(enable);
+  }
+  bool IsVSyncEnabled() { return this->Underlying().IsVSyncEnabled(); }
+  void EnableVSync() { this->Underlying().EnableVSync(); }
+  void DisableVSync() { this->Underlying().DisableVSync(); }
+  void ToggleVSync() { this->Underlying().ToggleVSync(); }
 
-		void Quit() {
-			this->Underlying().Quit();
-		}
-		bool IsCursorDisabled() {
-			return this->Underlying().IsCursorDisabled();
-		}
-		void DisableCursor(bool disabled = true) {
-			this->Underlying().DisableCursor(disabled);
-		}
-		bool RoggleCursor() {
-			return this->Underlying().ToggleCursor();
-		}
+  void Quit() { this->Underlying().Quit(); }
+  bool IsCursorDisabled() { return this->Underlying().IsCursorDisabled(); }
+  void DisableCursor(bool disabled = true) {
+    this->Underlying().DisableCursor(disabled);
+  }
+  bool RoggleCursor() { return this->Underlying().ToggleCursor(); }
 
-		void RedrawWindowBounds(glm::ivec2 size) {
-			this->Underlying().RedrawWindowBounds(size);
-		}
+  void RedrawWindowBounds(glm::ivec2 size) {
+    this->Underlying().RedrawWindowBounds(size);
+  }
 };
-
 
 } /* namespace game_engine */
 

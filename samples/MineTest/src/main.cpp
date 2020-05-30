@@ -20,6 +20,4 @@
 
 #include "MineTest.hpp"
 
-int main(int argc, char** argv) {
-	mine_test::MineTest::Main(&argc, &argv);
-}
+int main(int argc, char** argv) { mine_test::MineTest::Main(&argc, &argv); }

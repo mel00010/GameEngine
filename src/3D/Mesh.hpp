@@ -22,66 +22,70 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 
-#include "Primitive.hpp"
-#include "Texture.hpp"
-#include "Vertex.hpp"
-
-#include <Renderer.hpp>
-#include <VboHandle.hpp>
-
-#include <vector>
-#include <GL/glew.h>
 #include <utility>
+#include <vector>
 
+#include <GL/glew.h>
+
+#include "3D/Primitive.hpp"
+#include "3D/Texture.hpp"
+#include "Renderer.hpp"
+#include "VboHandle.hpp"
+#include "Vertex.hpp"
 
 namespace game_engine {
 namespace _3D {
 
 class Mesh {
-	public:
-		Mesh() noexcept = default;
-		Mesh& operator=(const Mesh& rhs) = default;
-		Mesh(const Mesh& rhs) = default;
-		Mesh& operator=(Mesh&& rhs) noexcept = default;
-		Mesh(Mesh&& rhs) noexcept = default;
-		~Mesh() noexcept = default;
+ public:
+  Mesh() noexcept = default;
+  Mesh& operator=(const Mesh& rhs) = default;
+  Mesh(const Mesh& rhs) = default;
+  Mesh& operator=(Mesh&& rhs) noexcept = default;
+  Mesh(Mesh&& rhs) noexcept = default;
+  ~Mesh() noexcept = default;
 
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const std::vector<Texture>& textures,
-				const Primitive mode = Primitive::TRIANGLES);
+  Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices,
+       const std::vector<Texture>& textures,
+       const Primitive mode = Primitive::TRIANGLES);
 
-		template<typename Renderer> void Init(Renderer& renderer, const ShaderPrograms shaders);
-		template<typename Renderer> void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
+  template <typename Renderer>
+  void Init(Renderer& renderer, const ShaderPrograms shaders);
+  template <typename Renderer>
+  void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
 
-		void swap(Mesh& other) noexcept	{
-			using std::swap;
-			swap(other.vertices_, vertices_);
-			swap(other.indices_, indices_);
-			swap(other.textures_, textures_);
-			swap(other.handle_, handle_);
-			swap(other.texture_strings_, texture_strings_);
-			swap(other.mode_, mode_);
-		}
-	public:
-		/*  Mesh Data  */
-		std::vector<Vertex> vertices_ { };
-		std::vector<GLuint> indices_ { };
-		std::vector<Texture> textures_ { };
+  void swap(Mesh& other) noexcept {
+    using std::swap;
+    swap(other.vertices_, vertices_);
+    swap(other.indices_, indices_);
+    swap(other.textures_, textures_);
+    swap(other.handle_, handle_);
+    swap(other.texture_strings_, texture_strings_);
+    swap(other.mode_, mode_);
+  }
 
-	protected:
-		VboHandle handle_ { };
-		std::vector<std::string> texture_strings_ { };
-		Primitive mode_ { Primitive::TRIANGLES };
+ public:
+  /*  Mesh Data  */
+  std::vector<Vertex> vertices_{};
+  std::vector<GLuint> indices_{};
+  std::vector<Texture> textures_{};
 
-		friend std::ostream& operator<<(std::ostream& os, const Mesh& m);
+ protected:
+  VboHandle handle_{};
+  std::vector<std::string> texture_strings_{};
+  Primitive mode_{Primitive::TRIANGLES};
+
+  friend std::ostream& operator<<(std::ostream& os, const Mesh& m);
+
+ private:
+  logging::Log log_ = logging::Log("main");
 };
 
-inline void swap(Mesh& a, Mesh& b) noexcept {
-	a.swap(b);
-}
+inline void swap(Mesh& a, Mesh& b) noexcept { a.swap(b); }
 
 } /* namespace _3D */
 } /* namespace game_engine */
 
-#include "Mesh.tpp"
+#include "3D/Mesh.tpp"
 
 #endif /* SRC_3D_MESH_HPP_ */

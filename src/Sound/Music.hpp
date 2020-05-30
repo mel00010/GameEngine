@@ -20,61 +20,57 @@
 #ifndef SRC_SOUND_MUSIC_HPP_
 #define SRC_SOUND_MUSIC_HPP_
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-
-#include <cmrc/cmrc.hpp>
-
 #include <string>
 #include <utility>
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+#include <cmrc/cmrc.hpp>
+
+#include "LoggerV2/Log.hpp"
+
 namespace game_engine {
-namespace Sound {
+namespace sound {
 
 class Music {
-	public:
-		Music() = default;
-		Music& operator=(const Music &rhs) = default;
-		Music(const Music &rhs) = default;
-		Music& operator=(Music &&rhs) noexcept = default;
-		Music(Music &&rhs) noexcept = default;
+ public:
+  Music() = default;
+  Music& operator=(const Music& rhs) = default;
+  Music(const Music& rhs) = default;
+  Music& operator=(Music&& rhs) noexcept = default;
+  Music(Music&& rhs) noexcept = default;
 
-		explicit Music(const cmrc::file file) {
-			LoadMusic(file);
-		}
-		~Music() noexcept;
+  explicit Music(const cmrc::file file) { LoadMusic(file); }
+  ~Music() noexcept;
 
-		Mix_Music* LoadMusic(const cmrc::file file);
+  Mix_Music* LoadMusic(const cmrc::file file);
 
+ public:
+  void Play(const size_t times = 1);
+  void Pause();
+  void Resume();
+  void Halt();
+  int SetVolume(const int volume);
+  bool IsPaused();
+  bool IsPlaying();
 
-	public:
-		void Play(const size_t times = 1);
-		void Pause();
-		void Resume();
-		void Halt();
-		int  SetVolume(const int volume);
-		bool IsPaused();
-		bool IsPlaying();
+ public:
+  std::string path_ = "";
+  Mix_Music* music_ = nullptr;
 
+  void swap(Music& other) noexcept {
+    using std::swap;
+    swap(other.path_, path_);
+    swap(other.music_, music_);
+  }
 
-	public:
-		std::string path_ = "";
-		Mix_Music* music_ = nullptr;
-
-		void swap(Music &other) noexcept {
-			using std::swap;
-			swap(other.path_, path_);
-			swap(other.music_, music_);
-		}
+ private:
+  logging::Log log_ = logging::Log("main");
 };
 
-inline void swap(Music &a, Music &b) noexcept {
-	a.swap(b);
-}
+inline void swap(Music& a, Music& b) noexcept { a.swap(b); }
 
-} /* namespace Sound */
+}  // namespace sound
 } /* namespace game_engine */
-
-
 
 #endif /* SRC_SOUND_MUSIC_HPP_ */

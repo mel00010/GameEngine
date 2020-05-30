@@ -20,6 +20,4 @@
 
 #include "SoundTest.hpp"
 
-int main(int argc, char** argv) {
-	sound_test::SoundTest::Main(&argc, &argv);
-}
+int main(int argc, char** argv) { sound_test::SoundTest::Main(&argc, &argv); }

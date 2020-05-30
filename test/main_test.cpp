@@ -18,8 +18,8 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 /**
  * @file test/main_test.cpp
  * @brief The main test file of GameEngine
@@ -34,5 +34,4 @@
  * @param argv
  * @return
  */
-int main(int argc, char **argv); // LCOV_EXCL_LINE
-
+int main(int argc, char** argv);  // LCOV_EXCL_LINE

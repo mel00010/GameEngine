@@ -25,103 +25,132 @@
 /**
  * @brief Enable the usual bitwise operators on an enum class
  */
-#define ENABLE_BITMASK_OPERATORS(x)								\
-template<> struct game_engine::util::EnableBitMaskOperators<x> {	\
-		static const bool enable = true;						\
-}
+#define ENABLE_BITMASK_OPERATORS(x)                     \
+  template <>                                           \
+  struct game_engine::util::EnableBitMaskOperators<x> { \
+    static const bool enable = true;                    \
+  }
 
 namespace game_engine {
 namespace util {
 
 /**
- * @brief Struct defining whether bitwise operators should be defined on an enum class
+ * @brief Struct defining whether bitwise operators should be defined on an enum
+ * class
  */
-template<typename Enumerator>
+template <typename Enumerator>
 struct EnableBitMaskOperators {
-	static const bool enable = false;
+  static const bool enable = false;
 };
 
 /**
- * @brief OR operator overload for a generic enum, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
- * @param lhs
- * @param rhs
- * @return
- */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator|(Enumerator lhs, Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (static_cast<underlying>(lhs) | static_cast<underlying>(rhs));
-}
-
-/**
- * @brief AND operator overload for a generic enum, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
- * @param lhs
- * @param rhs
- * @return
- */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator&(Enumerator lhs, Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (static_cast<underlying>(lhs) & static_cast<underlying>(rhs));
-}
-
-/**
- * @brief XOR operator overload for a generic enum class, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
+ * @brief OR operator overload for a generic enum, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
  * @param lhs An enum of class Enumerator
  * @param rhs An enum of class Enumerator
- * @return Returns
+ * @return Returns lhs | rhs
  */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator^(Enumerator lhs, Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (static_cast<underlying>(lhs) ^ static_cast<underlying>(rhs));
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator|(Enumerator lhs, Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(static_cast<underlying>(lhs) |
+                                 static_cast<underlying>(rhs));
 }
 
 /**
- * @brief NOT operator overload for a generic enum, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
- * @param rhs
- * @return
- */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator~(Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (~static_cast<underlying>(rhs));
-}
-
-/**
- * @brief OR equal operator overload for a generic enum, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
- * @param lhs
- * @param rhs
- * @return
- */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator|=(Enumerator lhs, Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (static_cast<underlying>(lhs) |= static_cast<underlying>(rhs));
-}
-
-/**
- * @brief AND equal operator overload for a generic enum, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
- * @param lhs
- * @param rhs
- * @return
- */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator&=(Enumerator lhs, Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (static_cast<underlying>(lhs) &= static_cast<underlying>(rhs));
-}
-
-/**
- * @brief XOR equal operator overload for a generic enum class, defined iff EnableBitMaskOperators<Enumerator>::enable is true.
+ * @brief AND operator overload for a generic enum, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
  * @param lhs An enum of class Enumerator
  * @param rhs An enum of class Enumerator
- * @return Returns
+ * @return Returns lhs & rhs
  */
-template<typename Enumerator>
-typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable, Enumerator>::type operator^=(Enumerator lhs, Enumerator rhs) {
-	using underlying = typename std::underlying_type<Enumerator>::type;
-	return static_cast<Enumerator> (static_cast<underlying>(lhs) ^= static_cast<underlying>(rhs));
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator&(Enumerator lhs, Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(static_cast<underlying>(lhs) &
+                                 static_cast<underlying>(rhs));
+}
+
+/**
+ * @brief XOR operator overload for a generic enum class, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
+ * @param lhs An enum of class Enumerator
+ * @param rhs An enum of class Enumerator
+ * @return Returns lhs ^ rhs
+ */
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator^(Enumerator lhs, Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(static_cast<underlying>(lhs) ^
+                                 static_cast<underlying>(rhs));
+}
+
+/**
+ * @brief NOT operator overload for a generic enum, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
+ * @param rhs An enum of class Enumerator
+ * @return Returns ~rhs
+ */
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator~(Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(~static_cast<underlying>(rhs));
+}
+
+/**
+ * @brief OR equal operator overload for a generic enum, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
+ * @param lhs An enum of class Enumerator
+ * @param rhs An enum of class Enumerator
+ * @return Returns lhs |= rhs
+ */
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator|=(Enumerator lhs, Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(static_cast<underlying>(lhs) |=
+                                 static_cast<underlying>(rhs));
+}
+
+/**
+ * @brief AND equal operator overload for a generic enum, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
+ * @param lhs An enum of class Enumerator
+ * @param rhs An enum of class Enumerator
+ * @return Returns lhs &= rhs
+ */
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator&=(Enumerator lhs, Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(static_cast<underlying>(lhs) &=
+                                 static_cast<underlying>(rhs));
+}
+
+/**
+ * @brief XOR equal operator overload for a generic enum class, defined iff
+ * EnableBitMaskOperators<Enumerator>::enable is true.
+ * @param lhs An enum of class Enumerator
+ * @param rhs An enum of class Enumerator
+ * @return Returns lhs ^= rhs
+ */
+template <typename Enumerator>
+typename std::enable_if<EnableBitMaskOperators<Enumerator>::enable,
+                        Enumerator>::type
+operator^=(Enumerator lhs, Enumerator rhs) {
+  using underlying = typename std::underlying_type<Enumerator>::type;
+  return static_cast<Enumerator>(static_cast<underlying>(lhs) ^=
+                                 static_cast<underlying>(rhs));
 }
 
 } /* namespace util */

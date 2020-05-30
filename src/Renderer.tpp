@@ -22,8 +22,6 @@
 
 #include "Renderer.hpp"
 
-namespace game_engine {
-
-} /* namespace game_engine */
+namespace game_engine {} /* namespace game_engine */
 
 #endif /* SRC_RENDERER_TPP_ */

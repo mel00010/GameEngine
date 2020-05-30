@@ -20,16 +20,17 @@
 #ifndef SRC_UTIL_RNG_HPP_
 #define SRC_UTIL_RNG_HPP_
 
+#include <stdint.h>
+
 #include <limits>
 #include <random>
-#include <stdint.h>
 
 namespace game_engine {
 namespace util {
 
 class Rng {
-	public:
-		static uint64_t get();
+ public:
+  static uint64_t get();
 };
 
 } /* namespace util */

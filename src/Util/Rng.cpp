@@ -18,19 +18,16 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "Rng.hpp"
+#include "Util/Rng.hpp"
 
 namespace game_engine {
 namespace util {
 
 uint64_t Rng::get() {
-	static std::random_device rd;
-	static std::mt19937_64 rng(rd());
-	return rng();
+  static std::random_device rd;
+  static std::mt19937_64 rng(rd());
+  return rng();
 }
 
 } /* namespace util */
 } /* namespace game_engine */
-
-
-

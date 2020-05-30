@@ -20,6 +20,4 @@
 
 #include "SlangTest.hpp"
 
-int main(int argc, char** argv) {
-	slang_test::SlangTest::Main(&argc, &argv);
-}
+int main(int argc, char** argv) { slang_test::SlangTest::Main(&argc, &argv); }

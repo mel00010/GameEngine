@@ -26,8 +26,8 @@ namespace mine_test {
 namespace blocks {
 
 class Cobblestone : public Block<Cobblestone, Cobblestone> {
-	public:
-		static constexpr std::string_view name = "Cobblestone";
+ public:
+  static constexpr std::string_view name = "Cobblestone";
 };
 
 } /* namespace blocks */

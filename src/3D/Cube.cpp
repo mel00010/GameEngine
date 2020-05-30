@@ -18,38 +18,34 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "Cube.hpp"
+#include "3D/Cube.hpp"
 
 namespace game_engine {
 namespace _3D {
 
 std::ostream& operator<<(std::ostream& os, const Cube& m) {
-	os << "Cube {" << std::endl << push_indent;
-	os << "Model model_ = " << m.model_ << std::endl;
-	os << pop_indent << "}";
-	return os;
+  os << "Cube {" << std::endl;
+  os << "Model model_ = " << m.model_ << std::endl;
+  os << "}";
+  return os;
 }
 
-
-
 std::ostream& operator<<(std::ostream& os, const Cube::CubeMesh& m) {
-	os << "Cube::Mesh {" << push_indent << std::endl;
-	os << "std::vector<Vertex> vertices_ = [ " << push_indent << std::endl;
-	for (auto& i : m.vertices_) {
-		os <<  i << ", " << std::endl;
-	}
-	os << pop_indent << "]" << std::endl;
-	os << "std::vector<GLuint> indices_ = [ " << push_indent << std::endl;
-	for (auto& i : m.indices_) {
-		os << i << ", " << std::endl;
-	}
-	os << pop_indent << "]" << std::endl;
-	os << "VboHandle handle_ = " << m.handle_ << std::endl;
-	os << pop_indent << "}";
-	return os;
+  os << "Cube::Mesh {" << std::endl;
+  os << "std::vector<Vertex> vertices_ = [ " << std::endl;
+  for (auto& i : m.vertices_) {
+    os << i << ", " << std::endl;
+  }
+  os << "]" << std::endl;
+  os << "std::vector<GLuint> indices_ = [ " << std::endl;
+  for (auto& i : m.indices_) {
+    os << i << ", " << std::endl;
+  }
+  os << "]" << std::endl;
+  os << "VboHandle handle_ = " << m.handle_ << std::endl;
+  os << "}";
+  return os;
 }
 
 } /* namespace _3D */
 } /* namespace game_engine */
-
-

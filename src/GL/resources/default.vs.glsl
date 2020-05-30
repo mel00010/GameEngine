@@ -16,30 +16,30 @@ layout(location = 13) in vec2 tex_coord6;
 layout(location = 14) in vec2 tex_coord7;
 layout(location = 15) in float fog_coord;
 
-//out vec3 Normal;
+// out vec3 Normal;
 out vec4 Color;
-//out vec4 Secondary_color;
-//out vec3 Tangent;
-//out vec3 Bitangent;
+// out vec4 Secondary_color;
+// out vec3 Tangent;
+// out vec3 Bitangent;
 out vec2 Tex_coord0;
-//out vec2 Tex_coord1;
-//out vec2 Tex_coord2;
-//out vec2 Tex_coord3;
-//out vec2 Tex_coord4;
-//out vec2 Tex_coord5;
-//out vec2 Tex_coord6;
-//out vec2 Tex_coord7;
-//out float Fog_coord;
+// out vec2 Tex_coord1;
+// out vec2 Tex_coord2;
+// out vec2 Tex_coord3;
+// out vec2 Tex_coord4;
+// out vec2 Tex_coord5;
+// out vec2 Tex_coord6;
+// out vec2 Tex_coord7;
+// out float Fog_coord;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-	// note that we read the multiplication from right to left
-	gl_Position = projection * view * model * vec4(position, 1.0);
-	
-	Color = color;
-	//Secondary_color = secondary_color;
-	Tex_coord0 = tex_coord0;
+  // note that we read the multiplication from right to left
+  gl_Position = projection * view * model * vec4(position, 1.0);
+
+  Color = color;
+  // Secondary_color = secondary_color;
+  Tex_coord0 = tex_coord0;
 }

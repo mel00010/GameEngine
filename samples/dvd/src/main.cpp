@@ -20,6 +20,4 @@
 
 #include "DvdCore.hpp"
 
-int main(int argc, char** argv) {
-	dvd::DvdCore::Main(&argc, &argv);
-}
+int main(int argc, char** argv) { dvd::DvdCore::Main(&argc, &argv); }

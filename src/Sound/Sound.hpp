@@ -20,55 +20,53 @@
 #ifndef SRC_SOUND_SOUND_HPP_
 #define SRC_SOUND_SOUND_HPP_
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-
-#include <cmrc/cmrc.hpp>
-
 #include <string>
 #include <utility>
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+#include <cmrc/cmrc.hpp>
+
+#include "LoggerV2/Log.hpp"
 
 namespace game_engine {
-namespace Sound {
+namespace sound {
 
 class Sound {
-	public:
-		Sound& operator=(const Sound &rhs) = default;
-		Sound(const Sound &rhs) = default;
-		Sound& operator=(Sound &&rhs) noexcept = default;
-		Sound(Sound &&rhs) noexcept = default;
-		Sound() = default;
-		explicit Sound(const cmrc::file file) {
-			LoadSound(file);
-		}
-		~Sound() noexcept;
+ public:
+  Sound& operator=(const Sound& rhs) = default;
+  Sound(const Sound& rhs) = default;
+  Sound& operator=(Sound&& rhs) noexcept = default;
+  Sound(Sound&& rhs) noexcept = default;
+  Sound() = default;
+  explicit Sound(const cmrc::file file) { LoadSound(file); }
+  ~Sound() noexcept;
 
-		Mix_Chunk* LoadSound(const cmrc::file file);
+  Mix_Chunk* LoadSound(const cmrc::file file);
 
+ public:
+  void Play(const size_t times = 1);
+  int SetVolume(const int volume);
 
-	public:
-		void Play(const size_t times = 1);
-		int SetVolume(const int volume);
+  void swap(Sound& other) noexcept {
+    using std::swap;
+    swap(other.path_, path_);
+    swap(other.channel_, channel_);
+    swap(other.chunk_, chunk_);
+  }
 
-		void swap(Sound &other) noexcept {
-			using std::swap;
-			swap(other.path_, path_);
-			swap(other.channel_, channel_);
-			swap(other.chunk_, chunk_);
-		}
-	public:
-		std::string path_ = "";
-		int channel_ = -2;
-		Mix_Chunk* chunk_ = nullptr;
+ public:
+  std::string path_ = "";
+  int channel_ = -2;
+  Mix_Chunk* chunk_ = nullptr;
+
+ private:
+  logging::Log log_ = logging::Log("main");
 };
 
-inline void swap(Sound &a, Sound &b) noexcept {
-	a.swap(b);
-}
+inline void swap(Sound& a, Sound& b) noexcept { a.swap(b); }
 
-} /* namespace Sound */
+}  // namespace sound
 } /* namespace game_engine */
-
 
 #endif /* SRC_SOUND_SOUND_HPP_ */

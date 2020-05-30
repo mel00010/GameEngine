@@ -33,32 +33,32 @@ namespace util {
  * template<typename Derived>
  * class Base : CRTP<Derived, Base> { ...
  */
-template<template<typename...> class Base, typename Derived, typename... Base_Args>
+template <template <typename...> class Base, typename Derived,
+          typename... Base_Args>
 struct Crtp {
-	public:
-		/**
-		 * @brief Get a reference to the derived class Derived
-		 * @return Returns a reference to the derived class Derived
-		 */
-		Derived& Underlying() {
-			return static_cast<Derived&>(*this);
-		}
-		/**
-		 * @brief Get a const reference to the derived class Derived
-		 * @return Returns a const reference to the derived class Derived
-		 */
-		Derived const& Underlying() const {
-			return static_cast<Derived const&>(*this);
-		}
-	private:
-		Crtp() noexcept = default;
-		Crtp& operator=(const Crtp& rhs) = default;
-		Crtp(const Crtp& rhs) = default;
-		Crtp& operator=(Crtp&& rhs) noexcept = default;
-		Crtp(Crtp&& rhs) noexcept = default;
-		~Crtp() noexcept = default;
+ public:
+  /**
+   * @brief Get a reference to the derived class Derived
+   * @return Returns a reference to the derived class Derived
+   */
+  Derived& Underlying() { return static_cast<Derived&>(*this); }
+  /**
+   * @brief Get a const reference to the derived class Derived
+   * @return Returns a const reference to the derived class Derived
+   */
+  Derived const& Underlying() const {
+    return static_cast<Derived const&>(*this);
+  }
 
-		friend Base<Derived, Base_Args...>;
+ private:
+  Crtp() noexcept = default;
+  Crtp& operator=(const Crtp& rhs) = default;
+  Crtp(const Crtp& rhs) = default;
+  Crtp& operator=(Crtp&& rhs) noexcept = default;
+  Crtp(Crtp&& rhs) noexcept = default;
+  ~Crtp() noexcept = default;
+
+  friend Base<Derived, Base_Args...>;
 };
 
 } /* namespace util */

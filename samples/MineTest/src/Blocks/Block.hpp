@@ -22,6 +22,7 @@
 
 #include <3D/Cube.hpp>
 #include <cmrc/cmrc.hpp>
+
 #include "../../../../src/Util/Crtp.hpp"
 
 CMRC_DECLARE(blocks);
@@ -31,25 +32,24 @@ using namespace game_engine;
 namespace mine_test {
 namespace blocks {
 
-template<class Derived, class Renderer>
-class Block : public Crtp<Block, Derived, Renderer>, public _3D::Transformations {
-	public:
-		using Renderer_t = Renderer;
-		Block(Renderer_t& _renderer) : renderer_(_renderer) {
-			name_ = std::string(this->underlying().name_);
-		}
+template <class Derived, class Renderer>
+class Block : public Crtp<Block, Derived, Renderer>,
+              public _3D::Transformations {
+ public:
+  using Renderer_t = Renderer;
+  Block(Renderer_t& _renderer) : renderer_(_renderer) {
+    name_ = std::string(this->underlying().name_);
+  }
 
-		void init() {
-			cube_.LoadCube(renderer_, fs_, name_, ShaderPrograms::CUBE);
-		}
+  void init() { cube_.LoadCube(renderer_, fs_, name_, ShaderPrograms::CUBE); }
 
-	protected:
-		cmrc::embedded_filesystem fs_ { cmrc::blocks::get_filesystem() };
+ protected:
+  cmrc::embedded_filesystem fs_{cmrc::blocks::get_filesystem()};
 
-		Renderer_t& renderer_;
-		std::string name_;
+  Renderer_t& renderer_;
+  std::string name_;
 
-		_3D::Cube cube_;
+  _3D::Cube cube_;
 };
 
 } /* namespace blocks */

@@ -18,66 +18,69 @@
  * along with GameEngineMin.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "EmbeddedIOStream.hpp"
-
-#include <Log.hpp>
+#include "3D/EmbeddedIOStream.hpp"
 
 #include <iterator>
+
+#include "LoggerV2/Log.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-size_t EmbeddedIOStream::Read(void* pvBuffer, size_t pSize, size_t pCount)  {
-//	LOG_D("Reading " << pCount << " items of size " << pSize << " (" << (pSize * pCount) << " bytes) "
-//			<< "from " << file.filename() << " at position " << position);
-	size_t requested_end = position_ + (pSize*pCount);
-	if(requested_end > file_.size()) {
-		requested_end = file_.size();
-	}
-	std::copy(file_.begin() + position_, file_.begin() + requested_end, static_cast<char*>(pvBuffer));
-//	std::string str;
-//	str.assign((char*)pvBuffer, pCount);
-//	LOG_D("Contents of pvBuffer = " << str);
-//	str.assign(file.begin(), pCount);
-//	LOG_D("Contents of file = " << str);
-	size_t old_pos = position_;
-	position_ = requested_end;
-	return (requested_end - old_pos) / pSize;
+size_t EmbeddedIOStream::Read(void* pvBuffer, size_t pSize, size_t pCount) {
+  log_.Debug("Reading {}  items of size  ({} bytes) from {} at position {}.",
+             pCount, pSize, (pSize * pCount), file_.filename(), position_);
+
+  size_t requested_end = position_ + (pSize * pCount);
+  if (requested_end > file_.size()) {
+    requested_end = file_.size();
+  }
+  std::copy(file_.begin() + position_, file_.begin() + requested_end,
+            static_cast<char*>(pvBuffer));
+  //	std::string str;
+  //	str.assign((char*)pvBuffer, pCount);
+  //	log_.Debug("Contents of pvBuffer = {}", str);
+  //	str.assign(file.begin(), pCount);
+  //	log_.Debug("Contents of file = {}", str);
+  size_t old_pos = position_;
+  position_ = requested_end;
+  return (requested_end - old_pos) / pSize;
 }
-size_t EmbeddedIOStream::Write(__attribute__((unused))const void* pvBuffer, __attribute__((unused))size_t pSize, __attribute__((unused))size_t pCount)  {
-//	LOG_E("Writing to file " << file.filename());
-	return 0;
+size_t EmbeddedIOStream::Write(__attribute__((unused)) const void* pvBuffer,
+                               __attribute__((unused)) size_t pSize,
+                               __attribute__((unused)) size_t pCount) {
+  log_.Error("Writing to file {}!  Writing is not enabled!", file_.filename());
+  return 0;
 }
-aiReturn EmbeddedIOStream::Seek(size_t pOffset, aiOrigin pOrigin)  {
-//	LOG_D("Seeking to " << pOffset << " in file " << file.filename());
-	size_t req_pos = position_;
-	switch(pOrigin) {
-		case aiOrigin_SET:
-			req_pos = pOffset;
-			break;
-		case aiOrigin_CUR:
-			req_pos += pOffset;
-			break;
-		case aiOrigin_END:
-			req_pos = file_.size() - pOffset;
-			break;
-		case _AI_ORIGIN_ENFORCE_ENUM_SIZE:
-			break;
-	}
-	if(req_pos > file_.size()) {
-		return aiReturn_FAILURE;
-	}
-	position_ = req_pos;
-	return aiReturn_SUCCESS;
+aiReturn EmbeddedIOStream::Seek(size_t pOffset, aiOrigin pOrigin) {
+  log_.Debug("Seeking to {} in file {}.", pOffset, file_.filename());
+  size_t req_pos = position_;
+  switch (pOrigin) {
+    case aiOrigin_SET:
+      req_pos = pOffset;
+      break;
+    case aiOrigin_CUR:
+      req_pos += pOffset;
+      break;
+    case aiOrigin_END:
+      req_pos = file_.size() - pOffset;
+      break;
+    case _AI_ORIGIN_ENFORCE_ENUM_SIZE:
+      break;
+  }
+  if (req_pos > file_.size()) {
+    return aiReturn_FAILURE;
+  }
+  position_ = req_pos;
+  return aiReturn_SUCCESS;
 }
-size_t EmbeddedIOStream::Tell() const  {
-	return position_;
-}
+size_t EmbeddedIOStream::Tell() const { return position_; }
 size_t EmbeddedIOStream::FileSize() const {
-//	LOG_D("Getting file size of " << file.filename() << ".  File is " << file.size() << " bytes.");
-	return file_.size();
+  log_.Debug("Getting file size of {}.  File is {} bytes.", file_.filename(),
+             file_.size());
+  return file_.size();
 }
 void EmbeddedIOStream::Flush() {}
 
-} /* namespace game_engine */
-} /* namespace _3D */
+}  // namespace _3D
+}  // namespace game_engine

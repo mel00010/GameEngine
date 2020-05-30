@@ -20,21 +20,20 @@
 #ifndef SRC_3D_SCENE_TPP_
 #define SRC_3D_SCENE_TPP_
 
-#include "Scene.hpp"
+#include "3D/Scene.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-template<typename RealRenderer, typename RealWindowManager> void Scene::Draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
-	for (auto& model : models_) {
-		camera_.DrawModel(renderer, model);
-	}
+template <typename RealRenderer, typename RealWindowManager>
+void Scene::Draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
+  for (auto& model : models_) {
+    camera_.DrawModel(renderer, model);
+  }
 }
-}
+}  // namespace _3D
 
-} /* namespace _3D */
+}  // namespace game_engine
 } /* namespace game_engine */
-
-
 
 #endif /* SRC_3D_SCENE_TPP_ */

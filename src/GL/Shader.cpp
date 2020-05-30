@@ -18,67 +18,65 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "Shader.hpp"
-
-#include <Log.hpp>
-
-#include <SDL2/SDL.h>
+#include "GL/Shader.hpp"
 
 #include <fstream>
 #include <streambuf>
 
+#include <SDL2/SDL.h>
+
+#include "LoggerV2/Log.hpp"
+
 namespace game_engine {
 namespace gl {
 
-Shader::Shader(std::string _source, ShaderType _type) :
-		source(_source), type(_type), shader(0), valid(false) {
-}
+Shader::Shader(std::string _source, ShaderType _type)
+    : source(_source), type(_type), shader(0), valid(false) {}
 
 Shader::~Shader() noexcept {
-	if (isValid()) {
-//		LOG_D("shader = " << shader);
-		glDeleteShader(shader);
-	}
-	valid = false;
+  if (isValid()) {
+    log_.CAPTURE(shader);
+    glDeleteShader(shader);
+  }
+  valid = false;
 }
 
 bool Shader::Init() {
-	if (isValid()) {
-		return isValid();
-	}
-	shader = glCreateShader(static_cast<GLenum>(type));
+  if (isValid()) {
+    return isValid();
+  }
+  shader = glCreateShader(static_cast<GLenum>(type));
 
-	const char* c_str = source.c_str();
-	glShaderSource(shader, 1, &c_str, NULL);
-	glCompileShader(shader);
+  const char* c_str = source.c_str();
+  glShaderSource(shader, 1, &c_str, NULL);
+  glCompileShader(shader);
 
-	GLint isCompiled = 0;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+  GLint isCompiled = 0;
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
 
-	if (isCompiled == GL_FALSE) {
-		GLint log_size = 0;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_size);
-		std::string log_contents;
-		log_contents.reserve(log_size);
-		glGetShaderInfoLog(shader, log_contents.capacity(), &log_size, &log_contents[0]);
-		LOG_E("Shader of type " << type << " failed to compile!  Shader compiler log output follows:");
-		LOG_E(log_contents);
-		LOG_E("Shading language version = " << glGetString(GL_SHADING_LANGUAGE_VERSION));
-		glDeleteShader(shader);
-		return (valid = false);
-	}
-	return (valid = true);
+  if (isCompiled == GL_FALSE) {
+    GLint log_size = 0;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_size);
+    std::string log_contents;
+    log_contents.reserve(log_size);
+    glGetShaderInfoLog(shader, log_contents.capacity(), &log_size,
+                       &log_contents[0]);
+    log_.Error(
+        "Shader of type {} failed to compile!  Shader compiler log output "
+        "follows:",
+        type);
+    log_.Error(log_contents);
+    log_.Error("Shading language version = {}",
+               glGetString(GL_SHADING_LANGUAGE_VERSION));
+    glDeleteShader(shader);
+    return (valid = false);
+  }
+  return (valid = true);
 }
 
-bool Shader::isValid() const {
-	return valid;
-}
-ShaderType Shader::getShaderType() {
-	return type;
-}
-GLuint Shader::getShaderHandle() {
-	return shader;
-}
+bool Shader::isValid() const { return valid; }
+ShaderType Shader::getShaderType() { return type; }
+GLuint Shader::getShaderHandle() { return shader; }
 
 } /* namespace gl */
 } /* namespace game_engine */

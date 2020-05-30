@@ -20,27 +20,27 @@
 #ifndef SRC_3D_MESH_TPP_
 #define SRC_3D_MESH_TPP_
 
-#include "Mesh.hpp"
+#include "3D/Mesh.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-template<typename Renderer> void Mesh::Init(Renderer& renderer, const ShaderPrograms shaders) {
-	// TODO Decouple from rendering logic
-	handle_ = renderer.GenerateVbo(shaders, vertices_, indices_);
+template <typename Renderer>
+void Mesh::Init(Renderer& renderer, const ShaderPrograms shaders) {
+  // TODO Decouple from rendering logic
+  handle_ = renderer.GenerateVbo(shaders, vertices_, indices_);
 }
 
-template<typename Renderer> void Mesh::Draw(const Renderer& renderer, const ShaderPrograms shaders) const {
-	for(GLuint i = 0; i < textures_.size(); i++) {
-		renderer.BindTexture(shaders, texture_strings_[i], textures_[i], i);
-	}
+template <typename Renderer>
+void Mesh::Draw(const Renderer& renderer, const ShaderPrograms shaders) const {
+  for (GLuint i = 0; i < textures_.size(); i++) {
+    renderer.BindTexture(shaders, texture_strings_[i], textures_[i], i);
+  }
 
-	// draw mesh
-	renderer.Render(handle_, mode_);
-
-//	LOG_D("this = " << *this);
+  // draw mesh
+  renderer.Render(handle_, mode_);
+  //  log_.CAPTURE(handle_.uuid_);
 }
-
 
 } /* namespace _3D */
 } /* namespace game_engine */

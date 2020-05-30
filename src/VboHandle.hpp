@@ -20,10 +20,10 @@
 #ifndef SRC_VBOHANDLE_HPP_
 #define SRC_VBOHANDLE_HPP_
 
-#include <Util/Uuid.hpp>
-
-#include <Log.hpp>
 #include <utility>
+
+#include "LoggerV2/Log.hpp"
+#include "Util/Uuid.hpp"
 
 namespace game_engine {
 
@@ -31,61 +31,56 @@ namespace game_engine {
  * @brief Handle class for VBO objects
  */
 class VboHandle {
-	public:
-		/**
-		 * @brief UUID of the referenced VBO
-		 */
-		Uuid uuid_ = Uuid(0);
-		/**
-		 * @brief Bool representing the validity of the handle
-		 */
-		bool valid_ = false;
+ public:
+  /**
+   * @brief UUID of the referenced VBO
+   */
+  Uuid uuid_ = Uuid(0);
+  /**
+   * @brief Bool representing the validity of the handle
+   */
+  bool valid_ = false;
 
-	public:
-		VboHandle() : uuid_(), valid_(true) {}
-		VboHandle(Uuid uuid, bool valid) : uuid_(uuid), valid_(valid) {}
+ public:
+  VboHandle() : uuid_(), valid_(true) {}
+  VboHandle(Uuid uuid, bool valid) : uuid_(uuid), valid_(valid) {}
 
-		void swap(VboHandle& other) noexcept {
-			using std::swap;
-			swap(other.uuid_, uuid_);
-			swap(other.valid_, valid_);
-		}
+  void swap(VboHandle& other) noexcept {
+    using std::swap;
+    swap(other.uuid_, uuid_);
+    swap(other.valid_, valid_);
+  }
 };
 
 inline bool operator==(const VboHandle lhs, const VboHandle rhs) {
-	return (lhs.uuid_ == rhs.uuid_) && (lhs.valid_ == rhs.valid_);
+  return (lhs.uuid_ == rhs.uuid_) && (lhs.valid_ == rhs.valid_);
 }
 inline bool operator!=(const VboHandle lhs, const VboHandle rhs) {
-	return !(lhs == rhs);
+  return !(lhs == rhs);
 }
 inline bool operator<(const VboHandle lhs, const VboHandle rhs) {
-	return lhs.uuid_ < rhs.uuid_;
+  return lhs.uuid_ < rhs.uuid_;
 }
 inline bool operator<=(const VboHandle lhs, const VboHandle rhs) {
-	return (lhs == rhs) || (lhs < rhs);
+  return (lhs == rhs) || (lhs < rhs);
 }
 inline bool operator>(const VboHandle lhs, const VboHandle rhs) {
-	return lhs.uuid_ > rhs.uuid_;
+  return lhs.uuid_ > rhs.uuid_;
 }
 inline bool operator>=(const VboHandle lhs, const VboHandle rhs) {
-	return (lhs == rhs) || (lhs > rhs);
+  return (lhs == rhs) || (lhs > rhs);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const VboHandle handle) {
-	os << "VboHandle {" << push_indent << std::endl;
-	os << "Uuid uuid_ = " << handle.uuid_ << std::endl;
-	os << "bool valid_ = " << std::boolalpha << handle.valid_ << std::endl;
-	os << pop_indent << "}";
-	return os;
+  os << "VboHandle {" << std::endl;
+  os << "Uuid uuid_ = " << handle.uuid_ << std::endl;
+  os << "bool valid_ = " << std::boolalpha << handle.valid_ << std::endl;
+  os << "}";
+  return os;
 }
 
-inline void swap(VboHandle& a, VboHandle& b) noexcept {
-	a.swap(b);
-}
+inline void swap(VboHandle& a, VboHandle& b) noexcept { a.swap(b); }
 
 } /* namespace game_engine */
-
-
-
 
 #endif /* SRC_VBOHANDLE_HPP_ */

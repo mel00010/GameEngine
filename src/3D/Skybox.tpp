@@ -20,26 +20,28 @@
 #ifndef SRC_3D_SKYBOX_TPP_
 #define SRC_3D_SKYBOX_TPP_
 
-#include "Skybox.hpp"
+#include "3D/Skybox.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-template<typename Renderer>
-Skybox::Skybox(Renderer& renderer, const cmrc::embedded_filesystem& fs,  const std::string& path) {
-	LoadSkybox(renderer, fs, path);
+template <typename Renderer>
+Skybox::Skybox(Renderer& renderer, const cmrc::embedded_filesystem& fs,
+               const std::string& path) {
+  LoadSkybox(renderer, fs, path);
 }
 
-template<typename Renderer>
-void Skybox::LoadSkybox(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path) {
-	cube_.LoadCube(renderer, fs, path, ShaderPrograms::SKYBOX);
+template <typename Renderer>
+void Skybox::LoadSkybox(Renderer& renderer, const cmrc::embedded_filesystem& fs,
+                        const std::string& path) {
+  cube_.LoadCube(renderer, fs, path, ShaderPrograms::SKYBOX);
 }
 
-template<typename Renderer> void Skybox::Draw(const Renderer& renderer, const ShaderPrograms shaders) {
-	glDepthMask(GL_FALSE);
-	cube_.Draw(renderer, shaders);
-	glDepthMask(GL_TRUE);
-
+template <typename Renderer>
+void Skybox::Draw(const Renderer& renderer, const ShaderPrograms shaders) {
+  glDepthMask(GL_FALSE);
+  cube_.Draw(renderer, shaders);
+  glDepthMask(GL_TRUE);
 }
 
 } /* namespace _3D */

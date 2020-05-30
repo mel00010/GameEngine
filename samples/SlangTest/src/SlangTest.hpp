@@ -20,13 +20,13 @@
 #ifndef SAMPLES_SOUNDTEST_SOUNDTEST_HPP_
 #define SAMPLES_SOUNDTEST_SOUNDTEST_HPP_
 
-#include <3D/Camera.hpp>
-#include <3D/Model.hpp>
-#include <Sound/Sound.hpp>
-#include <Sound/Music.hpp>
-#include <GameCore.hpp>
-
 #include <cmrc/cmrc.hpp>
+
+#include "3D/Camera.hpp"
+#include "3D/Model.hpp"
+#include "GameCore.hpp"
+#include "Sound/Music.hpp"
+#include "Sound/Sound.hpp"
 
 CMRC_DECLARE(slang_test);
 
@@ -35,24 +35,21 @@ using namespace game_engine;
 namespace slang_test {
 
 class SlangTest : public game_engine::GameCore<SlangTest> {
-	public:
-		static constexpr std::string_view program_name_ = "SlangTest";
-		void Setup();
-		void Tick();
-		void Render();
-		void RegisterCallbacks();
+ public:
+  static constexpr std::string_view program_name_ = "SlangTest";
+  void Setup();
+  void Tick();
+  void Render();
+  void RegisterCallbacks();
 
-	protected:
-		cmrc::embedded_filesystem fs_ = cmrc::slang_test::get_filesystem();
+ protected:
+  cmrc::embedded_filesystem fs_ = cmrc::slang_test::get_filesystem();
 
-		Sound::Sound oof_;
-		Sound::Sound ouch_;
-		Sound::Music rickroll_;
+  sound::Sound oof_;
+  sound::Sound ouch_;
+  sound::Music rickroll_;
 };
 
 } /* namespace slang_test */
-
-
-
 
 #endif /* SAMPLES_SOUNDTEST_SOUNDTEST_HPP_ */

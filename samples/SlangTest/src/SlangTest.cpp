@@ -20,59 +20,51 @@
 
 #include "SlangTest.hpp"
 
-#include <3D/Model.hpp>
-#include <GL/Shader.hpp>
-#include <GL/ShaderProgram.hpp>
+#include <thread>
 
 #include <cmrc/cmrc.hpp>
 #include <glm/glm.hpp>
-#include <Log.hpp>
 #include <slang.h>
 
-#include <thread>
+#include "3D/Model.hpp"
+#include "GL/Shader.hpp"
+#include "GL/ShaderProgram.hpp"
+#include "LoggerV2/Log.hpp"
 
 using namespace game_engine;
 
 namespace slang_test {
 
 void SlangTest::RegisterCallbacks() {
-	RegisterKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		oof_.Play();
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_P, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		ouch_.Play();
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_R, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		rickroll_.Play();
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_T, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		rickroll_.Pause();
-	});
-	RegisterKeyboardEventCallback(SDL_SCANCODE_Y, KeyEventType::DOWN, [this](SDL_KeyboardEvent&) {
-		rickroll_.Resume();
-	});
-	RegisterTimeoutCallback("ms_per_frame", 1000, [this]() {
-		LOG_D("ms/frame = " << frame_time_ms_ << " | fps = " << fps_avg_);
-	}, true);
+  RegisterKeyboardEventCallback(SDL_SCANCODE_O, KeyEventType::DOWN,
+                                [this](SDL_KeyboardEvent&) { oof_.Play(); });
+  RegisterKeyboardEventCallback(SDL_SCANCODE_P, KeyEventType::DOWN,
+                                [this](SDL_KeyboardEvent&) { ouch_.Play(); });
+  RegisterKeyboardEventCallback(
+      SDL_SCANCODE_R, KeyEventType::DOWN,
+      [this](SDL_KeyboardEvent&) { rickroll_.Play(); });
+  RegisterKeyboardEventCallback(
+      SDL_SCANCODE_T, KeyEventType::DOWN,
+      [this](SDL_KeyboardEvent&) { rickroll_.Pause(); });
+  RegisterKeyboardEventCallback(
+      SDL_SCANCODE_Y, KeyEventType::DOWN,
+      [this](SDL_KeyboardEvent&) { rickroll_.Resume(); });
+  RegisterTimeoutCallback(
+      "ms_per_frame", 1000,
+      [this]() {
+        log_.Debug("ms/frame = {} | fps = {}", frame_time_ms_, fps_avg_);
+      },
+      true);
 }
 
 void SlangTest::Setup() {
-	oof_ = Sound::Sound(fs_.open("oof.ogg"));
-	ouch_ = Sound::Sound(fs_.open("ouch.ogg"));
-	rickroll_ = Sound::Music(fs_.open("rickroll.ogg"));
-
-
+  oof_ = sound::Sound(fs_.open("oof.ogg"));
+  ouch_ = sound::Sound(fs_.open("ouch.ogg"));
+  rickroll_ = sound::Music(fs_.open("rickroll.ogg"));
 }
 
-void SlangTest::Render() {
+void SlangTest::Render() {}
 
-}
-
-void SlangTest::Tick() {
-
-}
+void SlangTest::Tick() {}
 
 } /* namespace slang_test */
-
-
-

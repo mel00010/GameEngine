@@ -20,13 +20,13 @@
 #ifndef SAMPLES_SOUNDTEST_SOUNDTEST_HPP_
 #define SAMPLES_SOUNDTEST_SOUNDTEST_HPP_
 
-#include <3D/Camera.hpp>
-#include <3D/Model.hpp>
-#include <Sound/Sound.hpp>
-#include <Sound/Music.hpp>
-#include <GameCore.hpp>
-
 #include <cmrc/cmrc.hpp>
+
+#include "3D/Camera.hpp"
+#include "3D/Model.hpp"
+#include "GameCore.hpp"
+#include "Sound/Music.hpp"
+#include "Sound/Sound.hpp"
 
 CMRC_DECLARE(sound_test);
 
@@ -35,28 +35,25 @@ using namespace game_engine;
 namespace sound_test {
 
 class SoundTest : public game_engine::GameCore<SoundTest> {
-	public:
-		static constexpr std::string_view program_name_ = "SoundTest";
-		void Setup();
-		void Tick();
-		void Render();
-		void RegisterCallbacks();
+ public:
+  static constexpr std::string_view program_name_ = "SoundTest";
+  void Setup();
+  void Tick();
+  void Render();
+  void RegisterCallbacks();
 
-	protected:
-		cmrc::embedded_filesystem fs_ = cmrc::sound_test::get_filesystem();
+ protected:
+  cmrc::embedded_filesystem fs_ = cmrc::sound_test::get_filesystem();
 
-		glm::vec3 line_color_ = glm::vec3(1.0, 1.0, 0.0);
+  glm::vec3 line_color_ = glm::vec3(1.0, 1.0, 0.0);
 
-		_3D::Camera camera_;
-		_3D::Model grid_;
-		Sound::Sound oof_;
-		Sound::Sound ouch_;
-		Sound::Music rickroll_;
+  _3D::Camera camera_;
+  _3D::Model grid_;
+  sound::Sound oof_;
+  sound::Sound ouch_;
+  sound::Music rickroll_;
 };
 
-} /* namespace SoundTest */
-
-
-
+}  // namespace sound_test
 
 #endif /* SAMPLES_SOUNDTEST_SOUNDTEST_HPP_ */

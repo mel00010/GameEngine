@@ -20,15 +20,14 @@
 #ifndef SAMPLES_MINETEST_MINETEST_HPP_
 #define SAMPLES_MINETEST_MINETEST_HPP_
 
-#include <3D/Camera.hpp>
-#include <3D/Model.hpp>
-#include <Sound/Sound.hpp>
-#include <Sound/Music.hpp>
-#include <GameCore.hpp>
-
-#include <Blocks/Cobblestone.hpp>
-
 #include <cmrc/cmrc.hpp>
+
+#include "3D/Camera.hpp"
+#include "3D/Model.hpp"
+#include "Blocks/Cobblestone.hpp"
+#include "GameCore.hpp"
+#include "Sound/Music.hpp"
+#include "Sound/Sound.hpp"
 
 CMRC_DECLARE(mine_test);
 
@@ -39,29 +38,25 @@ namespace mine_test {
 inline constexpr glm::vec3 kLineColor = glm::vec3(1.0, 1.0, 0.0);
 
 class MineTest : public game_engine::GameCore<MineTest> {
-	public:
-		static constexpr std::string_view program_name_ = "MineTest";
-		void Setup();
-		void Tick();
-		void Render();
-		void RegisterCallbacks();
+ public:
+  static constexpr std::string_view program_name_ = "MineTest";
+  void Setup();
+  void Tick();
+  void Render();
+  void RegisterCallbacks();
 
-	protected:
-		const cmrc::embedded_filesystem fs_ = cmrc::mine_test::get_filesystem();
+ protected:
+  const cmrc::embedded_filesystem fs_ = cmrc::mine_test::get_filesystem();
 
+  _3D::Camera camera_;
+  _3D::Model grid_;
 
-		_3D::Camera camera_;
-		_3D::Model grid_;
-
-//		Blocks::Cobblestone cobble_block_;
-		Sound::Sound oof_;
-		Sound::Sound ouch_;
-		Sound::Music rickroll_;
+  //		Blocks::Cobblestone cobble_block_;
+  sound::Sound oof_;
+  sound::Sound ouch_;
+  sound::Music rickroll_;
 };
 
 } /* namespace mine_test */
-
-
-
 
 #endif /* SAMPLES_SOUNDTEST_SOUNDTEST_HPP_ */

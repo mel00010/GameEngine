@@ -27,8 +27,8 @@ using InternalFormat = int;
 using Format = unsigned int;
 
 struct PixelFormat {
-		InternalFormat i_format;
-		Format e_format;
+  InternalFormat i_format;
+  Format e_format;
 };
 
 } /* namespace _3D */

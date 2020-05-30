@@ -20,32 +20,37 @@
 
 #include "Dvd.hpp"
 
-#include <Log.hpp>
-#include <3D/Texture.hpp>
-
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/color_space.hpp>
+
+#include "3D/Texture.hpp"
+#include "LoggerV2/Log.hpp"
 
 using namespace game_engine;
 
 namespace dvd {
 
 bool Dvd::IsAtWindowEdge(WindowEdge edge, double length, glm::dvec2 offset) {
-	switch(edge) {
-		case WindowEdge::RIGHT:		return length > (offset.x - translate_vec_.x);
-		case WindowEdge::LEFT:		return length > (offset.x + translate_vec_.x);
-		case WindowEdge::TOP:		return length > (offset.y - translate_vec_.y);
-		case WindowEdge::BOTTOM:	return length > (offset.y + translate_vec_.y);
-	}
-	return false;
+  switch (edge) {
+    case WindowEdge::RIGHT:
+      return length > (offset.x - translate_vec_.x);
+    case WindowEdge::LEFT:
+      return length > (offset.x + translate_vec_.x);
+    case WindowEdge::TOP:
+      return length > (offset.y - translate_vec_.y);
+    case WindowEdge::BOTTOM:
+      return length > (offset.y + translate_vec_.y);
+  }
+  return false;
 }
 
 glm::vec3 Dvd::UpdateLogoColor() {
-	return (logo_color_ = glm::rgbColor(glm::vec3(glm::linearRand(0.0, 360.0), 1.0, 1.0)));
+  return (logo_color_ =
+              glm::rgbColor(glm::vec3(glm::linearRand(0.0, 360.0), 1.0, 1.0)));
 }
 
-} /* namespace DVD */
+}  // namespace dvd

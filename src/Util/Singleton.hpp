@@ -27,28 +27,29 @@ namespace util {
  * @brief Wrapper ensuring only one object of a class exists at a time
  * @tparam ActualClass The class to protect
  */
-template<class ActualClass> struct Singleton {
-	public:
-		/**
-		 * @brief Gets the instance of the encapsulated object
-		 * @return Returns a reference to the encapsulated object
-		 */
-		static inline ActualClass& GetInstance() {
-			static ActualClass obj;
-			return obj;
-		}
-		/**
-		 * @brief Alias for getInstance
-		 * @return Returns a reference to the encapsulated object
-		 */
-		static inline ActualClass& Instance() {
-			return GetInstance();
-		}
-	protected:
-		Singleton(){}
-	private:
-		Singleton(Singleton const &);
-		Singleton& operator = (Singleton const &);
+template <class ActualClass>
+struct Singleton {
+ public:
+  /**
+   * @brief Gets the instance of the encapsulated object
+   * @return Returns a reference to the encapsulated object
+   */
+  static inline ActualClass& GetInstance() {
+    static ActualClass obj;
+    return obj;
+  }
+  /**
+   * @brief Alias for getInstance
+   * @return Returns a reference to the encapsulated object
+   */
+  static inline ActualClass& Instance() { return GetInstance(); }
+
+ protected:
+  Singleton() {}
+
+ private:
+  Singleton(Singleton const&);
+  Singleton& operator=(Singleton const&);
 };
 
 } /* namespace util */

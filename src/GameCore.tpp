@@ -21,11 +21,6 @@
 #ifndef SRC_GAMECORE_TPP_
 #define SRC_GAMECORE_TPP_
 
-
-
-namespace game_engine {
-
-} /* namespace game_engine */
+namespace game_engine {} /* namespace game_engine */
 
 #endif /* SRC_GAMECORE_TPP_ */
-

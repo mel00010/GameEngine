@@ -20,91 +20,79 @@
 #ifndef SRC_3D_TEXTURE_HPP_
 #define SRC_3D_TEXTURE_HPP_
 
-#include "PixelFormat.hpp"
-
-#include <ShaderPrograms.hpp>
-
-#include <Log.hpp>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-
-#include <cmrc/cmrc.hpp>
-
 #include <string>
 #include <utility>
 
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <cmrc/cmrc.hpp>
+#include <glm/glm.hpp>
+
+#include "3D/PixelFormat.hpp"
+#include "LoggerV2/Log.hpp"
+#include "ShaderPrograms.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-enum class TextureType : std::uint8_t {
-	DIFFUSE,
-	SPECULAR,
-	NORMAL,
-	HEIGHT
-};
+enum class TextureType : std::uint8_t { DIFFUSE, SPECULAR, NORMAL, HEIGHT };
 std::ostream& operator<<(std::ostream& os, const TextureType type);
 
 class Texture {
-	public:
-		Texture() noexcept = default;
-		Texture& operator=(const Texture& rhs) = default;
-		Texture(const Texture& rhs) = default;
-		Texture& operator=(Texture&& rhs) noexcept = default;
-		Texture(Texture&& rhs) noexcept = default;
-		~Texture() noexcept = default;
+ public:
+  Texture() = default;
+  Texture& operator=(const Texture& rhs) = default;
+  Texture(const Texture& rhs) = default;
+  Texture& operator=(Texture&& rhs) noexcept = default;
+  Texture(Texture&& rhs) noexcept = default;
+  ~Texture() noexcept = default;
 
-		Texture(const GLuint id, const TextureType type, const std::string path) : id_(id), type_(type), path_(path) {}
+  Texture(const GLuint id, const TextureType type, const std::string path)
+      : id_(id), type_(type), path_(path) {}
 
+  template <typename Renderer>
+  Texture(const Renderer& renderer, const cmrc::file file,
+          const ShaderPrograms shader_program, const TextureType type);
 
-		template<typename Renderer>
-		Texture(const Renderer& renderer,
-				 const cmrc::file file,
-				 const ShaderPrograms shader_program,
-				 const TextureType type);
+  template <typename Renderer>
+  GLuint LoadTexture(const Renderer& renderer, const cmrc::file file,
+                     const ShaderPrograms shader_program,
+                     const TextureType _type = TextureType::DIFFUSE);
+  template <typename Renderer>
+  GLuint LoadTextureFromMemory(const Renderer& renderer, const glm::ivec2 size,
+                               const _3D::PixelFormat pixel_format,
+                               const void* buffer,
+                               const ShaderPrograms shader_program,
+                               const TextureType _type = TextureType::DIFFUSE);
 
-		template<typename Renderer>
-		GLuint LoadTexture(const Renderer& renderer,
-				const cmrc::file file,
-				const ShaderPrograms shader_program,
-				const TextureType _type = TextureType::DIFFUSE);
-		template<typename Renderer>
-		GLuint LoadTextureFromMemory(const Renderer& renderer,
-				const glm::ivec2 size,
-				const _3D::PixelFormat pixel_format,
-				const void* buffer,
-				const ShaderPrograms shader_program,
-				const TextureType _type = TextureType::DIFFUSE);
+  void swap(Texture& other) noexcept {
+    using std::swap;
+    swap(other.id_, id_);
+    swap(other.type_, type_);
+    swap(other.path_, path_);
+  }
 
-		void swap(Texture& other) noexcept {
-			using std::swap;
-			swap(other.id_, id_);
-			swap(other.type_, type_);
-			swap(other.path_, path_);
-		}
-	protected:
-		static PixelFormat DeterminePixelFormat(const SDL_PixelFormat* format);
-		friend class Cubemap;
+ protected:
+  static PixelFormat DeterminePixelFormat(const SDL_PixelFormat* format);
+  friend class Cubemap;
 
-	public:
-		unsigned int id_ { };
-		TextureType type_ { };
-		std::string path_ { };
+ public:
+  unsigned int id_{};
+  TextureType type_{};
+  std::string path_{};
 
-
+ private:
+  logging::Log log_ = logging::Log("main");
 };
 
 std::ostream& operator<<(std::ostream& os, const Texture& text);
 
-inline void swap(Texture& a, Texture& b) noexcept {
-	a.swap(b);
-}
+inline void swap(Texture& a, Texture& b) noexcept { a.swap(b); }
 
 } /* namespace _3D */
 } /* namespace game_engine */
 
-#include "Texture.tpp"
+#include "3D/Texture.tpp"
 
 #endif /* SRC_3D_TEXTURE_HPP_ */

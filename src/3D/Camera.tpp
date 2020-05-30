@@ -20,23 +20,30 @@
 #ifndef SRC_3D_CAMERA_TPP_
 #define SRC_3D_CAMERA_TPP_
 
-#include "Camera.hpp"
+#include "3D/Camera.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-template<typename Renderer> void Camera::DrawModel(const Renderer& renderer, Model& model, ShaderPrograms shaders) {
-	renderer.SetMatrices(shaders, model.model_, view_, projection_);
-	model.Draw(renderer, shaders);
+template <typename Renderer>
+void Camera::DrawModel(const Renderer& renderer, Model& model,
+                       ShaderPrograms shaders) {
+  renderer.SetMatrices(shaders, model.model_, view_, projection_);
+  model.Draw(renderer, shaders);
 }
 
-template<typename Renderer> void Camera::DrawModel(const Renderer& renderer, Cube& cube, ShaderPrograms shaders) {
-	renderer.SetMatrices(shaders, cube.model_, view_, projection_);
-	cube.Draw(renderer, shaders);
+template <typename Renderer>
+void Camera::DrawModel(const Renderer& renderer, Cube& cube,
+                       ShaderPrograms shaders) {
+  renderer.SetMatrices(shaders, cube.model_, view_, projection_);
+  cube.Draw(renderer, shaders);
 }
-template<typename Renderer> void Camera::DrawModel(const Renderer& renderer, Skybox& skybox, ShaderPrograms shaders) {
-	renderer.SetMatrices(shaders, glm::mat4(1.0f), glm::mat4(glm::mat3(view_)), projection_);
-	skybox.Draw(renderer, shaders);
+template <typename Renderer>
+void Camera::DrawModel(const Renderer& renderer, Skybox& skybox,
+                       ShaderPrograms shaders) {
+  renderer.SetMatrices(shaders, glm::mat4(1.0f), glm::mat4(glm::mat3(view_)),
+                       projection_);
+  skybox.Draw(renderer, shaders);
 }
 
 } /* namespace _3D */

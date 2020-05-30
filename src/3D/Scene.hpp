@@ -20,26 +20,28 @@
 #ifndef SRC_3D_SCENE_HPP_
 #define SRC_3D_SCENE_HPP_
 
-#include "Camera.hpp"
-#include "Mesh.hpp"
-#include "Model.hpp"
-
 #include <vector>
+
+#include "3D/Camera.hpp"
+#include "3D/Mesh.hpp"
+#include "3D/Model.hpp"
 
 namespace game_engine {
 namespace _3D {
 
 class Scene {
-	public:
-		template<typename Renderer> void Draw(Renderer renderer);
-	protected:
-		std::vector<Model> models_;
-		Camera camera_;
+ public:
+  template <typename Renderer>
+  void Draw(Renderer renderer);
+
+ protected:
+  std::vector<Model> models_;
+  Camera camera_;
 };
 
 } /* namespace _3D */
 } /* namespace game_engine */
 
-#include "Scene.tpp"
+#include "3D/Scene.tpp"
 
 #endif /* SRC_3D_SCENE_HPP_ */

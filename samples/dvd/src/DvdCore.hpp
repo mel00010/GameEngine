@@ -21,56 +21,53 @@
 #define SAMPLES_DVD_SRC_DVDCORE_HPP_
 
 #include "Dvd.hpp"
-
-#include <GameCore.hpp>
+#include "GameCore.hpp"
 
 namespace dvd {
 
 class DvdCore : public game_engine::GameCore<DvdCore> {
-	public:
-		static constexpr std::string_view program_name_ = "DVD";
-		void Setup();
-		void Tick();
-		void Render();
-		void RegisterCallbacks();
+ public:
+  static constexpr std::string_view program_name_ = "DVD";
+  void Setup();
+  void Tick();
+  void Render();
+  void RegisterCallbacks();
 
-	public:
-		void SetScale(glm::dvec2 scale) {
-			for(auto& i : dvds_) {
-				i.SetScale(scale);
-			}
-		}
+ public:
+  void SetScale(glm::dvec2 scale) {
+    for (auto& i : dvds_) {
+      i.SetScale(scale);
+    }
+  }
 
-		void SetSpeed(double speed = 1.0) {
-			for(auto& i : dvds_) {
-				i.SetSpeed(speed);
-			}
-		}
-		void ModifySpeed(double delta = 0.0) {
-			for(auto& i : dvds_) {
-				i.ModifySpeed(delta);
-			}
-		}
-		void Reset() {
-			for(auto& i : dvds_) {
-				i.Reset();
-			}
-		}
-		void AddDvd() {
-			dvds_.push_back(Dvd(renderer_));
-		}
-		void RemoveDvd() {
-			if(!dvds_.empty()) {
-				dvds_.pop_back();
-			}
-		}
+  void SetSpeed(double speed = 1.0) {
+    for (auto& i : dvds_) {
+      i.SetSpeed(speed);
+    }
+  }
+  void ModifySpeed(double delta = 0.0) {
+    for (auto& i : dvds_) {
+      i.ModifySpeed(delta);
+    }
+  }
+  void Reset() {
+    for (auto& i : dvds_) {
+      i.Reset();
+    }
+  }
+  void AddDvd() { dvds_.push_back(Dvd(renderer_)); }
+  void RemoveDvd() {
+    if (!dvds_.empty()) {
+      dvds_.pop_back();
+    }
+  }
 
-	protected:
-		std::list<Dvd> dvds_;
+ protected:
+  std::list<Dvd> dvds_;
 
-		double scroll_factor_ = 1.0;
-		size_t counter_ = 0;
-		size_t prev_time_ = SDL_GetTicks();
+  double scroll_factor_ = 1.0;
+  size_t counter_ = 0;
+  size_t prev_time_ = SDL_GetTicks();
 };
 
 } /* namespace dvd */

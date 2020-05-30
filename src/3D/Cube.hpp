@@ -20,96 +20,93 @@
 #ifndef SRC_3D_CUBE_HPP_
 #define SRC_3D_CUBE_HPP_
 
+#include <utility>
+#include <vector>
+
+#include <GL/glew.h>
+#include <cmrc/cmrc.hpp>
 #include <glm/glm.hpp>
 
-#include "Cubemap.hpp"
-#include "Transformations.hpp"
+#include "3D/Cubemap.hpp"
+#include "3D/Transformations.hpp"
+#include "VboHandle.hpp"
 #include "Vertex.hpp"
-
-#include <VboHandle.hpp>
-
-#include <cmrc/cmrc.hpp>
-#include <GL/glew.h>
-
-#include <vector>
-#include <utility>
 
 namespace game_engine {
 namespace _3D {
 
 class Cube : public Transformations {
-	public:
-		Cube() = default;
-		Cube& operator=(const Cube& rhs) = default;
-		Cube(const Cube& rhs) = default;
-		Cube& operator=(Cube&& rhs) noexcept = default;
-		Cube(Cube&& rhs) noexcept = default;
-		~Cube() noexcept = default;
+ public:
+  Cube() = default;
+  Cube& operator=(const Cube& rhs) = default;
+  Cube(const Cube& rhs) = default;
+  Cube& operator=(Cube&& rhs) noexcept = default;
+  Cube(Cube&& rhs) noexcept = default;
+  ~Cube() noexcept = default;
 
-		template<typename Renderer>
-		Cube(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path,
-				const ShaderPrograms shaders = ShaderPrograms::CUBE);
+  template <typename Renderer>
+  Cube(Renderer& renderer, const cmrc::embedded_filesystem& fs,
+       const std::string& path,
+       const ShaderPrograms shaders = ShaderPrograms::CUBE);
 
-		template<typename Renderer>
-		void LoadCube(Renderer& renderer, const cmrc::embedded_filesystem& fs, const std::string& path,
-				const ShaderPrograms shaders = ShaderPrograms::CUBE);
+  template <typename Renderer>
+  void LoadCube(Renderer& renderer, const cmrc::embedded_filesystem& fs,
+                const std::string& path,
+                const ShaderPrograms shaders = ShaderPrograms::CUBE);
 
-		template<typename Renderer>
-		void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
+  template <typename Renderer>
+  void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
 
-		void swap(Cube& other) noexcept {
-			using std::swap;
-			swap(other.cube_mesh_, cube_mesh_);
-		}
+  void swap(Cube& other) noexcept {
+    using std::swap;
+    swap(other.cube_mesh_, cube_mesh_);
+  }
 
-	private:
-		class CubeMesh {
-			public:
-				VboHandle handle_ { };
-				std::vector<Vertex> vertices_ { };
-				std::vector<GLuint> indices_ { };
-				Cubemap cube_map_ { };
+ private:
+  class CubeMesh {
+   public:
+    VboHandle handle_{};
+    std::vector<Vertex> vertices_{};
+    std::vector<GLuint> indices_{};
+    Cubemap cube_map_{};
 
-				CubeMesh() = default;
-				CubeMesh& operator=(const CubeMesh& rhs) = default;
-				CubeMesh(const CubeMesh& rhs) = default;
-				CubeMesh& operator=(CubeMesh&& rhs) noexcept = default;
-				CubeMesh(CubeMesh&& rhs) noexcept = default;
-				~CubeMesh() noexcept = default;
+    CubeMesh() = default;
+    CubeMesh& operator=(const CubeMesh& rhs) = default;
+    CubeMesh(const CubeMesh& rhs) = default;
+    CubeMesh& operator=(CubeMesh&& rhs) noexcept = default;
+    CubeMesh(CubeMesh&& rhs) noexcept = default;
+    ~CubeMesh() noexcept = default;
 
-				CubeMesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const Cubemap& cube_map)
-						: vertices_(vertices), indices_(indices), cube_map_(cube_map) {
-				};
+    CubeMesh(const std::vector<Vertex>& vertices,
+             const std::vector<GLuint>& indices, const Cubemap& cube_map)
+        : vertices_(vertices), indices_(indices), cube_map_(cube_map){};
 
-				template<typename Renderer> void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
+    template <typename Renderer>
+    void Draw(const Renderer& renderer, const ShaderPrograms shaders) const;
 
-				void swap(CubeMesh& other) noexcept {
-					using std::swap;
-					swap(other.handle_, handle_);
-					swap(other.vertices_, vertices_);
-					swap(other.indices_, indices_);
-					swap(other.cube_map_, cube_map_);
-				}
-		};
+    void swap(CubeMesh& other) noexcept {
+      using std::swap;
+      swap(other.handle_, handle_);
+      swap(other.vertices_, vertices_);
+      swap(other.indices_, indices_);
+      swap(other.cube_map_, cube_map_);
+    }
+  };
 
-		CubeMesh cube_mesh_;
+  CubeMesh cube_mesh_;
 
-		friend void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept;
-		friend std::ostream& operator<<(std::ostream& os, const Cube& m);
-		friend std::ostream& operator<<(std::ostream& os, const Cube::CubeMesh& m);
+  friend void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept;
+  friend std::ostream& operator<<(std::ostream& os, const Cube& m);
+  friend std::ostream& operator<<(std::ostream& os, const Cube::CubeMesh& m);
 };
 
-inline void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept {
-	a.swap(b);
-}
+inline void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept { a.swap(b); }
 
-inline void swap(Cube& a, Cube& b) noexcept {
-	a.swap(b);
-}
+inline void swap(Cube& a, Cube& b) noexcept { a.swap(b); }
 
 } /* namespace _3D */
 } /* namespace game_engine */
 
-#include "Cube.tpp"
+#include "3D/Cube.tpp"
 
 #endif /* SRC_3D_CUBE_HPP_ */

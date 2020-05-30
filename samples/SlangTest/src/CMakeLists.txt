@@ -1,27 +1,29 @@
 add_executable(SlangTest "")
 target_sources(SlangTest
-	PRIVATE
-		main.cpp
-		SlangTest.cpp
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/SlangTest.hpp
+  PRIVATE
+    main.cpp
+    SlangTest.cpp
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/SlangTest.hpp
 )
+#set_target_properties(SlangTest PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
+target_precompile_headers(SlangTest REUSE_FROM GameEngine::GameEngine)
 
 target_link_libraries(SlangTest
-	PUBLIC
-		GameEngine
-		SlangTest::Resources
+  PUBLIC
+    GameEngine
+    SlangTest::Resources
 
-		Slang
-		Logger::Logger
+    Slang
+    glm
 )
 include(CMakeRC)
 
 cmrc_add_resource_library(SlangTest-Resources ALIAS SlangTest::Resources NAMESPACE slang_test)
 cmrc_add_resources(SlangTest-Resources
-	WHENCE resources
+  WHENCE resources
 
-	resources/oof.ogg
-	resources/ouch.ogg
-	resources/rickroll.ogg
+  resources/oof.ogg
+  resources/ouch.ogg
+  resources/rickroll.ogg
 )

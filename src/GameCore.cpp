@@ -20,17 +20,13 @@
 
 #include "GameCore.hpp"
 
-#include <Log.hpp>
-
 #include <GL/glew.h>
+#include <ft2build.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <ft2build.h>
+#include "LoggerV2/Log.hpp"
 #include FT_FREETYPE_H
 
-
-namespace game_engine {
-
-} /* namespace game_engine */
+namespace game_engine {} /* namespace game_engine */

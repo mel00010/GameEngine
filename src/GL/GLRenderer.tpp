@@ -23,10 +23,7 @@
 #include "GLRenderer.hpp"
 
 namespace game_engine {
-namespace gl {
-
-
-} /* namespace gl */
+namespace gl {} /* namespace gl */
 } /* namespace game_engine */
 
 #endif /* SRC_GL_GLRENDERER_TPP_ */

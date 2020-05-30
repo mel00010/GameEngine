@@ -20,44 +20,48 @@
 #ifndef SRC_GL_VBO_HPP_
 #define SRC_GL_VBO_HPP_
 
-#include <ShaderPrograms.hpp>
-#include <Vertex.hpp>
-
-#include <GL/glew.h>
 #include <ostream>
 #include <vector>
+
+#include <GL/glew.h>
+
+#include "ShaderPrograms.hpp"
+#include "Vertex.hpp"
 
 namespace game_engine {
 namespace gl {
 
 class Vbo {
-	public:
-		void Init(ShaderPrograms shader);
-		void Bind();
-		void Allocate(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices);
-		void Update(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices);
-		void AddVertexPointer(GLuint id, size_t vec_size, GLenum type, size_t stride, size_t offset);
-		void AddVertexPointers();
-	public:
-		GLuint vao_ = 0;
-		GLuint vbo_ = 0;
-		GLuint ebo_ = 0;
-		size_t n_vertices_ = 0;
-		size_t n_indices_ = 0;
-		ShaderPrograms shaders_ = ShaderPrograms::NULL_SHADER;
+ public:
+  void Init(ShaderPrograms shader);
+  void Bind();
+  void Allocate(const std::vector<Vertex>& vertices,
+                const std::vector<GLuint>& indices);
+  void Update(const std::vector<Vertex>& vertices,
+              const std::vector<GLuint>& indices);
+  void AddVertexPointer(GLuint id, size_t vec_size, GLenum type, size_t stride,
+                        size_t offset);
+  void AddVertexPointers();
+
+ public:
+  GLuint vao_ = 0;
+  GLuint vbo_ = 0;
+  GLuint ebo_ = 0;
+  size_t n_vertices_ = 0;
+  size_t n_indices_ = 0;
+  ShaderPrograms shaders_ = ShaderPrograms::NULL_SHADER;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Vbo vbo) {
-	return os << "GL {\n"<< push_indent
-			<< "GLuint vao_ = "<< static_cast<unsigned int>(vbo.vao_) << "\n"
-			<< "GLuint vbo_ = " << static_cast<unsigned int>(vbo.vbo_) << "\n"
-			<< "GLuint ebo_ = " << static_cast<unsigned int>(vbo.ebo_) << "\n"
-			<< "size_t n_vertices_" << vbo.n_vertices_ << "\n"
-			<< "size_t n_indices_" << vbo.n_indices_ << "\n"
-			<< "ShaderPrograms shaders_ = " << vbo.shaders_ << "\n"
-			<< pop_indent << "}";
+  return os << "GL {\n"
+            << "GLuint vao_ = " << static_cast<unsigned int>(vbo.vao_) << "\n"
+            << "GLuint vbo_ = " << static_cast<unsigned int>(vbo.vbo_) << "\n"
+            << "GLuint ebo_ = " << static_cast<unsigned int>(vbo.ebo_) << "\n"
+            << "size_t n_vertices_" << vbo.n_vertices_ << "\n"
+            << "size_t n_indices_" << vbo.n_indices_ << "\n"
+            << "ShaderPrograms shaders_ = " << vbo.shaders_ << "\n"
+            << "}";
 }
-
 
 } /* namespace gl */
 } /* namespace game_engine */

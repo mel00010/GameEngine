@@ -26,32 +26,42 @@ namespace game_engine {
 namespace _3D {
 
 enum class Primitive : std::uint8_t {
-	POINTS,
-	LINES,
-	LINE_STRIP,
-	LINE_LOOP,
-	TRIANGLES,
-	TRIANGLE_STRIP,
-	TRIANGLE_FAN,
-	QUADS,
-	QUAD_STRIP,
-	PATCHES
+  POINTS,
+  LINES,
+  LINE_STRIP,
+  LINE_LOOP,
+  TRIANGLES,
+  TRIANGLE_STRIP,
+  TRIANGLE_FAN,
+  QUADS,
+  QUAD_STRIP,
+  PATCHES
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Primitive p) {
-	switch(p) {
-		case Primitive::POINTS: 		return os << "Primitive::POINTS";
-		case Primitive::LINES: 			return os << "Primitive::LINES";
-		case Primitive::LINE_STRIP: 	return os << "Primitive::LINE_STRIP";
-		case Primitive::LINE_LOOP: 		return os << "Primitive::LINE_LOOP";
-		case Primitive::TRIANGLES: 		return os << "Primitive::TRIANGLES";
-		case Primitive::TRIANGLE_STRIP:	return os << "Primitive::TRIANGLE_STRIP";
-		case Primitive::TRIANGLE_FAN: 	return os << "Primitive::TRIANGLE_FAN";
-		case Primitive::QUADS:			return os << "Primitive::QUADS";
-		case Primitive::QUAD_STRIP: 	return os << "Primitive::QUAD_STRIP";
-		case Primitive::PATCHES: 		return os << "Primitive::PATCHES";
-	}
-	return os;
+  switch (p) {
+    case Primitive::POINTS:
+      return os << "Primitive::POINTS";
+    case Primitive::LINES:
+      return os << "Primitive::LINES";
+    case Primitive::LINE_STRIP:
+      return os << "Primitive::LINE_STRIP";
+    case Primitive::LINE_LOOP:
+      return os << "Primitive::LINE_LOOP";
+    case Primitive::TRIANGLES:
+      return os << "Primitive::TRIANGLES";
+    case Primitive::TRIANGLE_STRIP:
+      return os << "Primitive::TRIANGLE_STRIP";
+    case Primitive::TRIANGLE_FAN:
+      return os << "Primitive::TRIANGLE_FAN";
+    case Primitive::QUADS:
+      return os << "Primitive::QUADS";
+    case Primitive::QUAD_STRIP:
+      return os << "Primitive::QUAD_STRIP";
+    case Primitive::PATCHES:
+      return os << "Primitive::PATCHES";
+  }
+  return os;
 }
 
 } /* namespace _3D */

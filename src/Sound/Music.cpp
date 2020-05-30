@@ -18,65 +18,54 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "Music.hpp"
+#include "Sound/Music.hpp"
 
-#include <Log.hpp>
+#include "LoggerV2/Log.hpp"
 
 namespace game_engine {
-namespace Sound {
+namespace sound {
 
 Music::~Music() noexcept {
-	if(music_ == nullptr) {
-		return;
-	}
-	// Do not call SDL_Mix functions if Mix is not initialized
-	if(!Mix_Init(0)) {
-		return;
-	}
-	Mix_FreeMusic(music_);
+  if (music_ == nullptr) {
+    return;
+  }
+  // Do not call SDL_Mix functions if Mix is not initialized
+  if (!Mix_Init(0)) {
+    return;
+  }
+  Mix_FreeMusic(music_);
 }
 
 Mix_Music* Music::LoadMusic(const cmrc::file file) {
-	std::vector<uint8_t> file_contents(file.begin(), file.end());
-	path_ = file.path();
-	music_ = Mix_LoadMUS_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
-	if (music_ == nullptr) {
-		LOG_E("Mix_LoadMUS:  " << Mix_GetError());
-	}
-	return music_;
+  std::vector<uint8_t> file_contents(file.begin(), file.end());
+  path_ = file.path();
+  music_ = Mix_LoadMUS_RW(
+      SDL_RWFromMem(file_contents.data(), file_contents.size()), 1);
+  if (music_ == nullptr) {
+    log_.Error("Mix_LoadMUS:  {}", Mix_GetError());
+  }
+  return music_;
 }
 
 void Music::Play(const size_t times) {
-	if(times == 0) {
-		return;
-	}
-	if (Mix_PlayMusic(music_, static_cast<int>(times - 1)) == -1) {
-		LOG_E("Mix_PlayMusic:  " << Mix_GetError());
-	}
+  if (times == 0) {
+    return;
+  }
+  if (Mix_PlayMusic(music_, static_cast<int>(times - 1)) == -1) {
+    log_.Error("Mix_PlayMusic:  {}", Mix_GetError());
+  }
 }
 
-void Music::Pause() {
-	Mix_PauseMusic();
-}
-void Music::Resume() {
-	Mix_ResumeMusic();
-}
-void Music::Halt() {
-	Mix_HaltMusic();
-}
+void Music::Pause() { Mix_PauseMusic(); }
+void Music::Resume() { Mix_ResumeMusic(); }
+void Music::Halt() { Mix_HaltMusic(); }
 int Music::SetVolume(const int volume) {
-	if(volume < -1) {
-		return -1;
-	}
-	return Mix_VolumeMusic(volume);
+  if (volume < -1) {
+    return -1;
+  }
+  return Mix_VolumeMusic(volume);
 }
-bool Music::IsPaused() {
-	return Mix_PausedMusic();
-}
-bool Music::IsPlaying() {
-	return Mix_PlayingMusic();
-}
-} /* namespace Sound */
+bool Music::IsPaused() { return Mix_PausedMusic(); }
+bool Music::IsPlaying() { return Mix_PlayingMusic(); }
+}  // namespace sound
 } /* namespace game_engine */
-
-

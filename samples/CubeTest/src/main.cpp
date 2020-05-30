@@ -20,6 +20,4 @@
 
 #include "CubeTestCore.hpp"
 
-int main(int argc, char** argv) {
-	cube_test::CubeTestCore::Main(&argc, &argv);
-}
+int main(int argc, char** argv) { cube_test::CubeTestCore::Main(&argc, &argv); }

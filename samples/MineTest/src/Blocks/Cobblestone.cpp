@@ -21,9 +21,5 @@
 #include "Cobblestone.hpp"
 
 namespace mine_test {
-namespace blocks {
-
-} /* namespace blocks */
+namespace blocks {} /* namespace blocks */
 } /* namespace mine_test */
-
-

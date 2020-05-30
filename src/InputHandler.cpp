@@ -23,56 +23,41 @@
 namespace game_engine {
 
 void InputHandler::SetKeyStatus(SDL_Scancode key, bool status) {
-	key_status_[key] = status;
+  key_status_[key] = status;
 }
-bool InputHandler::GetKeyStatus(SDL_Scancode key) {
-	return key_status_[key];
-}
-bool InputHandler::GetKeyStatus(size_t key) {
-	return key_status_[key];
-}
+bool InputHandler::GetKeyStatus(SDL_Scancode key) { return key_status_[key]; }
+bool InputHandler::GetKeyStatus(size_t key) { return key_status_[key]; }
 
 void InputHandler::SetMouseButtonStatus(uint8_t button, bool status) {
-	mouse_buttons_status_[button] = status;
+  mouse_buttons_status_[button] = status;
 }
 bool InputHandler::GetMouseButtonStatus(uint8_t button) {
-	return mouse_buttons_status_[button];
+  return mouse_buttons_status_[button];
 }
 
-void InputHandler::SetControllerButtonStatus(SDL_GameControllerButton button, bool status) {
-	controller_buttons_status_[button] = status;
+void InputHandler::SetControllerButtonStatus(SDL_GameControllerButton button,
+                                             bool status) {
+  controller_buttons_status_[button] = status;
 }
 bool InputHandler::GetControllerButtonStatus(SDL_GameControllerButton button) {
-	return controller_buttons_status_[button];
+  return controller_buttons_status_[button];
 }
 
 void InputHandler::SetJoyButtonStatus(uint8_t button, bool status) {
-	joystick_buttons_status_[button] = status;
+  joystick_buttons_status_[button] = status;
 }
 bool InputHandler::GetJoyButtonStatus(uint8_t button) {
-	return joystick_buttons_status_[button];
+  return joystick_buttons_status_[button];
 }
 
-void InputHandler::SetMouseWheelPos(glm::ivec2 pos) {
-	mouse_wheel_pos_ = pos;
-}
+void InputHandler::SetMouseWheelPos(glm::ivec2 pos) { mouse_wheel_pos_ = pos; }
 void InputHandler::AddToMouseWheelPos(glm::ivec2 delta) {
-	mouse_wheel_pos_ += delta;
+  mouse_wheel_pos_ += delta;
 }
-glm::ivec2 InputHandler::GetMouseWheelPos() {
-	return mouse_wheel_pos_;
-}
+glm::ivec2 InputHandler::GetMouseWheelPos() { return mouse_wheel_pos_; }
 
-void InputHandler::SetMousePos(glm::ivec2 pos) {
-	mouse_pos_ = pos;
-}
-void InputHandler::AddToMousePos(glm::ivec2 delta) {
-	mouse_pos_ += delta;
-}
-glm::ivec2 InputHandler::GetMousePos() {
-	return mouse_pos_;
-}
+void InputHandler::SetMousePos(glm::ivec2 pos) { mouse_pos_ = pos; }
+void InputHandler::AddToMousePos(glm::ivec2 delta) { mouse_pos_ += delta; }
+glm::ivec2 InputHandler::GetMousePos() { return mouse_pos_; }
 
 } /* namespace game_engine */
-
-

@@ -20,79 +20,82 @@
 #ifndef SRC_3D_TEXTURE_TPP_
 #define SRC_3D_TEXTURE_TPP_
 
-#include "Texture.hpp"
-
 #include <glm/glm.hpp>
+
+#include "3D/Texture.hpp"
 
 namespace game_engine {
 namespace _3D {
 
-template<typename Renderer>
-Texture::Texture(const Renderer& renderer,
-		const cmrc::file file,
-		const ShaderPrograms shader_program,
-		const TextureType type) :
-		id_ { 0 }, type_(TextureType::DIFFUSE) {
-	LoadTexture(renderer, file, shader_program, type);
+template <typename Renderer>
+Texture::Texture(const Renderer& renderer, const cmrc::file file,
+                 const ShaderPrograms shader_program, const TextureType type)
+    : id_{0}, type_(TextureType::DIFFUSE) {
+  LoadTexture(renderer, file, shader_program, type);
 }
 
-template<typename Renderer>
-GLuint Texture::LoadTexture(const Renderer& renderer,
-		const cmrc::file file,
-		const ShaderPrograms shader_program,
-		const TextureType type) {
-//	LOG_D("Opening " << file.path());
-	std::vector<uint8_t> file_contents(file.begin(), file.end());
-	path_ = file.path();
-	std::string ext { };
-	if(path_.rfind('.') == std::string::npos) {
-		ext = path_;
-	} else {
-		ext = path_.substr(path_.rfind('.'));
-	}
+template <typename Renderer>
+GLuint Texture::LoadTexture(const Renderer& renderer, const cmrc::file file,
+                            const ShaderPrograms shader_program,
+                            const TextureType type) {
+  log_.Debug("Opening {}.", file.path());
+  std::vector<uint8_t> file_contents(file.begin(), file.end());
+  path_ = file.path();
+  std::string ext{};
+  if (path_.rfind('.') == std::string::npos) {
+    ext = path_;
+  } else {
+    ext = path_.substr(path_.rfind('.'));
+  }
 
-	// New SDL surface and load the image
-	SDL_Surface *surface = IMG_LoadTyped_RW(SDL_RWFromMem(file_contents.data(), file_contents.size()), 1, ext.c_str());
+  // New SDL surface and load the image
+  SDL_Surface* surface = IMG_LoadTyped_RW(
+      SDL_RWFromMem(file_contents.data(), file_contents.size()), 1,
+      ext.c_str());
 
-	// Check if image data loaded ok
-	if(surface == 0) {
-		LOG_E("Error!  surface == 0");
-		LOG_E("file.path() = " << file.path());
-		LOG_E("texture_type = " << type);
+  // Check if image data loaded ok
+  if (surface == 0) {
+    log_.Error("Error!  surface == 0");
+    log_.Error("file.path() = {}", file.path());
+    log_.Error("texture_type = {}", type);
 
-		throw EXIT_FAILURE;
-	}
+    throw EXIT_FAILURE;
+  }
 
-	// Get dimensions
-	glm::ivec2 size(surface->w, surface->h);
+  // Get dimensions
+  glm::ivec2 size(surface->w, surface->h);
 
-	// Check that the image's dimensions are powers of 2
-	if ( (size.x & (size.x - 1)) != 0 ) { 		LOG_W("Non power-of-two texture loaded: " + file.path());	}
-	else if ( (size.y & (size.y - 1)) != 0 ) {	LOG_W("Non power-of-two texture loaded: " + file.path());	}
+  // Check that the image's dimensions are powers of 2
+  if ((size.x & (size.x - 1)) != 0) {
+    log_.Warning("Non power-of-two texture loaded: {}", file.path());
+  } else if ((size.y & (size.y - 1)) != 0) {
+    log_.Warning("Non power-of-two texture loaded: {}", file.path());
+  }
 
-	PixelFormat format = DeterminePixelFormat(surface->format);
+  PixelFormat format = DeterminePixelFormat(surface->format);
 
-	LoadTextureFromMemory(renderer, size, format, surface->pixels, shader_program, type);
+  LoadTextureFromMemory(renderer, size, format, surface->pixels, shader_program,
+                        type);
 
-	// Free SDL surface
-	SDL_FreeSurface(surface);
+  // Free SDL surface
+  SDL_FreeSurface(surface);
 
-	return id_;
+  return id_;
 }
 
-template<typename Renderer>
+template <typename Renderer>
 GLuint Texture::LoadTextureFromMemory(const Renderer& renderer,
-		const glm::ivec2 size,
-		const _3D::PixelFormat pixel_format,
-		const void* buffer,
-		const ShaderPrograms shader_program,
-		const TextureType _type) {
-	if(path_ == "") {
-		path_ = "N/A";
-	}
-	type_ = _type;
-	id_ = renderer.CreateTexture(shader_program, pixel_format, size, buffer);
-	return id_;
+                                      const glm::ivec2 size,
+                                      const _3D::PixelFormat pixel_format,
+                                      const void* buffer,
+                                      const ShaderPrograms shader_program,
+                                      const TextureType _type) {
+  if (path_ == "") {
+    path_ = "N/A";
+  }
+  type_ = _type;
+  id_ = renderer.CreateTexture(shader_program, pixel_format, size, buffer);
+  return id_;
 }
 } /* namespace _3D */
 } /* namespace game_engine */

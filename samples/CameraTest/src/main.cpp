@@ -18,17 +18,8 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "CameraTest.hpp"
-
 #include <gflags/gflags.h>
 
-int main(int argc, char** argv) {
-//	using namespace std::literals::string_literals;
-//
-//	::gflags::SetUsageMessage("Sample usage:\n\t"s
-//			+ (*argv)[0] + " [flags...]");
-//	::gflags::SetVersionString("0.0.1");
-//	::gflags::ParseCommandLineFlags(&argc, &argv, true);
+#include "CameraTest.hpp"
 
-	camera_test::CameraTest::Main(&argc, &argv);
-}
+int main(int argc, char** argv) { camera_test::CameraTest::Main(&argc, &argv); }
