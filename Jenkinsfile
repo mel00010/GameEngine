@@ -42,7 +42,7 @@ pipeline {
             always{
                 xunit (
                     thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-                    tools: [ GoogleTest(pattern: 'build/Release/reports/*.xml') ])
+                    tools: [ GoogleTest(pattern: 'build/Release/reports/*.xml') ]
                 )
             }
         }
