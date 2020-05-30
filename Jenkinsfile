@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh build/Release/test/tests--gtest_output=xml:build/Release/reports/
+                sh build/Release/test/tests --gtest_output=xml:build/Release/reports/
             }
         }
         stage('Analyse') {
