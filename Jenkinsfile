@@ -3,6 +3,7 @@ pipeline {
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
+        skipDefaultCheckout()
     }
 
     parameters {
@@ -11,16 +12,32 @@ pipeline {
     }
 
     stages {
+        /**
+         * Checkout source code from Github on any of the GIT nodes
+         */
+        stage('Checkout') {
+          steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[url: '/home/mel/workspace/GameEngine']]])
+          }
+        }
         stage('Build') {
             steps {
-                cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true, args: all]]
-                cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true, args: all]]
-                cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true, args: all]]
+                cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]
+                cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]
+                cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]
             }
         }
         stage('Test') {
             steps {
                 sh 'build/Release/test/tests --gtest_output=xml:build/Release/reports/'
+            }
+            post {
+                always{
+                    xunit (
+                        thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+                        tools: [ GoogleTest(pattern: 'build/Release/reports/*.xml') ]
+                    )
+                }
             }
         }
         stage('Analyse') {
@@ -41,14 +58,6 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-    post {
-        always{
-            xunit (
-                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-                tools: [ GoogleTest(pattern: 'build/Release/reports/*.xml') ]
-            )
         }
     }
 }
