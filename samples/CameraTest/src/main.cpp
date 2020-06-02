@@ -18,8 +18,6 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <gflags/gflags.h>
-
 #include "CameraTest.hpp"
 
 int main(int argc, char** argv) { camera_test::CameraTest::Main(&argc, &argv); }

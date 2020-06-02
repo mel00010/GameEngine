@@ -18,8 +18,6 @@
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 /**
  * @file test/main_test.cpp
  * @brief The main test file of GameEngine

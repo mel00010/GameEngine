@@ -24,18 +24,19 @@
 #include <string>
 #include <string_view>
 
+#include "LoggerV2/Client.hpp"
+#include "LoggerV2/Log.hpp"
+#include "LoggerV2/Telemetry.hpp"
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
 #include "absl/flags/usage.h"
+#include "absl/strings/str_cat.h"
 
 #include "2D/FpsRenderer.hpp"
 #include "2D/TextRenderer.hpp"
 #include "CallbackHandler.hpp"
 #include "GL/GLRenderer.hpp"
 #include "GL/GLWindowManager.hpp"
-#include "LoggerV2/Client.hpp"
-#include "LoggerV2/Log.hpp"
-#include "LoggerV2/Telemetry.hpp"
 #include "Renderer.hpp"
 #include "Util/Singleton.hpp"
 #include "WindowManager.hpp"

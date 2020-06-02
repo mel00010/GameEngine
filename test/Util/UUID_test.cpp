@@ -22,7 +22,6 @@
 
 #include <ostream>
 
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 using game_engine::util::Uuid;
