@@ -15,6 +15,9 @@ RUN mv /usr/bin/ld /usr/bin/ld.gold
 RUN mv /usr/bin/lld /usr/bin/ld.lld
 RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.lld 100
 RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
+RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
+RUN update-alternatives --set cc /usr/bin/clang
+RUN update-alternatives --set c++ /usr/bin/clang++
 
 RUN sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config
 RUN echo "root:root" | chpasswd
