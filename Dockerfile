@@ -1,5 +1,4 @@
 FROM debian:experimental
-COPY rootfs /
 EXPOSE 22
 RUN echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list
 
