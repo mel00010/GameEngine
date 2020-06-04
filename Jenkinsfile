@@ -1,11 +1,18 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            label 'GameEngineBuild'
+            args '-v ./build/Release/_deps/:/tmp'
+        }
+    }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         skipDefaultCheckout()
     }
-
+    environment {
+        GITHUB_CREDS = credentials('GithubPAC')
+    }
     parameters {
         booleanParam name: 'RUN_ANALYSIS', defaultValue: true, description: 'Run Static Code Analysis?'
         booleanParam name: 'DEPLOY', defaultValue: true, description: 'Deploy Artifacts?'
@@ -16,9 +23,26 @@ pipeline {
          * Checkout source code from Github on any of the GIT nodes
          */
         stage('Checkout') {
-          steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[url: '/home/mel/workspace/GameEngine']]])
-          }
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[
+                        $class: 'SubmoduleOption',
+                        disableSubmodules: false,
+                        parentCredentials: true,
+                        recursiveSubmodules: true,
+                        reference: '',
+                        trackingSubmodules: false
+                    ]],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/mel00010/GameEngine.git',
+                        credentialsID: 'GithubPAC'
+                    ]]
+                ])
+            }
         }
         stage('Build') {
             steps {
