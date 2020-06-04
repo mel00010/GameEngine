@@ -53,9 +53,9 @@ pipeline {
                 stage('SonarQube analysis') {
                     steps{
                         script {
-                            def scannerHome = tool 'SonarScanner 4.0';
-                            withSonarQubeEnv('My SonarQube Server') { // If you have configured more than one global server connection, you can specify its name
-                                sh "/opt/sonar-scanner/bin/sonar-scanner"
+                            def scannerHome = tool 'sonar-scanner';
+                            withSonarQubeEnv() { // If you have configured more than one global server connection, you can specify its name
+                                sh "${scannerHome}/bin/sonar-scanner"
                             }
                         }
                     }
@@ -63,14 +63,14 @@ pipeline {
                 stage('Build') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps"
+                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
                     steps {
-                        cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]
-                        cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]
-                        cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]
+                        cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', cleanBuild: true, installation: 'cmake-3.17.3', steps: [[withCmake: true]]
+                        cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', cleanBuild: true, installation: 'cmake-3.17.3', steps: [[withCmake: true]]
+                        cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', cleanBuild: true, installation: 'cmake-3.17.3', steps: [[withCmake: true]]
                     }
                 }
             }
@@ -80,7 +80,7 @@ pipeline {
                 stage('Test Release') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps"
+                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
@@ -99,7 +99,7 @@ pipeline {
                 stage('Test Debug') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps"
+                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
@@ -118,7 +118,7 @@ pipeline {
                 stage('Test Coverage') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps"
+                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
