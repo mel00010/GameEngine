@@ -10,7 +10,7 @@ RUN apt-get install -t experimental -y --no-install-recommends \
     libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
     libsdl2-mixer-dev libboost-all-dev freeglut3-dev \
     libglew-dev openssh-client openssh-server git libc++abi-dev \
-    ca-certificates gcc lcov libstdc++-dev
+    ca-certificates gcc lcov libstdc++-10-dev
 RUN mv /usr/bin/ld /usr/bin/ld.gold
 RUN mv /usr/bin/lld /usr/bin/ld.lld
 RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.lld 100
