@@ -26,6 +26,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include "LoggerV2/Log.hpp"
+
 namespace game_engine {
 namespace gl {
 

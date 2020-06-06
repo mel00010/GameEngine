@@ -37,17 +37,19 @@ target_link_libraries(GameEngine
     absl::flags_parse
     absl::strings
 )
-target_precompile_headers(GameEngine
-  PUBLIC
-    CallbackHandler.hpp
-    GameCore.hpp
-    InputHandler.hpp
-    Renderer.hpp
-    ShaderPrograms.hpp
-    VboHandle.hpp
-    Vertex.hpp
-    WindowManager.hpp
-)
+if(NOT DEFINED DISABLE_PCH)
+    target_precompile_headers(GameEngine
+      PUBLIC
+        CallbackHandler.hpp
+        GameCore.hpp
+        InputHandler.hpp
+        Renderer.hpp
+        ShaderPrograms.hpp
+        VboHandle.hpp
+        Vertex.hpp
+        WindowManager.hpp
+    )
+endif()
 
 target_include_directories(GameEngine
   PUBLIC

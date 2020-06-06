@@ -7,7 +7,9 @@ target_sources(SlangTest
     ${CMAKE_CURRENT_SOURCE_DIR}/SlangTest.hpp
 )
 #set_target_properties(SlangTest PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
-target_precompile_headers(SlangTest REUSE_FROM GameEngine::GameEngine)
+if(NOT DEFINED DISABLE_PCH)
+    target_precompile_headers(SlangTest REUSE_FROM GameEngine::GameEngine)
+endif()
 
 target_link_libraries(SlangTest
   PUBLIC

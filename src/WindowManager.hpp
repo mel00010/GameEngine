@@ -62,6 +62,4 @@ class WindowManager : Crtp<WindowManager, Derived> {
 
 } /* namespace game_engine */
 
-#include "WindowManager.tpp"
-
 #endif /* SRC_WINDOWMANAGER_HPP_ */

@@ -17,7 +17,6 @@ target_sources(GL
 )
 #set_target_properties(GL PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
-
 target_include_directories(GL
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
@@ -38,8 +37,6 @@ target_link_libraries(GL
     SDL2_image
 #    Slang
 )
-#target_precompile_headers(GL REUSE_FROM Logging::Logging)
-
 
 include(CMakeRC)
 

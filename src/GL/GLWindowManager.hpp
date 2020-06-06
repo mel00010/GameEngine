@@ -23,6 +23,8 @@
 #include <SDL2/SDL.h>
 #include <glm/glm.hpp>
 
+#include "LoggerV2/Log.hpp"
+
 #include "WindowManager.hpp"
 
 namespace game_engine {

@@ -7,7 +7,9 @@ target_sources(CameraTest
     ${CMAKE_CURRENT_SOURCE_DIR}/CameraTest.hpp
 )
 #set_target_properties(CameraTest PROPERTIES INTERPROCEDURAL_OPTIMIZATION FALSE)
-target_precompile_headers(CameraTest REUSE_FROM GameEngine::GameEngine)
+if(NOT DEFINED DISABLE_PCH)
+    target_precompile_headers(CameraTest REUSE_FROM GameEngine::GameEngine)
+endif()
 
 target_link_libraries(CameraTest
   PUBLIC
@@ -19,6 +21,22 @@ target_link_libraries(CameraTest
 )
 
 include(CMakeRC)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+  # coverage target setup
+  include(CodeCoverage)
+  append_coverage_compiler_flags()
+  set(COVERAGE_EXCLUDES
+    '${PROJECT_SOURCE_DIR}/test/*'
+    '/usr/include/c++/6/*'
+    '/usr/include/c++/7/*'
+    '/usr/include/c++/8/*'
+    '/usr/include/c++/9/*'
+    '/usr/include/c++/10/*'
+    '/usr/local/include/boost/*'
+  )
+  setup_target_for_coverage(NAME CameraTest_coverage EXECUTABLE samples/CameraTest/src/CameraTest DEPENDENCIES CameraTest)
+endif()
 
 cmrc_add_resource_library(CameraTest-Resources ALIAS CameraTest::Resources NAMESPACE camera_test)
 cmrc_add_resources(CameraTest-Resources

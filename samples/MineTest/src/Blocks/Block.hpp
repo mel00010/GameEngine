@@ -23,7 +23,7 @@
 #include <3D/Cube.hpp>
 #include <cmrc/cmrc.hpp>
 
-#include "../../../../src/Util/Crtp.hpp"
+#include "Util/Crtp.hpp"
 
 CMRC_DECLARE(blocks);
 
