@@ -49,12 +49,12 @@ pipeline {
                 cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
                 cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
                 cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
+                sh 'cp -r /host/Release/_deps  build/Release/_deps '
+                sh 'cp -r /host/Debug/_deps    build/Debug/_deps   '
+                sh 'cp -r /host/Coverage/_deps build/Coverage/_deps'
                 cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', installation: 'cmake-3.17.3', steps: [[args: 'all']]
                 cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', installation: 'cmake-3.17.3', steps: [[args: 'all']]
                 cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', installation: 'cmake-3.17.3', steps: [[args: 'all']]
-                sh 'cp -r build/Release/_deps  /host/Release/_deps '
-                sh 'cp -r build/Debug/_deps    /host/Debug/_deps   '
-                sh 'cp -r build/Coverage/_deps /host/Coverage/_deps'
             }
         }
         stage('Test') {
