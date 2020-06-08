@@ -5,6 +5,11 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         skipDefaultCheckout()
     }
+    parameters {
+        string(name: 'CODECHECKER_PATH', defaultValue: '/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker', description: 'Path to CodeChecker executable')
+    }
+
+
 
     stages {
         /**
@@ -38,23 +43,20 @@ pipeline {
         stage('Build') {
             agent {
                 dockerfile {
-                    args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                    //args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                    args "-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+
                     reuseNode true
                 }
             }
             steps {
-                sh 'cp -r /host/Release/_deps  build/Release/_deps '
-                sh 'cp -r /host/Debug/_deps    build/Debug/_deps   '
-                sh 'cp -r /host/Coverage/_deps build/Coverage/_deps'
-                cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
-                cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
-                cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
-                sh 'cp -r /host/Release/_deps  build/Release/_deps '
-                sh 'cp -r /host/Debug/_deps    build/Debug/_deps   '
-                sh 'cp -r /host/Coverage/_deps build/Coverage/_deps'
+//                cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
+//                cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
+//                cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', installation: 'cmake-3.17.3', steps: [[args: 'clean']]
                 cmakeBuild buildType: 'Release', generator: 'Ninja', buildDir: 'build/Release', installation: 'cmake-3.17.3', steps: [[args: 'all']]
                 cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/Debug', installation: 'cmake-3.17.3', steps: [[args: 'all']]
                 cmakeBuild buildType: 'Coverage', generator: 'Ninja', buildDir: 'build/Coverage', installation: 'cmake-3.17.3', steps: [[args: 'all']]
+                cmakeBuild buildType: 'Debug', generator: 'Ninja', buildDir: 'build/DebugNoPCH', installation: 'cmake-3.17.3', steps: [[args: '-DDISABLE_PCH=True all']]
             }
         }
         stage('Test') {
@@ -62,7 +64,8 @@ pipeline {
                 stage('Test Release') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                            //args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                            args "-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
@@ -81,7 +84,8 @@ pipeline {
                 stage('Test Debug') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                            //args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                            args "-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
@@ -100,7 +104,8 @@ pipeline {
                 stage('Test Coverage') {
                     agent {
                         dockerfile {
-                            args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                            //args "-v ${PWD}/build/Release/_deps/:/host/Release/_deps -v ${PWD}/build/Debug/_deps/:/host/Debug/_deps -v ${PWD}/build/Coverage/_deps/:/host/Coverage/_deps -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
+                            args "-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/"
                             reuseNode true
                         }
                     }
@@ -123,13 +128,13 @@ pipeline {
                 stage('CodeChecker ClangSA') {
                    steps {
                        sh 'mkdir -p build/Analysis/CodeChecker/ClangSA'
-                       sh '_CodeChecker analyze "build/DebugNoPCH/compile_commands.json" --analyzers clangsa -i .codechecker_skip --enable-all --enable alpha --ctu --output build/Analysis/CodeChecker/ClangSA/'
+                       sh "${CODECHECKER_PATH} analyze \"build/DebugNoPCH/compile_commands.json\" --analyzers clangsa -i .codechecker_skip --enable-all --enable alpha --ctu --output build/Analysis/CodeChecker/ClangSA/"
                    }
                 }
                 stage('CodeChecker ClangTidy') {
                    steps {
                        sh 'mkdir -p build/Analysis/CodeChecker/ClangTidy'
-                       sh '_CodeChecker analyze "build/DebugNoPCH/compile_commands.json" --analyzers clang-tidy -i .codechecker_skip --enable-all --enable alpha --ctu --output build/Analysis/CodeChecker/ClangTidy/'
+                       sh "${CODECHECKER_PATH} analyze \"build/DebugNoPCH/compile_commands.json\" --analyzers clang-tidy -i .codechecker_skip --enable-all --enable alpha --ctu --output build/Analysis/CodeChecker/ClangTidy/"
                    }
                 }
                 stage('CppCheck') {
@@ -179,7 +184,7 @@ pipeline {
                             DATETIME_TAG = java.time.LocalDateTime.now()
                         }
                         sh 'mkdir -p build/Analysis/Coverage'
-                        sh "gcovr -r . -x --object-directory=${PWD}/build/Coverage/test/ > build/Analysis/Coverage/report-${DATETIME_TAG}.xml"
+                        sh "gcovr -r . -x --object-directory=build/Coverage/test/ > build/Analysis/Coverage/report-${DATETIME_TAG}.xml"
                     }
                 }
             }
