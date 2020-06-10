@@ -33,8 +33,7 @@
 #include "Util/Uuid.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 class GLRenderer : public Renderer<GLRenderer, GLWindowManager> {
  public:
@@ -122,8 +121,7 @@ class GLRenderer : public Renderer<GLRenderer, GLWindowManager> {
   ShaderProgram* GetShader(const ShaderPrograms shader_program) const;
 };
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #include "GL/GLRenderer.tpp"
 

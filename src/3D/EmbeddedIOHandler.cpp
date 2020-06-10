@@ -22,8 +22,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 bool EmbeddedIOHandler::Exists(const char* pFile) const {
   log_.Debug("Testing for existence of {}.  File {}.", pFile,
@@ -50,5 +49,4 @@ void EmbeddedIOHandler::Close(Assimp::IOStream* pFile) {
   delete file;
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

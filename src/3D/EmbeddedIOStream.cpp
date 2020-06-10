@@ -24,8 +24,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 size_t EmbeddedIOStream::Read(void* pvBuffer, size_t pSize, size_t pCount) {
   log_.Debug("Reading {}  items of size  ({} bytes) from {} at position {}.",
@@ -82,5 +81,4 @@ size_t EmbeddedIOStream::FileSize() const {
 }
 void EmbeddedIOStream::Flush() {}
 
-}  // namespace _3D
-}  // namespace game_engine
+} /* namespace game_engine::_3D */

@@ -24,8 +24,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace sound {
+namespace game_engine::sound {
 
 Sound::~Sound() {
   if (chunk_ == nullptr) {
@@ -72,5 +71,5 @@ void Sound::Play(const size_t times) {
 int Sound::SetVolume(const int volume) {
   return Mix_VolumeChunk(chunk_, volume);
 }
-}  // namespace sound
-} /* namespace game_engine */
+
+} /* namespace game_engine::sound */

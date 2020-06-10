@@ -31,8 +31,7 @@
     static const bool enable = true;                       \
   }
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 /**
  * @brief Struct defining whether comparison operators should be defined on an
@@ -318,8 +317,7 @@ operator!=(const Integer lhs, const Enumerator rhs) {
   return lhs != static_cast<const underlying>(rhs);
 }
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 using namespace game_engine::util;
 

@@ -24,8 +24,7 @@
 #include <iomanip>
 #include <numeric>
 
-namespace game_engine {
-namespace _2D {
+namespace game_engine::_2D {
 
 void FpsRenderer::CalculateFps() {
   static size_t tick_counter(0);
@@ -86,5 +85,4 @@ void FpsRenderer::IncrementFrameCount() {
 void FpsRenderer::StartFrameTimer() { frame_start_time_ = Clock::now(); }
 void FpsRenderer::StopFrameTimer() { frame_stop_time_ = Clock::now(); }
 
-} /* namespace _2D */
-} /* namespace game_engine */
+} /* namespace game_engine::_2D */

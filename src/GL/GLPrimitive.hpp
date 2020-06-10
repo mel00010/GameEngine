@@ -26,8 +26,7 @@
 
 #include "3D/Primitive.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 enum class GLPrimitive : GLenum {
   POINTS = GL_POINTS,
@@ -94,7 +93,6 @@ inline GLPrimitive Convert(const _3D::Primitive p) {
   return GLPrimitive::TRIANGLES;
 }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_GLPRIMITIVE_HPP_ */

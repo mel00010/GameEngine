@@ -27,8 +27,7 @@
 
 #include "3D/EmbeddedIOStream.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class EmbeddedIOHandler : public Assimp::IOSystem {
  public:
@@ -81,7 +80,6 @@ class EmbeddedIOHandler : public Assimp::IOSystem {
   logging::Log log_ = logging::Log("main");
 };
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_EMBEDDEDIOHANDLER_HPP_ */

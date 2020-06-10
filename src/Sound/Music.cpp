@@ -22,8 +22,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace sound {
+namespace game_engine::sound {
 
 Music::~Music() noexcept {
   if (music_ == nullptr) {
@@ -67,5 +66,5 @@ int Music::SetVolume(const int volume) {
 }
 bool Music::IsPaused() { return Mix_PausedMusic(); }
 bool Music::IsPlaying() { return Mix_PlayingMusic(); }
-}  // namespace sound
-} /* namespace game_engine */
+
+} /* namespace game_engine::sound */

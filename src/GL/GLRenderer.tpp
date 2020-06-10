@@ -22,8 +22,6 @@
 
 #include "GLRenderer.hpp"
 
-namespace game_engine {
-namespace gl {} /* namespace gl */
-} /* namespace game_engine */
+namespace game_engine::gl {} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_GLRENDERER_TPP_ */

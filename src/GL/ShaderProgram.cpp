@@ -20,11 +20,11 @@
 
 #include "GL/ShaderProgram.hpp"
 
-#include "GL/Shader.hpp"
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace gl {
+#include "GL/Shader.hpp"
+
+namespace game_engine::gl {
 
 bool ShaderProgram::Init() {
   program_ = glCreateProgram();
@@ -167,5 +167,4 @@ void ShaderProgram::SetMat4(const std::string& name,
                      &mat[0][0]);
 }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */

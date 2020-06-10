@@ -20,8 +20,7 @@
 #ifndef SRC_UTIL_SINGLETON_HPP_
 #define SRC_UTIL_SINGLETON_HPP_
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 /**
  * @brief Wrapper ensuring only one object of a class exists at a time
@@ -52,8 +51,7 @@ struct Singleton {
   Singleton& operator=(Singleton const&);
 };
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 using namespace game_engine::util;
 

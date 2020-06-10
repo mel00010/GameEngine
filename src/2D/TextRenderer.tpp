@@ -25,13 +25,13 @@
 
 #include <glm/glm.hpp>
 
-#include "2D/TextRenderer.hpp"
 #include "LoggerV2/Log.hpp"
+
+#include "2D/TextRenderer.hpp"
 #include "Renderer.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _2D {
+namespace game_engine::_2D {
 
 template <typename Renderer>
 void TextRenderer::Init(Renderer& renderer) {
@@ -173,7 +173,6 @@ void TextRenderer::RenderText(const Renderer& renderer, const std::string text,
   renderer.UseShader(ShaderPrograms::DEFAULT);
 }
 
-} /* namespace _2D */
-} /* namespace game_engine */
+} /* namespace game_engine::_2D */
 
 #endif /* SRC_2D_TEXTRENDERER_TPP_ */

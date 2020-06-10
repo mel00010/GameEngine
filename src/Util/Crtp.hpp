@@ -20,8 +20,7 @@
 #ifndef SRC_UTIL_CRTP_HPP_
 #define SRC_UTIL_CRTP_HPP_
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 /**
  * @brief A helper class to make CRTP more convenient
@@ -61,8 +60,7 @@ struct Crtp {
   friend Base<Derived, Base_Args...>;
 };
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 using namespace game_engine::util;
 

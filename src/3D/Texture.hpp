@@ -29,12 +29,12 @@
 #include <cmrc/cmrc.hpp>
 #include <glm/glm.hpp>
 
-#include "3D/PixelFormat.hpp"
 #include "LoggerV2/Log.hpp"
+
+#include "3D/PixelFormat.hpp"
 #include "ShaderPrograms.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 enum class TextureType : std::uint8_t { DIFFUSE, SPECULAR, NORMAL, HEIGHT };
 std::ostream& operator<<(std::ostream& os, const TextureType type);
@@ -75,6 +75,7 @@ class Texture {
 
  protected:
   static PixelFormat DeterminePixelFormat(const SDL_PixelFormat* format);
+
   friend class Cubemap;
 
  public:
@@ -90,8 +91,7 @@ std::ostream& operator<<(std::ostream& os, const Texture& text);
 
 inline void swap(Texture& a, Texture& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Texture.tpp"
 

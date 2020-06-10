@@ -33,8 +33,7 @@
 #include "VboHandle.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class Mesh {
  public:
@@ -83,8 +82,7 @@ class Mesh {
 
 inline void swap(Mesh& a, Mesh& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Mesh.tpp"
 

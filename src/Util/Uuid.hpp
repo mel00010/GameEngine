@@ -27,10 +27,10 @@
 #include <utility>
 
 #include "LoggerV2/Log.hpp"
+
 #include "Util/Rng.hpp"
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 class Uuid {
  public:
@@ -96,8 +96,7 @@ inline std::ostream& operator<<(std::ostream& os, const Uuid uuid) {
 
 inline void swap(Uuid& a, Uuid& b) noexcept { a.swap(b); }
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 using namespace game_engine::util;
 

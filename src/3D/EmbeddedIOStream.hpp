@@ -29,8 +29,7 @@ namespace game_engine::_3D {
 class EmbeddedIOHandler;
 }  // namespace game_engine::_3D
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class EmbeddedIOStream : public Assimp::IOStream {
  protected:
@@ -83,7 +82,6 @@ class EmbeddedIOStream : public Assimp::IOStream {
   logging::Log log_ = logging::Log("main");
 };
 
-}  // namespace _3D
-}  // namespace game_engine
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_EMBEDDEDIOSTREAM_HPP_ */

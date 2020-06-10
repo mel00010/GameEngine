@@ -25,8 +25,7 @@
 
 CMRC_DECLARE(_3D);
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename Renderer>
 Cube::Cube(Renderer& renderer, const cmrc::embedded_filesystem& fs,
@@ -66,7 +65,6 @@ void Cube::CubeMesh::Draw(const Renderer& renderer,
   renderer.Render(handle_, Primitive::TRIANGLES);
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_CUBE_TPP_ */

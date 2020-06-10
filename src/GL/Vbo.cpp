@@ -22,8 +22,7 @@
 
 #include <GL/glew.h>
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 void Vbo::Init(ShaderPrograms shader) {
   glGenVertexArrays(1, &vao_);
@@ -101,5 +100,4 @@ void Vbo::AddVertexPointers() {
                    offsetof(Vertex, fog_coord));
 }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */

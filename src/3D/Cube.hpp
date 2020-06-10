@@ -32,8 +32,7 @@
 #include "VboHandle.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine ::_3D {
 
 class Cube : public Transformations {
  public:
@@ -104,8 +103,7 @@ inline void swap(Cube::CubeMesh& a, Cube::CubeMesh& b) noexcept { a.swap(b); }
 
 inline void swap(Cube& a, Cube& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Cube.tpp"
 

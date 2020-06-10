@@ -20,8 +20,7 @@
 #ifndef SRC_UTIL_BIND_HPP_
 #define SRC_UTIL_BIND_HPP_
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 struct none {};
 
@@ -312,7 +311,6 @@ template <template <class derived, typename... class_args> class Class>
 struct bind<Class, none, none, none, none, none, none, none, none, none, none>
     : public bind0<Class> {};
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 #endif /* SRC_UTIL_BIND_HPP_ */

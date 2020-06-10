@@ -29,12 +29,12 @@
 #include <cmrc/cmrc.hpp>
 #include <glm/glm.hpp>
 
-#include "3D/PixelFormat.hpp"
 #include "LoggerV2/Log.hpp"
+
+#include "3D/PixelFormat.hpp"
 #include "ShaderPrograms.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 struct CubemapBuffers {
  public:
@@ -112,8 +112,7 @@ std::ostream& operator<<(std::ostream& os, const Cubemap& text);
 
 inline void swap(Cubemap& a, Cubemap& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Cubemap.tpp"
 

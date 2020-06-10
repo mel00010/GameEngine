@@ -25,10 +25,10 @@
 #include <assimp/scene.h>
 
 #include "LoggerV2/Log.hpp"
+
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 std::vector<Texture> Model::textures_loaded_;
 
@@ -57,5 +57,4 @@ std::ostream& operator<<(std::ostream& os, Model m) {
   return os;
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

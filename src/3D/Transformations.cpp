@@ -22,8 +22,7 @@
 
 #include <glm/gtx/euler_angles.hpp>
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 void Transformations::Rotate(const glm::vec3 delta) {
   model_ *= glm::orientate4(delta);
@@ -226,5 +225,4 @@ void Transformations::ScaleXYZTo(const float Scale_x, const float Scale_y,
   model_ = glm::scale(model_, scaling_);
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

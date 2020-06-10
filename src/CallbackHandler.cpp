@@ -24,68 +24,68 @@
 
 namespace game_engine {
 
-void CallbackHandler::DispatchCallbacks() {
-  SDL_Event ev;
-  while (SDL_PollEvent(&ev) != 0) {
-    switch (ev.type) {
-      case SDL_WINDOWEVENT:
-        for (auto& i : window_event_callbacks_) {
-          i(ev.window);
-        }
-        break;
-      case SDL_KEYDOWN:
-        if (ev.key.repeat != 0) {
-          break;
-        }
-        handler_.SetKeyStatus(ev.key.keysym.scancode, true);
-        for (auto& i : key_down_callbacks_[ev.key.keysym.scancode]) {
-          i(ev.key);
-        }
-        break;
-      case SDL_KEYUP:
-        handler_.SetKeyStatus(ev.key.keysym.scancode, false);
-        for (auto& i : key_up_callbacks_[ev.key.keysym.scancode]) {
-          i(ev.key);
-        }
-        break;
-      case SDL_MOUSEMOTION:
-        for (auto& i : m_move_callbacks_) {
-          i(ev.motion, glm::ivec2(ev.motion.x, ev.motion.y),
-            glm::ivec2(ev.motion.xrel, ev.motion.yrel));
-        }
-        break;
-      case SDL_MOUSEBUTTONDOWN:
-        handler_.SetMouseButtonStatus(ev.button.button, true);
-        for (auto& i : m_button_down_callbacks_[ev.button.button]) {
-          i(ev.button, glm::ivec2(ev.button.x, ev.button.y));
-        }
-        break;
-      case SDL_MOUSEBUTTONUP:
-        handler_.SetMouseButtonStatus(ev.button.button, false);
-        for (auto& i : m_button_up_callbacks_[ev.button.button]) {
-          i(ev.button, glm::ivec2(ev.button.x, ev.button.y));
-        }
-        break;
-      case SDL_MOUSEWHEEL:
-        handler_.AddToMouseWheelPos(glm::ivec2(ev.wheel.x, ev.wheel.y));
-        for (auto& i : m_immediate_wheel_callbacks_) {
-          i(ev.wheel, glm::ivec2(ev.wheel.x, ev.wheel.y));
-        }
-        break;
-    }
-    for (auto& callback_pair : event_callbacks_) {
-      if (callback_pair.first(ev)) {
-        callback_pair.second(ev);
-      }
+void CallbackHandler::HandleWindowEvent(SDL_Event& ev) {
+  for (auto& i : window_event_callbacks_) {
+    i(ev.window);
+  }
+}
+void CallbackHandler::HandleKeyDownEvent(SDL_Event& ev) {
+  if (ev.key.repeat != 0) {
+    return;
+  }
+  handler_.SetKeyStatus(ev.key.keysym.scancode, true);
+  for (auto& i : key_down_callbacks_[ev.key.keysym.scancode]) {
+    i(ev.key);
+  }
+}
+void CallbackHandler::HandleKeyUpEvent(SDL_Event& ev) {
+  handler_.SetKeyStatus(ev.key.keysym.scancode, false);
+  for (auto& i : key_up_callbacks_[ev.key.keysym.scancode]) {
+    i(ev.key);
+  }
+}
+void CallbackHandler::HandleMouseMotionEvent(SDL_Event& ev) {
+  for (auto& i : m_move_callbacks_) {
+    i(ev.motion, glm::ivec2(ev.motion.x, ev.motion.y),
+      glm::ivec2(ev.motion.xrel, ev.motion.yrel));
+  }
+}
+void CallbackHandler::HandleMouseDownEvent(SDL_Event& ev) {
+  handler_.SetMouseButtonStatus(ev.button.button, true);
+  for (auto& i : m_button_down_callbacks_[ev.button.button]) {
+    i(ev.button, glm::ivec2(ev.button.x, ev.button.y));
+  }
+}
+
+void CallbackHandler::HandleMouseUpEvent(SDL_Event& ev) {
+  handler_.SetMouseButtonStatus(ev.button.button, false);
+  for (auto& i : m_button_up_callbacks_[ev.button.button]) {
+    i(ev.button, glm::ivec2(ev.button.x, ev.button.y));
+  }
+}
+void CallbackHandler::HandleMouseWheelEvent(SDL_Event& ev) {
+  handler_.AddToMouseWheelPos(glm::ivec2(ev.wheel.x, ev.wheel.y));
+  for (auto& i : m_immediate_wheel_callbacks_) {
+    i(ev.wheel, glm::ivec2(ev.wheel.x, ev.wheel.y));
+  }
+}
+void CallbackHandler::HandleGenericEvent(SDL_Event& ev) {
+  for (auto& callback_pair : event_callbacks_) {
+    if (callback_pair.first(ev)) {
+      callback_pair.second(ev);
     }
   }
+}
+
+void CallbackHandler::UpdateMouseWheelPos() {
   if (handler_.GetMouseWheelPos() != glm::ivec2(0, 0)) {
     for (auto& callback : m_wheel_callbacks_) {
       callback(handler_.GetMouseWheelPos());
     }
     handler_.SetMouseWheelPos(glm::ivec2(0, 0));
   }
-
+}
+void CallbackHandler::UpdateKeyStatus() {
   for (size_t i = 0; i < key_held_callbacks_.size(); i++) {
     if (handler_.GetKeyStatus(i)) {
       for (auto& callback : key_held_callbacks_[i]) {
@@ -93,6 +93,8 @@ void CallbackHandler::DispatchCallbacks() {
       }
     }
   }
+}
+void CallbackHandler::UpdateMouseButtonStatus() {
   for (size_t i = 0; i < m_button_held_callbacks_.size(); i++) {
     if (handler_.GetMouseButtonStatus(i)) {
       for (auto& callback : m_button_held_callbacks_[i]) {
@@ -100,6 +102,39 @@ void CallbackHandler::DispatchCallbacks() {
       }
     }
   }
+}
+
+void CallbackHandler::DispatchCallbacks() {
+  SDL_Event ev;
+  while (SDL_PollEvent(&ev) != 0) {
+    switch (ev.type) {
+      case SDL_WINDOWEVENT:
+        HandleWindowEvent(ev);
+        break;
+      case SDL_KEYDOWN:
+        HandleKeyDownEvent(ev);
+        break;
+      case SDL_KEYUP:
+        HandleKeyUpEvent(ev);
+        break;
+      case SDL_MOUSEMOTION:
+        HandleMouseMotionEvent(ev);
+        break;
+      case SDL_MOUSEBUTTONDOWN:
+        HandleMouseDownEvent(ev);
+        break;
+      case SDL_MOUSEBUTTONUP:
+        HandleMouseUpEvent(ev);
+        break;
+      case SDL_MOUSEWHEEL:
+        HandleMouseWheelEvent(ev);
+        break;
+    }
+    HandleGenericEvent(ev);
+  }
+  UpdateMouseWheelPos();
+  UpdateKeyStatus();
+  UpdateMouseButtonStatus();
 }
 
 void CallbackHandler::DispatchTimeoutEvents() {

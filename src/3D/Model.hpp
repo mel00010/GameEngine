@@ -29,13 +29,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
+#include "LoggerV2/Log.hpp"
+
 #include "3D/Mesh.hpp"
 #include "3D/Texture.hpp"
 #include "3D/Transformations.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class Model : public Transformations {
  public:
@@ -90,8 +91,7 @@ class Model : public Transformations {
   logging::Log log_ = logging::Log("main");
 };
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Model.tpp"
 

@@ -20,8 +20,7 @@
 
 #include "Util/Rng.hpp"
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 uint64_t Rng::get() {
   static std::random_device rd;
@@ -29,5 +28,4 @@ uint64_t Rng::get() {
   return rng();
 }
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */

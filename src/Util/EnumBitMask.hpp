@@ -31,8 +31,7 @@
     static const bool enable = true;                    \
   }
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 /**
  * @brief Struct defining whether bitwise operators should be defined on an enum
@@ -153,8 +152,7 @@ operator^=(Enumerator lhs, Enumerator rhs) {
                                  static_cast<underlying>(rhs));
 }
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 using namespace game_engine::util;
 

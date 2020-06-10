@@ -23,8 +23,7 @@
 #include "3D/Cubemap.hpp"
 #include "3D/Texture.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename Renderer>
 Cubemap::Cubemap(const Renderer& renderer, const cmrc::embedded_filesystem& fs,
@@ -90,7 +89,6 @@ GLuint Cubemap::LoadCubemapFromMemory(const Renderer& renderer,
   log_.Debug("Cubemap id_ = {}", id_);
   return id_;
 }
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_CUBEMAP_TPP_ */

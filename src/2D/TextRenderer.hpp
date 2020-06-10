@@ -31,14 +31,14 @@
 
 #include <glm/glm.hpp>
 
-#include "3D/Texture.hpp"
 #include "LoggerV2/Log.hpp"
+
+#include "3D/Texture.hpp"
 #include "Renderer.hpp"
 #include "Util/Singleton.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _2D {
+namespace game_engine::_2D {
 
 class TextRenderer {
  public:
@@ -94,8 +94,7 @@ inline void swap(TextRenderer::Character& a,
 
 inline void swap(TextRenderer& a, TextRenderer& b) noexcept { a.swap(b); }
 
-} /* namespace _2D */
-} /* namespace game_engine */
+} /* namespace game_engine::_2D */
 
 #include "TextRenderer.tpp"
 

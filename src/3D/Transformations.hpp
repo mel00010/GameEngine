@@ -23,8 +23,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class Transformations {
  public:
@@ -121,7 +120,6 @@ class Transformations {
 
 inline void swap(Transformations& a, Transformations& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_TRANSFORMATIONS_HPP_ */

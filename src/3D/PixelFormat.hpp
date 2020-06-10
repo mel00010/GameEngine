@@ -20,8 +20,7 @@
 #ifndef SRC_3D_PIXELFORMAT_HPP_
 #define SRC_3D_PIXELFORMAT_HPP_
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 using InternalFormat = int;
 using Format = unsigned int;
@@ -31,7 +30,6 @@ struct PixelFormat {
   Format e_format;
 };
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_PIXELFORMAT_HPP_ */

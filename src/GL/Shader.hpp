@@ -32,8 +32,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 enum class ShaderType : GLenum {
   VERTEX = GL_VERTEX_SHADER,
@@ -102,7 +101,6 @@ class Shader {
 
 inline void swap(Shader& a, Shader& b) noexcept { a.swap(b); }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_SHADER_HPP_ */

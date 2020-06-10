@@ -28,8 +28,7 @@
 #include "ShaderPrograms.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 class Vbo {
  public:
@@ -63,7 +62,6 @@ inline std::ostream& operator<<(std::ostream& os, const Vbo vbo) {
             << "}";
 }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_VBO_HPP_ */

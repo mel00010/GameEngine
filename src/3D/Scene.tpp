@@ -22,8 +22,7 @@
 
 #include "3D/Scene.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename RealRenderer, typename RealWindowManager>
 void Scene::Draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
@@ -31,9 +30,7 @@ void Scene::Draw(Renderer<RealRenderer, RealWindowManager>& renderer) {
     camera_.DrawModel(renderer, model);
   }
 }
-}  // namespace _3D
 
-}  // namespace game_engine
-} /* namespace game_engine */
+}  // namespace game_engine::_3D
 
 #endif /* SRC_3D_SCENE_TPP_ */

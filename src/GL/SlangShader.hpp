@@ -23,12 +23,12 @@
 #include <cmrc/cmrc.hpp>
 #include <slang.h>
 
-#include "GL/Shader.hpp"
-#include "GL/ShaderProgram.hpp"
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace gl {
+#include "GL/Shader.hpp"
+#include "GL/ShaderProgram.hpp"
+
+namespace game_engine::gl {
 
 SlangSession* getSlangSession() {
   static SlangSession* const slangSession = spCreateSession(NULL);
@@ -182,7 +182,6 @@ class SlangShaderProgram {
   logging::Log log_ = logging::Log("main");
 };
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_SLANGSHADER_HPP_ */

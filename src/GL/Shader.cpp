@@ -27,8 +27,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 Shader::Shader(std::string _source, ShaderType _type)
     : source(_source), type(_type), shader(0), valid(false) {}
@@ -78,5 +77,4 @@ bool Shader::isValid() const { return valid; }
 ShaderType Shader::getShaderType() { return type; }
 GLuint Shader::getShaderHandle() { return shader; }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */

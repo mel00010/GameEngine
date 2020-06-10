@@ -22,8 +22,7 @@
 
 #include "3D/Mesh.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename Renderer>
 void Mesh::Init(Renderer& renderer, const ShaderPrograms shaders) {
@@ -42,7 +41,6 @@ void Mesh::Draw(const Renderer& renderer, const ShaderPrograms shaders) const {
   //  log_.CAPTURE(handle_.uuid_);
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_MESH_TPP_ */

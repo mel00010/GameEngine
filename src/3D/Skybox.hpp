@@ -23,8 +23,7 @@
 
 #include "3D/Cube.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class Skybox {
  public:
@@ -59,8 +58,7 @@ class Skybox {
 
 inline void swap(Skybox& a, Skybox& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Skybox.tpp"
 

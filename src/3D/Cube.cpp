@@ -20,8 +20,7 @@
 
 #include "3D/Cube.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 std::ostream& operator<<(std::ostream& os, const Cube& m) {
   os << "Cube {" << std::endl;
@@ -47,5 +46,4 @@ std::ostream& operator<<(std::ostream& os, const Cube::CubeMesh& m) {
   return os;
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

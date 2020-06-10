@@ -22,8 +22,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 Mesh::Mesh(const std::vector<Vertex>& vertices,
            const std::vector<GLuint>& indices,
@@ -83,5 +82,4 @@ std::ostream& operator<<(std::ostream& os, const Mesh& m) {
   return os;
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

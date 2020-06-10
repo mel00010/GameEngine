@@ -22,8 +22,7 @@
 
 #include <ostream>
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 enum class Primitive : std::uint8_t {
   POINTS,
@@ -64,7 +63,6 @@ inline std::ostream& operator<<(std::ostream& os, const Primitive p) {
   return os;
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_PRIMITIVE_HPP_ */

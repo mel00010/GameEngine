@@ -22,8 +22,7 @@
 
 #include "3D/Camera.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename Renderer>
 void Camera::DrawModel(const Renderer& renderer, Model& model,
@@ -46,7 +45,6 @@ void Camera::DrawModel(const Renderer& renderer, Skybox& skybox,
   skybox.Draw(renderer, shaders);
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_CAMERA_TPP_ */

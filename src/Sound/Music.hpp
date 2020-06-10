@@ -29,8 +29,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace sound {
+namespace game_engine::sound {
 
 class Music {
  public:
@@ -70,7 +69,6 @@ class Music {
 
 inline void swap(Music& a, Music& b) noexcept { a.swap(b); }
 
-}  // namespace sound
-} /* namespace game_engine */
+} /* namespace game_engine::sound */
 
 #endif /* SRC_SOUND_MUSIC_HPP_ */

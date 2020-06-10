@@ -32,8 +32,9 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
+
+namespace {
 
 enum class Color : std::int8_t {
   EMPTY = -1,
@@ -49,64 +50,34 @@ bool IsBlue(const Color color) { return (color == Color::BLUE); }
 bool IsAlpha(const Color color) { return (color == Color::ALPHA); }
 bool IsEmpty(const Color color) { return (color == Color::EMPTY); }
 
+void ProcessColorMask(const Color color, const int mask,
+                      std::array<Color, 4>* bytes) {
+  if ((mask & 0x000000FF) != 0) {
+    (*bytes)[0] = color;
+  }
+  if ((mask & 0x0000FF00) != 0) {
+    (*bytes)[1] = color;
+  }
+  if ((mask & 0x00FF0000) != 0) {
+    (*bytes)[2] = color;
+  }
+  if ((mask & 0xFF000000) != 0) {
+    (*bytes)[3] = color;
+  }
+}
+
+}  // namespace
+
 PixelFormat Texture::DeterminePixelFormat(const SDL_PixelFormat* format) {
   PixelFormat f;
   logging::Log log = logging::Log("main");
 
   std::array<Color, 4> bytes = {Color::EMPTY, Color::EMPTY, Color::EMPTY,
                                 Color::EMPTY};
-
-  if ((format->Rmask & 0x000000FF) != 0) {
-    bytes[0] = Color::RED;
-  }
-  if ((format->Rmask & 0x0000FF00) != 0) {
-    bytes[1] = Color::RED;
-  }
-  if ((format->Rmask & 0x00FF0000) != 0) {
-    bytes[2] = Color::RED;
-  }
-  if ((format->Rmask & 0xFF000000) != 0) {
-    bytes[3] = Color::RED;
-  }
-
-  if ((format->Gmask & 0x000000FF) != 0) {
-    bytes[0] = Color::GREEN;
-  }
-  if ((format->Gmask & 0x0000FF00) != 0) {
-    bytes[1] = Color::GREEN;
-  }
-  if ((format->Gmask & 0x00FF0000) != 0) {
-    bytes[2] = Color::GREEN;
-  }
-  if ((format->Gmask & 0xFF000000) != 0) {
-    bytes[3] = Color::GREEN;
-  }
-
-  if ((format->Bmask & 0x000000FF) != 0) {
-    bytes[0] = Color::BLUE;
-  }
-  if ((format->Bmask & 0x0000FF00) != 0) {
-    bytes[1] = Color::BLUE;
-  }
-  if ((format->Bmask & 0x00FF0000) != 0) {
-    bytes[2] = Color::BLUE;
-  }
-  if ((format->Bmask & 0xFF000000) != 0) {
-    bytes[3] = Color::BLUE;
-  }
-
-  if ((format->Amask & 0x000000FF) != 0) {
-    bytes[0] = Color::ALPHA;
-  }
-  if ((format->Amask & 0x0000FF00) != 0) {
-    bytes[1] = Color::ALPHA;
-  }
-  if ((format->Amask & 0x00FF0000) != 0) {
-    bytes[2] = Color::ALPHA;
-  }
-  if ((format->Amask & 0xFF000000) != 0) {
-    bytes[3] = Color::ALPHA;
-  }
+  ProcessColorMask(Color::RED, format->Rmask, &bytes);
+  ProcessColorMask(Color::GREEN, format->Gmask, &bytes);
+  ProcessColorMask(Color::BLUE, format->Bmask, &bytes);
+  ProcessColorMask(Color::ALPHA, format->Amask, &bytes);
 
   if (IsRed(bytes[0]) && IsGreen(bytes[1]) && IsBlue(bytes[2]) &&
       IsAlpha(bytes[3])) {
@@ -165,5 +136,4 @@ std::ostream& operator<<(std::ostream& os, const TextureType type) {
   return os;
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

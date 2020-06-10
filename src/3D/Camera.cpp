@@ -22,8 +22,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 void Camera::Init(const glm::ivec2 size) {
   fov_ = 45.0f;
   curr_size_ = size;
@@ -74,5 +73,4 @@ void Camera::UpdateProjection(glm::ivec2 size) {
       glm::radians(fov_),
       static_cast<float>(size.x) / static_cast<float>(size.y), 0.1f, 100.0f);
 }
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

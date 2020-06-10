@@ -25,16 +25,14 @@
 #include <limits>
 #include <random>
 
-namespace game_engine {
-namespace util {
+namespace game_engine::util {
 
 class Rng {
  public:
   static uint64_t get();
 };
 
-} /* namespace util */
-} /* namespace game_engine */
+} /* namespace game_engine::util */
 
 using namespace game_engine::util;
 

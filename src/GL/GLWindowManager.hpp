@@ -27,8 +27,7 @@
 
 #include "WindowManager.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 class GLWindowManager : public WindowManager<GLWindowManager> {
  public:
@@ -70,7 +69,6 @@ class GLWindowManager : public WindowManager<GLWindowManager> {
   logging::Log log_ = logging::Log("main");
 };
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_GLWINDOWMANAGER_HPP_ */

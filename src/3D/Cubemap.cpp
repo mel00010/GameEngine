@@ -20,8 +20,7 @@
 
 #include "3D/Cubemap.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 SDL_Surface* Cubemap::OpenImage(const CubeFace face,
                                 const cmrc::embedded_filesystem& fs,
@@ -78,5 +77,4 @@ std::ostream& operator<<(std::ostream& os, const Cubemap& cube) {
             << " }";
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */

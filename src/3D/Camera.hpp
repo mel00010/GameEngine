@@ -30,8 +30,7 @@
 #include "3D/Model.hpp"
 #include "3D/Skybox.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class Camera {
  public:
@@ -88,8 +87,7 @@ class Camera {
 
 inline void swap(Camera& a, Camera& b) noexcept { a.swap(b); }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Camera.tpp"
 

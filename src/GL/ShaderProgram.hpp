@@ -28,8 +28,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 class Shader;
 
@@ -89,7 +88,6 @@ class ShaderProgram {
 
 inline void swap(ShaderProgram& a, ShaderProgram& b) noexcept { a.swap(b); }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */
 
 #endif /* SRC_GL_SHADERPROGRAM_HPP_ */

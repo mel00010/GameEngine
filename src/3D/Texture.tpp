@@ -24,8 +24,7 @@
 
 #include "3D/Texture.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename Renderer>
 Texture::Texture(const Renderer& renderer, const cmrc::file file,
@@ -97,7 +96,6 @@ GLuint Texture::LoadTextureFromMemory(const Renderer& renderer,
   id_ = renderer.CreateTexture(shader_program, pixel_format, size, buffer);
   return id_;
 }
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_TEXTURE_TPP_ */

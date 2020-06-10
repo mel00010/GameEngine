@@ -25,8 +25,7 @@
 
 #include "2D/TextRenderer.hpp"
 
-namespace game_engine {
-namespace _2D {
+namespace game_engine::_2D {
 
 using Clock = std::chrono::high_resolution_clock;
 
@@ -107,7 +106,6 @@ class FpsRenderer {
 
 inline void swap(FpsRenderer& a, FpsRenderer& b) noexcept { a.swap(b); }
 
-} /* namespace _2D */
-} /* namespace game_engine */
+} /* namespace game_engine::_2D */
 
 #endif /* SRC_2D_FPSRENDERER_HPP_ */

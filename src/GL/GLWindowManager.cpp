@@ -25,8 +25,7 @@
 
 #include "LoggerV2/Log.hpp"
 
-namespace game_engine {
-namespace gl {
+namespace game_engine::gl {
 
 SDL_Window* GLWindowManager::window_ = nullptr;
 
@@ -119,5 +118,4 @@ void GLWindowManager::RedrawWindowBounds(glm::ivec2 size) {
   glViewport(0, 0, size.x, size.y);
 }
 
-} /* namespace gl */
-} /* namespace game_engine */
+} /* namespace game_engine::gl */

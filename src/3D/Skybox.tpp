@@ -22,8 +22,7 @@
 
 #include "3D/Skybox.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 template <typename Renderer>
 Skybox::Skybox(Renderer& renderer, const cmrc::embedded_filesystem& fs,
@@ -44,7 +43,6 @@ void Skybox::Draw(const Renderer& renderer, const ShaderPrograms shaders) {
   glDepthMask(GL_TRUE);
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_SKYBOX_TPP_ */

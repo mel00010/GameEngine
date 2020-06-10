@@ -26,8 +26,7 @@
 #include "3D/Mesh.hpp"
 #include "3D/Model.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
 
 class Scene {
  public:
@@ -39,8 +38,7 @@ class Scene {
   Camera camera_;
 };
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #include "3D/Scene.tpp"
 

@@ -349,6 +349,19 @@ class CallbackHandler {
   bool UnregisterTimeoutCallback(std::string identifier);
 
  private:
+  void HandleWindowEvent(SDL_Event& ev);
+  void HandleKeyDownEvent(SDL_Event& ev);
+  void HandleKeyUpEvent(SDL_Event& ev);
+  void HandleMouseMotionEvent(SDL_Event& ev);
+  void HandleMouseDownEvent(SDL_Event& ev);
+  void HandleMouseUpEvent(SDL_Event& ev);
+  void HandleMouseWheelEvent(SDL_Event& ev);
+  void HandleGenericEvent(SDL_Event& ev);
+  void UpdateMouseWheelPos();
+  void UpdateKeyStatus();
+  void UpdateMouseButtonStatus();
+
+ private:
   /**
    * @brief List of all window event callback functions
    */

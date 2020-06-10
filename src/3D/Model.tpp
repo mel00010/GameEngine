@@ -26,13 +26,16 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
+#include "LoggerV2/Log.hpp"
+
 #include "3D/EmbeddedIOHandler.hpp"
 #include "3D/Model.hpp"
-#include "LoggerV2/Log.hpp"
+#include "3D/Texture.hpp"
 #include "Vertex.hpp"
 
-namespace game_engine {
-namespace _3D {
+namespace game_engine::_3D {
+
+namespace {
 
 inline glm::vec2 Convert(const aiVector2D vec) {
   return glm::vec2(vec.x, vec.y);
@@ -46,6 +49,78 @@ inline glm::vec3 Convert(const aiColor3D vec) {
 inline glm::vec4 Convert(const aiColor4D vec) {
   return glm::vec4(vec.r, vec.g, vec.b, vec.a);
 }
+
+inline void ProcessVertexPosition(const aiMesh* mesh, Vertex* vertex,
+                                  const size_t index) {
+  if (mesh->HasPositions()) {  // does the mesh contain positions?
+    vertex->position = Convert(mesh->mVertices[index]);
+  }
+}
+inline void ProcessVertexNormals(const aiMesh* mesh, Vertex* vertex,
+                                 const size_t index) {
+  if (mesh->HasNormals()) {  // does the mesh contain normals?
+    vertex->normal = Convert(mesh->mNormals[index]);
+  }
+}
+
+inline void ProcessVertexTextureCoords(const aiMesh* mesh, Vertex* vertex,
+                                       const size_t index) {
+  if (mesh->HasTextureCoords(0)) {
+    // does the mesh contain texture coordinate 0?
+    vertex->tex_coord0 = Convert(mesh->mTextureCoords[0][index]);
+  }
+  if (mesh->HasTextureCoords(1)) {
+    // does the mesh contain texture coordinate 1?
+    vertex->tex_coord1 = Convert(mesh->mTextureCoords[1][index]);
+  }
+  if (mesh->HasTextureCoords(2)) {
+    // does the mesh contain texture coordinate 2?
+    vertex->tex_coord2 = Convert(mesh->mTextureCoords[2][index]);
+  }
+  if (mesh->HasTextureCoords(3)) {
+    // does the mesh contain texture coordinate 3?
+    vertex->tex_coord3 = Convert(mesh->mTextureCoords[3][index]);
+  }
+  if (mesh->HasTextureCoords(4)) {
+    // does the mesh contain texture coordinate 4?
+    vertex->tex_coord4 = Convert(mesh->mTextureCoords[4][index]);
+  }
+  if (mesh->HasTextureCoords(5)) {
+    // does the mesh contain texture coordinate 5?
+    vertex->tex_coord5 = Convert(mesh->mTextureCoords[5][index]);
+  }
+  if (mesh->HasTextureCoords(6)) {
+    // does the mesh contain texture coordinate 6?
+    vertex->tex_coord6 = Convert(mesh->mTextureCoords[6][index]);
+  }
+  if (mesh->HasTextureCoords(7)) {
+    // does the mesh contain texture coordinate 7?
+    vertex->tex_coord7 = Convert(mesh->mTextureCoords[7][index]);
+  }
+}
+
+inline void ProcessVertexColors(const aiMesh* mesh, Vertex* vertex,
+                                const size_t index) {
+  if (mesh->HasVertexColors(0)) {
+    // does the mesh contain primary vertex colors?
+    vertex->color = Convert(mesh->mColors[0][index]);
+  }
+  if (mesh->HasVertexColors(1)) {
+    // does the mesh contain secondary vertex colors?
+    vertex->secondary_color = Convert(mesh->mColors[1][index]);
+  }
+}
+
+inline void ProcessVertexTangents(const aiMesh* mesh, Vertex* vertex,
+                                  const size_t index) {
+  if (mesh->HasTangentsAndBitangents()) {  // does the mesh contain tangents
+                                           // and bitangents?
+    vertex->tangent = Convert(mesh->mTangents[index]);
+    vertex->bitangent = Convert(mesh->mBitangents[index]);
+  }
+}
+
+}  // namespace
 
 template <typename Renderer>
 Model::Model(Renderer& renderer, const cmrc::embedded_filesystem& fs,
@@ -116,65 +191,11 @@ Mesh Model::ProcessMesh(Renderer& renderer, aiMesh* mesh,
   for (GLuint i = 0; i < mesh->mNumVertices; i++) {
     Vertex vertex;
 
-    // positions
-    if (mesh->HasPositions()) {  // does the mesh contain positions?
-      vertex.position = Convert(mesh->mVertices[i]);
-    }
-
-    // normals
-    if (mesh->HasNormals()) {  // does the mesh contain normals?
-      vertex.normal = Convert(mesh->mNormals[i]);
-    }
-
-    // texture coordinates
-    if (mesh->HasTextureCoords(
-            0)) {  // does the mesh contain texture coordinate 0?
-      vertex.tex_coord0 = Convert(mesh->mTextureCoords[0][i]);
-    }
-    if (mesh->HasTextureCoords(
-            1)) {  // does the mesh contain texture coordinate 1?
-      vertex.tex_coord1 = Convert(mesh->mTextureCoords[1][i]);
-    }
-    if (mesh->HasTextureCoords(
-            2)) {  // does the mesh contain texture coordinate 2?
-      vertex.tex_coord2 = Convert(mesh->mTextureCoords[2][i]);
-    }
-    if (mesh->HasTextureCoords(
-            3)) {  // does the mesh contain texture coordinate 3?
-      vertex.tex_coord3 = Convert(mesh->mTextureCoords[3][i]);
-    }
-    if (mesh->HasTextureCoords(
-            4)) {  // does the mesh contain texture coordinate 4?
-      vertex.tex_coord4 = Convert(mesh->mTextureCoords[4][i]);
-    }
-    if (mesh->HasTextureCoords(
-            5)) {  // does the mesh contain texture coordinate 5?
-      vertex.tex_coord5 = Convert(mesh->mTextureCoords[5][i]);
-    }
-    if (mesh->HasTextureCoords(
-            6)) {  // does the mesh contain texture coordinate 6?
-      vertex.tex_coord6 = Convert(mesh->mTextureCoords[6][i]);
-    }
-    if (mesh->HasTextureCoords(
-            7)) {  // does the mesh contain texture coordinate 7?
-      vertex.tex_coord7 = Convert(mesh->mTextureCoords[7][i]);
-    }
-
-    // colors
-    if (mesh->HasVertexColors(
-            0)) {  // does the mesh contain primary vertex colors?
-      vertex.color = Convert(mesh->mColors[0][i]);
-    }
-    if (mesh->HasVertexColors(
-            1)) {  // does the mesh contain secondary vertex colors?
-      vertex.secondary_color = Convert(mesh->mColors[1][i]);
-    }
-
-    if (mesh->HasTangentsAndBitangents()) {  // does the mesh contain tangents
-                                             // and bitangents?
-      vertex.tangent = Convert(mesh->mTangents[i]);
-      vertex.bitangent = Convert(mesh->mBitangents[i]);
-    }
+    ProcessVertexPosition(mesh, &vertex, i);
+    ProcessVertexNormals(mesh, &vertex, i);
+    ProcessVertexTextureCoords(mesh, &vertex, i);
+    ProcessVertexColors(mesh, &vertex, i);
+    ProcessVertexTangents(mesh, &vertex, i);
     vertices.push_back(vertex);
   }
 
@@ -260,13 +281,13 @@ std::vector<Texture> Model::LoadMaterialTextures(const Renderer& renderer,
                   // mat->GetName().C_Str());
       Texture texture;
       cmrc::file file = fs_->open(directory_ + "/" + std::string(str.C_Str()));
-      //			LOG_D("Opening texture " << file.path());
+      log_.Debug("Opening texture {}", file.path());
       texture.LoadTexture(renderer, file, ShaderPrograms::DEFAULT,
                           texture_type);
       textures.push_back(texture);
-      textures_loaded_.push_back(
-          texture);  // store it as texture loaded for entire model, to ensure
-                     // we won't unnecessary load duplicate textures.
+      // store it as texture loaded for entire model, to
+      // ensure we won't unnecessary load duplicate textures.
+      textures_loaded_.push_back(texture);
     }
   }
   return textures;
@@ -279,7 +300,6 @@ void Model::Draw(const Renderer& renderer, const ShaderPrograms shaders) {
   }
 }
 
-} /* namespace _3D */
-} /* namespace game_engine */
+} /* namespace game_engine::_3D */
 
 #endif /* SRC_3D_MODEL_TPP_ */
