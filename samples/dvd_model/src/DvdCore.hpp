@@ -23,6 +23,7 @@
 #include <list>
 
 #include "Dvd.hpp"
+
 #include "GameCore.hpp"
 
 namespace dvd {
@@ -36,7 +37,7 @@ class DvdCore : public game_engine::GameCore<DvdCore> {
   void RegisterCallbacks();
 
  public:
-  void SetScale(glm::dvec2 scale) {
+  void SetScale(const glm::dvec2 scale) {
     for (auto& i : dvds_) {
       i.SetScale(scale);
     }

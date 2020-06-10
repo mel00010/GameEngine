@@ -428,7 +428,7 @@ bool CallbackHandler::RegisterTimeoutCallback(
   });
   return true;
 }
-bool CallbackHandler::UnregisterTimeoutCallback(std::string identifier) {
+bool CallbackHandler::UnregisterTimeoutCallback(const std::string& identifier) {
   timeout_callbacks_.erase(
       std::remove_if(timeout_callbacks_.begin(), timeout_callbacks_.end(),
                      [&identifier](TimeoutCallback c) {

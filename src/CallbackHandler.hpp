@@ -346,7 +346,7 @@ class CallbackHandler {
    * @param identifier String identifier of the callback to unregister
    * @return Always returns false
    */
-  bool UnregisterTimeoutCallback(std::string identifier);
+  bool UnregisterTimeoutCallback(const std::string& identifier);
 
  private:
   void HandleWindowEvent(SDL_Event& ev);
