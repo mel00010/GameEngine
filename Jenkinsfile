@@ -344,10 +344,18 @@ pipeline {
             unstash(name: 'ReleaseTests')
             unstash(name: 'DebugTests')
             sh('mkdir -p build/Analysis/Valgrind')
-            sh('''valgrind build/Release/test/tests \
-                  --log-file=build/Analysis/Valgrind/valgrind-%p.log''')
-            sh('''valgrind build/Debug/test/tests \
-                  --log-file=build/Analysis/Valgrind/valgrind-%p.log''')
+            sh('''valgrind \
+                  --log-file=build/Analysis/Valgrind/valgrind-%p.log \
+                  -s \
+                  --leak-check=full \
+                  --show-leak-kinds=all \
+                  build/Release/test/tests''')
+            sh('''valgrind \
+                  --log-file=build/Analysis/Valgrind/valgrind-%p.log \
+                  -s \
+                  --leak-check=full \
+                  --show-leak-kinds=all \
+                  build/Debug/test/tests''')
             stash(name: 'ValgrindResults',
                   includes: 'build/Analysis/Valgrind/*.log')
           }
