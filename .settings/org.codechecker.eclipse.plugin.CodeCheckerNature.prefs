@@ -4,5 +4,5 @@ CHECKER_PATH=/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker
 CHECKER_WORKSPACE=/home/mel/workspace/.codechecker/GameEngine
 COMPILERS=gcc\:g++\:clang\:clang++\:c++\:cc
 IS_GLOBAL=false
-RES_METHOD=PRE
+RES_METHOD=PATH
 eclipse.preferences.version=1

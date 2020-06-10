@@ -53,6 +53,7 @@ pipeline {
         cmakeBuild( buildType: 'Release',
                     generator: 'Ninja',
                     buildDir: 'build/Release',
+                    cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
         sh('''ninja -C build/Release all \
               | tee build/Analysis/CompilerOutput/release.log''')
@@ -61,6 +62,7 @@ pipeline {
         cmakeBuild( buildType: 'Debug',
                     generator: 'Ninja',
                     buildDir: 'build/Debug',
+                    cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
         sh('''ninja -C build/Debug all \
               | tee build/Analysis/CompilerOutput/debug.log''')
@@ -69,6 +71,7 @@ pipeline {
         cmakeBuild( buildType: 'Coverage',
                     generator: 'Ninja',
                     buildDir: 'build/Coverage',
+                    cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
         sh('''ninja -C build/Coverage all \
               | tee build/Analysis/CompilerOutput/coverage.log''')
@@ -77,6 +80,7 @@ pipeline {
         cmakeBuild( buildType: 'Debug',
                     generator: 'Ninja',
                     buildDir: 'build/DebugNoPCH',
+                    cleanBuild: params.DO_CLEAN_BUILD,
                     cmakeArgs: '-DDISABLE_PCH=True',
                     installation: 'cmake-3.17.3')
         sh('''ninja -C build/DebugNoPCH all \
@@ -170,12 +174,14 @@ pipeline {
       stages {
         stage('CodeChecker ClangSA CTU') {
           when {
-            environment name: 'DO_CLANGSA_CTU', value: 'true'
+            expression { params.DO_CLANGSA_CTU == true }
           }
 
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
+            sh("""cat .codechecker_skip | sed "s|\*\/GameEngine|${WORKSPACE}|" \
+                > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j2 \
@@ -183,7 +189,7 @@ pipeline {
                   --enable-all \
                   --enable alpha \
                   --ctu \
-                  -i .codechecker_skip \
+                  -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
                   --output build/Analysis/CodeChecker/ClangSA/""")
             stash(name: 'CodeCheckerClangSA_CTUResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
@@ -191,18 +197,20 @@ pipeline {
         }
         stage('CodeChecker ClangSA') {
           when {
-            environment name: 'DO_CLANGSA_CTU', value: 'false'
+            expression { params.DO_CLANGSA_CTU == false }
           }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
+            sh("""cat .codechecker_skip | sed "s|\*\/GameEngine|${WORKSPACE}|" \
+                > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j8 \
                   --analyzers clangsa \
                   --enable-all \
                   --enable alpha \
-                  -i .codechecker_skip \
+                  -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
                   --output build/Analysis/CodeChecker/ClangSA/""")
             stash(name: 'CodeCheckerClangSAResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
@@ -212,12 +220,14 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
+            sh("""cat .codechecker_skip | sed "s|\*\/GameEngine|${WORKSPACE}|" \
+                > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j8 \
                   --analyzers clang-tidy \
                   --enable-all \
-                  -i .codechecker_skip \
+                  -i build/Analysis/CodeChecker/ClangTidy/.codechecker_skip \
                   --output build/Analysis/CodeChecker/ClangTidy/""")
             stash(name: 'CodeCheckerClangTidyResults',
                   includes: 'build/Analysis/CodeChecker/ClangTidy/*.plist')
@@ -246,6 +256,21 @@ pipeline {
             sh('''infer run \
                   --compilation-database build/DebugNoPCH/compile_commands.json \
                   --keep-going \
+                  --skip-analysis-in-path build/ \
+                  --skip-analysis-in-path-skips-compilation \
+                  --cost \
+                  --headers \
+                  --loop-hoisting \
+                  --pulse \
+                  --quandary \
+                  --quandaryBO \
+                  --siof \
+                  --starvation \
+                  --siof-check-iostreams \
+                  --bufferoverrun \
+                  --liveness \
+                  --biabduction \
+                  --jobs 4 \
                   --results-dir build/Analysis/Infer''')
             stash(name: 'InferResults',
                   includes: 'build/Analysis/Infer/report.json')
