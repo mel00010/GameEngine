@@ -157,7 +157,7 @@ find_package (Boost REQUIRED)
 
 add_library(boost INTERFACE IMPORTED)
 target_link_libraries(boost ${boost_LIBRARIES})
-target_include_directories(boost ${boost_INCLUDE_DIRS})
+target_include_directories(boost PUBLIC ${boost_INCLUDE_DIRS})
 
 # The version number.
 set(GameEngine_VERSION_MAJOR 0)
