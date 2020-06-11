@@ -3,7 +3,6 @@ include(GetGoogleTest)
 if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
   # coverage target setup
   include(CodeCoverage)
-  append_coverage_compiler_flags()
   set(COVERAGE_EXCLUDES
     '${PROJECT_SOURCE_DIR}/test/*'
     '/usr/include/c++/6/*'
