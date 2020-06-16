@@ -34,7 +34,7 @@ using namespace game_engine;
 
 namespace slang_test {
 
-class SlangTest : public game_engine::GameCore<SlangTest> {
+class SlangTest final : public game_engine::GameCore<SlangTest> {
  public:
   static constexpr std::string_view program_name_ = "SlangTest";
   void Setup();

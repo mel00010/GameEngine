@@ -1,8 +1,8 @@
-add_library(GameEngine STATIC "")
-add_library(GameEngine::GameEngine ALIAS GameEngine)
-#set_target_properties(GameEngine PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
+add_library(GameEngine_GameEngine STATIC "")
+add_library(GameEngine::GameEngine ALIAS GameEngine_GameEngine)
+#set_target_properties(GameEngine_GameEngine PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
-target_sources(GameEngine
+target_sources(GameEngine_GameEngine
   PRIVATE
     CallbackHandler.cpp
     GameCore.cpp
@@ -18,13 +18,14 @@ target_sources(GameEngine
     ${CMAKE_CURRENT_SOURCE_DIR}/WindowManager.hpp
 )
 include(CMakeRC)
-cmrc_add_resource_library(GameEngine-Resources ALIAS GameEngine::Resources NAMESPACE GameEngine)
+cmrc_add_resource_library(GameEngine_Resources ALIAS GameEngine::Resources NAMESPACE game_engine)
 
-target_link_libraries(GameEngine
+target_link_libraries(GameEngine_GameEngine
   PUBLIC
     GameEngine::2D
     GameEngine::3D
     GameEngine::GL
+    GameEngine::Plugin
     GameEngine::Sound
     GameEngine::Util
     GameEngine::Resources
@@ -38,7 +39,7 @@ target_link_libraries(GameEngine
     absl::strings
 )
 if(NOT DEFINED DISABLE_PCH)
-    target_precompile_headers(GameEngine
+    target_precompile_headers(GameEngine_GameEngine
       PUBLIC
         CallbackHandler.hpp
         GameCore.hpp
@@ -51,13 +52,14 @@ if(NOT DEFINED DISABLE_PCH)
     )
 endif()
 
-target_include_directories(GameEngine
+target_include_directories(GameEngine_GameEngine
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 add_subdirectory(2D)
 add_subdirectory(3D)
 add_subdirectory(GL)
+add_subdirectory(Plugin)
 add_subdirectory(Sound)
 add_subdirectory(Util)
 add_subdirectory(Vulkan)

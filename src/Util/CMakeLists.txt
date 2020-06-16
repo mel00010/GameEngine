@@ -1,8 +1,8 @@
-add_library(Util STATIC "")
-add_library(GameEngine::Util ALIAS Util)
+add_library(GameEngine_Util STATIC "")
+add_library(GameEngine::Util ALIAS GameEngine_Util)
 #set_target_properties(Util PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
-target_sources(Util
+target_sources(GameEngine_Util
   PRIVATE
     Rng.cpp
   PUBLIC
@@ -14,13 +14,13 @@ target_sources(Util
     ${CMAKE_CURRENT_SOURCE_DIR}/Singleton.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Uuid.hpp
 )
-target_link_libraries(Util
+target_link_libraries(GameEngine_Util
   PUBLIC
-    GameEngine
+    GameEngine::GameEngine
     Logging::Logging
     glm
 )
-target_include_directories(Util
+target_include_directories(GameEngine_Util
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )

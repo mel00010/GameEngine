@@ -1,7 +1,7 @@
-add_library(3D STATIC "")
-add_library(GameEngine::3D ALIAS 3D)
+add_library(GameEngine_3D STATIC "")
+add_library(GameEngine::3D ALIAS GameEngine_3D)
 
-target_sources(3D
+target_sources(GameEngine_3D
   PRIVATE
     Camera.cpp
     Cube.cpp
@@ -28,15 +28,15 @@ target_sources(3D
     ${CMAKE_CURRENT_SOURCE_DIR}/Texture.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Transformations.hpp
 )
-#set_target_properties(3D PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
-#target_precompile_headers(3D REUSE_FROM Logging::Logging)
+#set_target_properties(GameEngine_3D PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
+#target_precompile_headers(GameEngine_3D REUSE_FROM Logging::Logging)
 
-target_include_directories(3D
+target_include_directories(GameEngine_3D
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-target_link_libraries(3D
+target_link_libraries(GameEngine_3D
   PUBLIC
     Logging::Logging
     GameEngine::3D::Resources
@@ -48,8 +48,8 @@ target_link_libraries(3D
 
 include(CMakeRC)
 
-cmrc_add_resource_library(GameEngine-3D-Resources ALIAS GameEngine::3D::Resources NAMESPACE _3D)
-cmrc_add_resources(GameEngine-3D-Resources
+cmrc_add_resource_library(GameEngine_3D_Resources ALIAS GameEngine::3D::Resources NAMESPACE _3D)
+cmrc_add_resources(GameEngine_3D_Resources
   WHENCE resources
 
   resources/cube/cube.mtl

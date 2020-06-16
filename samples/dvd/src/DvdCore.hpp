@@ -21,11 +21,12 @@
 #define SAMPLES_DVD_SRC_DVDCORE_HPP_
 
 #include "Dvd.hpp"
+
 #include "GameCore.hpp"
 
 namespace dvd {
 
-class DvdCore : public game_engine::GameCore<DvdCore> {
+class DvdCore final : public game_engine::GameCore<DvdCore> {
  public:
   static constexpr std::string_view program_name_ = "DVD";
   void Setup();

@@ -34,12 +34,12 @@ target_include_directories(tests
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
 message("$ENV{LD_LIBRARY_PATH}")
 target_link_libraries(tests
-#  2D_test
-#  3D_test
-#  GL_test
-#  Sound_test
-  Util_test
-#  Vulkan_test
+  GameEngine::2D::test
+  GameEngine::3D::test
+  GameEngine::GL::test
+  GameEngine::Sound::test
+  GameEngine::Util::test
+  GameEngine::Vulkan::test
 
   # $<TARGET_FILE> is used to prevent shared linking of gtest
   gtest
@@ -47,9 +47,9 @@ target_link_libraries(tests
   gmock_main
   pthread
 )
-#add_subdirectory(2D)
-#add_subdirectory(3D)
-#add_subdirectory(GL)
-#add_subdirectory(Sound)
+add_subdirectory(2D)
+add_subdirectory(3D)
+add_subdirectory(GL)
+add_subdirectory(Sound)
 add_subdirectory(Util)
-#add_subdirectory(Vulkan)
+add_subdirectory(Vulkan)

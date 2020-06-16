@@ -1,8 +1,8 @@
-add_library(Sound STATIC "")
-add_library(GameEngine::Sound ALIAS Sound)
+add_library(GameEngine_Sound STATIC "")
+add_library(GameEngine::Sound ALIAS GameEngine_Sound)
 #set_target_properties(Sound PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
-target_sources(Sound
+target_sources(GameEngine_Sound
   PRIVATE
     Music.cpp
     Sound.cpp
@@ -11,12 +11,12 @@ target_sources(Sound
     ${CMAKE_CURRENT_SOURCE_DIR}/Sound.hpp
 )
 
-target_include_directories(Sound
+target_include_directories(GameEngine_Sound
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-target_link_libraries(Sound
+target_link_libraries(GameEngine_Sound
   PUBLIC
     SDL2
     SDL2_mixer

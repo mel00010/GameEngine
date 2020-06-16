@@ -13,7 +13,7 @@ endif()
 
 target_link_libraries(SlangTest
   PUBLIC
-    GameEngine
+    GameEngine::GameEngine
     SlangTest::Resources
 
     Slang

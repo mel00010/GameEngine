@@ -10,5 +10,5 @@ target_link_libraries(LogCTADTest
     absl::strings
     absl::hash
     absl::flags
-    GameEngine
+    GameEngine::GameEngine
 )

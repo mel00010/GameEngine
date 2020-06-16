@@ -1,8 +1,8 @@
-add_library(2D STATIC "")
-add_library(GameEngine::2D ALIAS 2D)
+add_library(GameEngine_2D STATIC "")
+add_library(GameEngine::2D ALIAS GameEngine_2D)
 #set_target_properties(2D PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
-target_sources(2D
+target_sources(GameEngine_2D
   PRIVATE
     FpsRenderer.cpp
   PUBLIC
@@ -11,12 +11,12 @@ target_sources(2D
 )
 #target_precompile_headers(2D REUSE_FROM Logging::Logging)
 
-target_include_directories(2D
+target_include_directories(GameEngine_2D
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-target_link_libraries(2D
+target_link_libraries(GameEngine_2D
   PUBLIC
     Logging::Logging
     Freetype::Freetype

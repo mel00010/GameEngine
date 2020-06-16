@@ -35,8 +35,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
   setup_target_for_coverage(NAME CubeTest_coverage EXECUTABLE samples/CubeTest/src/CubeTest DEPENDENCIES CubeTest)
 endif()
 
-cmrc_add_resource_library(CubeTest-Resources ALIAS CubeTest::Resources NAMESPACE cube_test)
-cmrc_add_resources(CubeTest-Resources
+cmrc_add_resource_library(CubeTest_Resources ALIAS CubeTest::Resources NAMESPACE cube_test)
+cmrc_add_resources(CubeTest_Resources
   WHENCE resources
 
   resources/cube/back.png

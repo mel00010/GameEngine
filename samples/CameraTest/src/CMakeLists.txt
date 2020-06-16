@@ -17,7 +17,7 @@ target_link_libraries(CameraTest
     CameraTest::Resources
 
     Logging::Logging
-    Boost.DI
+    Boost::DI
 )
 
 include(CMakeRC)
@@ -38,8 +38,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
   setup_target_for_coverage(NAME CameraTest_coverage EXECUTABLE samples/CameraTest/src/CameraTest DEPENDENCIES CameraTest)
 endif()
 
-cmrc_add_resource_library(CameraTest-Resources ALIAS CameraTest::Resources NAMESPACE camera_test)
-cmrc_add_resources(CameraTest-Resources
+cmrc_add_resource_library(CameraTest_Resources ALIAS CameraTest::Resources NAMESPACE camera_test)
+cmrc_add_resources(CameraTest_Resources
   WHENCE resources
 
   resources/cube/cube.mtl

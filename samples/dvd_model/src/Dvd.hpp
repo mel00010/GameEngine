@@ -25,10 +25,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 
+#include "LoggerV2/Log.hpp"
+
 #include "3D/Camera.hpp"
 #include "3D/Model.hpp"
 #include "3D/Texture.hpp"
-#include "LoggerV2/Log.hpp"
 #include "Renderer.hpp"
 #include "Util/Uuid.hpp"
 #include "Vertex.hpp"
@@ -39,7 +40,7 @@ using namespace game_engine;
 
 namespace dvd {
 
-class Dvd {
+class Dvd final {
  public:
   template <typename Renderer>
   Dvd(Renderer& renderer) {

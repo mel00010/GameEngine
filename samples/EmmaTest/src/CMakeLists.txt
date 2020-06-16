@@ -10,5 +10,5 @@ target_link_libraries(EmmaTest
     absl::strings
     absl::hash
     absl::flags
-    GameEngine
+    GameEngine::GameEngine
 )

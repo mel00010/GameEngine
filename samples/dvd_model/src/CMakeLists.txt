@@ -15,7 +15,7 @@ endif()
 
 target_link_libraries(DVD_model
   PUBLIC
-    GameEngine
+    GameEngine::GameEngine
     DVD_model::Resources
 
     glm
@@ -38,8 +38,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
   setup_target_for_coverage(NAME DVD_model_coverage EXECUTABLE samples/dvd_model/src/DVD_model DEPENDENCIES DVD_model)
 endif()
 
-cmrc_add_resource_library(DVD_model-Resources ALIAS DVD_model::Resources NAMESPACE dvd)
-cmrc_add_resources(DVD_model-Resources
+cmrc_add_resource_library(DVD_model_Resources ALIAS DVD_model::Resources NAMESPACE dvd)
+cmrc_add_resources(DVD_model_Resources
   WHENCE resources
 
   resources/dvd/dvd.mtl

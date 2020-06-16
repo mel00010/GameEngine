@@ -1,6 +1,6 @@
 /******************************************************************************
- * CubeTestCore.hpp
- * Copyright (C) 2019  Mel McCalla <melmccalla@gmail.com>
+ * PluginAPI.hpp
+ * Copyright (C) 2020  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of GameEngine.
  *
@@ -17,38 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with GameEngine.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#ifndef SAMPLES_CUBETEST_SRC_CUBETESTCORE_HPP_
-#define SAMPLES_CUBETEST_SRC_CUBETESTCORE_HPP_
+#ifndef SAMPLES_PLUGINTEST_SRC_PLUGINAPI_HPP_
+#define SAMPLES_PLUGINTEST_SRC_PLUGINAPI_HPP_
 
-#include <cmrc/cmrc.hpp>
+#include <string>
 
-#include "3D/Camera.hpp"
-#include "3D/Cube.hpp"
-#include "GameCore.hpp"
+#include <boost/config.hpp>
 
-CMRC_DECLARE(cube_test);
-
-using namespace game_engine;
-
-namespace cube_test {
-
-class CubeTestCore final : public game_engine::GameCore<CubeTestCore> {
+namespace plugin {
+class BOOST_SYMBOL_VISIBLE PluginAPI {
  public:
-  static constexpr std::string_view program_name_ = "CubeTest";
-  void Setup();
-  void Tick();
-  void Render();
-  void RegisterCallbacks();
-
- protected:
-  cmrc::embedded_filesystem fs_ = cmrc::cube_test::get_filesystem();
-
-  glm::vec3 cube_color_ = glm::vec3(1.0, 1.0, 1.0);
-
-  _3D::Camera camera_;
-  _3D::Cube cube_;
+  virtual std::string name() const;
+  virtual float calculate(float x, float y);
+  virtual int calculate(int x, int y);
+  static std::size_t size() { return sizeof(PluginAPI); }
+  PluginAPI(const std::string& name) {}
+  PluginAPI() {}
+  virtual ~PluginAPI(){};
+  static int value;
 };
 
-} /* namespace cube_test */
-
-#endif /* SAMPLES_CUBETEST_SRC_CUBETESTCORE_HPP_ */
+}  // namespace plugin
+#endif /* SAMPLES_PLUGINTEST_SRC_PLUGINAPI_HPP_ */

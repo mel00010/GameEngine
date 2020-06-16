@@ -28,8 +28,9 @@
 #include <glm/gtc/random.hpp>
 #include <glm/gtx/color_space.hpp>
 
-#include "3D/Texture.hpp"
 #include "LoggerV2/Log.hpp"
+
+#include "3D/Texture.hpp"
 #include "Renderer.hpp"
 #include "Util/Uuid.hpp"
 #include "Vertex.hpp"
@@ -40,7 +41,7 @@ using namespace game_engine;
 
 namespace dvd {
 
-class Dvd {
+class Dvd final {
  public:
   template <typename Renderer>
   explicit Dvd(Renderer& renderer)

@@ -61,10 +61,6 @@ inline constexpr double kFpsAlarmMaxVal = std::numeric_limits<double>::max();
 inline constexpr bool kFpsRawEnable = true;
 inline constexpr bool kFpsRollAvgEnable = true;
 
-class GameCoreImpl {
- public:
-};
-
 /**
  * @brief The main class of GameEngine
  *

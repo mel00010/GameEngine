@@ -34,7 +34,7 @@ using namespace game_engine;
 
 namespace sound_test {
 
-class SoundTest : public game_engine::GameCore<SoundTest> {
+class SoundTest final : public game_engine::GameCore<SoundTest> {
  public:
   static constexpr std::string_view program_name_ = "SoundTest";
   void Setup();

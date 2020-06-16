@@ -38,8 +38,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
   setup_target_for_coverage(NAME DVD_coverage EXECUTABLE samples/dvd/src/DVD DEPENDENCIES DVD)
 endif()
 
-cmrc_add_resource_library(DVD-Resources ALIAS DVD::Resources NAMESPACE dvd)
-cmrc_add_resources(DVD-Resources
+cmrc_add_resource_library(DVD_Resources ALIAS DVD::Resources NAMESPACE dvd)
+cmrc_add_resources(DVD_Resources
   WHENCE resources
 
   resources/dvd.png

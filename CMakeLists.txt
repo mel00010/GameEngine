@@ -23,11 +23,11 @@ cmake_policy(SET CMP0083 NEW)
 
 include(CheckPIESupported)
 check_pie_supported()
-set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 set(CMAKE_LINK_WHAT_YOU_USE FALSE)
 
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS ON)
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--thinlto-cache-dir=${PROJECT_BINARY_DIR}/lto.cache")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--thinlto-cache-dir=${PROJECT_BINARY_DIR}/lto.cache")
@@ -153,11 +153,7 @@ target_include_directories(SDL2_mixer INTERFACE ${SDL2_MIXER_INCLUDE_DIRS})
 
 find_package(Freetype REQUIRED)
 
-find_package (Boost REQUIRED)
-
-add_library(boost INTERFACE IMPORTED)
-target_link_libraries(boost ${boost_LIBRARIES})
-target_include_directories(boost PUBLIC ${boost_INCLUDE_DIRS})
+find_package (Boost COMPONENTS filesystem system REQUIRED)
 
 # The version number.
 set(GameEngine_VERSION_MAJOR 0)

@@ -22,9 +22,10 @@
 
 #include <cmrc/cmrc.hpp>
 
+#include "Blocks/Cobblestone.hpp"
+
 #include "3D/Camera.hpp"
 #include "3D/Model.hpp"
-#include "Blocks/Cobblestone.hpp"
 #include "GameCore.hpp"
 #include "Sound/Music.hpp"
 #include "Sound/Sound.hpp"
@@ -37,7 +38,7 @@ namespace mine_test {
 
 inline constexpr glm::vec3 kLineColor = glm::vec3(1.0, 1.0, 0.0);
 
-class MineTest : public game_engine::GameCore<MineTest> {
+class MineTest final : public game_engine::GameCore<MineTest> {
  public:
   static constexpr std::string_view program_name_ = "MineTest";
   void Setup();

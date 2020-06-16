@@ -10,7 +10,7 @@ target_sources(SoundTest
 
 target_link_libraries(SoundTest
   PUBLIC
-    GameEngine
+    GameEngine::GameEngine
     SoundTest::Resources
 
     glm

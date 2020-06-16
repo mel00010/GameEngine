@@ -1,13 +1,13 @@
-add_library(MineTest-Blocks "")
-add_library(MineTest::Blocks ALIAS MineTest-Blocks)
+add_library(MineTest_Blocks "")
+add_library(MineTest::Blocks ALIAS MineTest_Blocks)
 
-target_link_libraries(MineTest-Blocks
+target_link_libraries(MineTest_Blocks
   PUBLIC
     GameEngine::3D
     GameEngine::Util
 )
 
-target_sources(MineTest-Blocks
+target_sources(MineTest_Blocks
   PRIVATE
     Block.cpp
     Cobblestone.cpp
@@ -18,8 +18,8 @@ target_sources(MineTest-Blocks
 
 include(CMakeRC)
 
-cmrc_add_resource_library(MineTest-Blocks-Resources ALIAS MineTest::Blocks::Resources NAMESPACE blocks)
-cmrc_add_resources(MineTest-Blocks-Resources
+cmrc_add_resource_library(MineTest_Blocks_Resources ALIAS MineTest::Blocks::Resources NAMESPACE blocks)
+cmrc_add_resources(MineTest_Blocks_Resources
   WHENCE resources
 
   resources/cobblestone/back.png

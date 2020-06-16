@@ -26,13 +26,14 @@
 
 #include <cmrc/cmrc.hpp>
 
+#include "LoggerV2/Client.hpp"
+#include "LoggerV2/Log.hpp"
+#include "LoggerV2/Telemetry.hpp"
+
 #include "3D/Camera.hpp"
 #include "3D/Model.hpp"
 #include "3D/Skybox.hpp"
 #include "GameCore.hpp"
-#include "LoggerV2/Client.hpp"
-#include "LoggerV2/Log.hpp"
-#include "LoggerV2/Telemetry.hpp"
 
 CMRC_DECLARE(camera_test);
 
@@ -64,7 +65,7 @@ inline constexpr glm::vec3 kGridRotation =
     glm::vec3(glm::radians(91.0f), glm::radians(90.0f), glm::radians(0.0f));
 inline constexpr glm::vec3 kGridColor = glm::vec4(1.0, 1.0, 0.0, 1.0);
 
-class CameraTest : public game_engine::GameCore<CameraTest> {
+class CameraTest final : public game_engine::GameCore<CameraTest> {
  public:
   static constexpr std::string_view program_name_ = "CameraTest";
   void Setup();

@@ -13,7 +13,7 @@ endif()
 
 target_link_libraries(MineTest
   PUBLIC
-    GameEngine
+    GameEngine::GameEngine
 
     MineTest::Blocks
     MineTest::Resources
