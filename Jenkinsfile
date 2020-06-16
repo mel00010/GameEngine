@@ -83,6 +83,9 @@ pipeline {
     string( name: 'CODECHECKER_PATH',
             defaultValue: '/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker',
             description: 'Path to CodeChecker executable')
+    string( name: 'SOURCE_DIRECTORIES',
+            defaultValue: 'src test samples',
+            description: 'Directories to perform analysis on')
   }
 
   stages {
@@ -523,7 +526,7 @@ pipeline {
           }
           steps {
             sh('mkdir -p build/Analysis/VeraPlusPlus')
-            sh('''find src samples test \
+            sh('''find ${SOURCE_DIRECTORIES} \
                     -type f             \
                     -name "*.cpp" -o    \
                     -name "*.cxx" -o    \
@@ -548,8 +551,8 @@ pipeline {
           }
           steps {
             sh('mkdir -p build/Analysis/RATS')
-            sh('''rats src samples test --xml \
-                  1> build/Analysis/RATS/report.xml''')
+            sh("""rats ${SOURCE_DIRECTORIES} --xml \
+                  1> build/Analysis/RATS/report.xml""")
             stash(name: 'RATSResults',
                   includes: 'build/Analysis/RATS/report.xml')
           }
