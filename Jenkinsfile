@@ -305,6 +305,7 @@ pipeline {
 
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
+            sh('rm -rf build/Analysis/CodeChecker/ClangSA')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
             sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
@@ -327,6 +328,7 @@ pipeline {
           }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
+            sh('rm -rf build/Analysis/CodeChecker/ClangSA')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
             sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
@@ -348,6 +350,7 @@ pipeline {
           }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
+            sh('rm -rf build/Analysis/CodeChecker/ClangTidy')
             sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
             sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
