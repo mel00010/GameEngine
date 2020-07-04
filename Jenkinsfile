@@ -109,7 +109,6 @@ pipeline {
             values 'True', 'False'
           } // axis
         } // axes
-        options { disableConcurrentBuilds() }
         agent {
           dockerfile {
             filename "Dockerfile.${COMPILER}"
