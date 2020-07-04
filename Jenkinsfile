@@ -9,6 +9,14 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     skipDefaultCheckout()
     ansiColor('xterm')
+    throttleJobProperty(
+      categories: [],
+      limitOneJobWithMatchingParams: false,
+      maxConcurrentPerNode: 1,
+      maxConcurrentTotal: 1,
+      paramsToUseForLimit: '',
+      throttleEnabled: true,
+      throttleOption: 'project')
   } // options
   parameters {
     booleanParam( name: 'DO_CHECKOUT',
