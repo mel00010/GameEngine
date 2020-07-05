@@ -101,6 +101,8 @@ pipeline {
         ]) // checkout
         stash(name: 'source_code',
               includes: '*')
+        stash(name: 'dockerfiles',
+              includes: 'Dockerfile.*')
       } // steps
     } // stage('Checkout')
     stage('Setup') {
@@ -111,18 +113,28 @@ pipeline {
             values 'gcc', 'clang'
           } // axis
         } // axes
-        agent {
-          dockerfile {
-            filename "Dockerfile.${COMPILER}"
-            args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
-            reuseNode true
-          } // dockerfile
-        } // agent
         stages {
           stage('CompileDockerFile') {
-            steps {
-              sh("echo \"Compiling ${COMPILER}\"")
-            } // steps
+            agent any
+            stages {
+              stage('Setup') {
+                steps {
+                  unstash(name: 'dockerfiles')
+                } // steps
+              } // stage('Setup')
+              stage('Compile') {
+                agent {
+                  dockerfile {
+                    filename "Dockerfile.${COMPILER}"
+                    args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+                    reuseNode true
+                  } // dockerfile
+                } // agent
+                steps {
+                  sh("echo \"Compiling ${COMPILER}\"")
+                } // steps
+              } // stage('Compile')
+            } // stages
           } // stage('CompileDockerFile')
         } // stages
       } // matrix
@@ -143,77 +155,92 @@ pipeline {
             values 'True', 'False'
           } // axis
         } // axes
-        agent {
-          dockerfile {
-            filename "Dockerfile.${COMPILER}"
-            args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
-          } // dockerfile
-        } // agent
         when {
           expression { params.DO_BUILD == true }
         } // when
         stages {
-          stage('Build') {
-            when {
-              expression { params.DO_BUILD == true }
-            } // when
-            steps {
-              unstash(name: 'source_code')
-              sh("""mkdir -p build/Analysis/CompilerOutput/${COMPILER}/""")
-              cmakeBuild( buildType: "${CONFIGURATION}",
-                          generator: 'Ninja',
-                          buildDir: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/",
-                          cleanBuild: params.DO_CLEAN_BUILD,
-                          cmakeArgs: "-DDISABLE_PCH=${DISABLE_PCH}",
-                          installation: 'cmake-latest')
-              sh("""set +o pipefail ; \
-                    ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
-                    | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""")
-            } // steps
-          } // stage('Build')
-          stage('Test') {
-            when {
-              expression { params.RUN_TESTS == true}
-            } // when
-            steps {
-              sh("""build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests \
-                  --gtest_output=xml:build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/""")
-            } // steps
-            post {
-              always {
-                xunit (
-                  thresholds: [ skipped(failureThreshold: '0'),
-                                failed(failureThreshold: '0') ],
-                  tools: [ GoogleTest(pattern: """build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/*.xml""") ]
-                )
-              } // always
-            } // post
-          } // stage('Test')
-          stage('Valgrind') {
-            when {
-              expression { params.DO_ANALYSIS == true && params.RUN_VALGRIND == true}
-            } // when
-            steps {
-              sh('mkdir -p build/Analysis/Valgrind')
-              sh("""valgrind \
-                    --log-file=build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-%p.log \
-                    -s \
-                    --leak-check=full \
-                    --show-leak-kinds=all \
-                    build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests""")
-            } // steps
-          } // stage('Valgrind')
-          stage('Coverage') {
-            when {
-              expression { params.RUN_COVERAGE == true }
-            } // when
-            steps {
-              sh('mkdir -p build/Analysis/Coverage')
-              sh("""gcovr -r . -x \
-                    --object-directory=build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/ \
-                    > build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml""")
-            } // steps
-          } // stage('Coverage')
+          stage('SetupAndExecute') {
+            agent any
+            stages {
+              stage('Setup') {
+                steps {
+                  unstash(name: 'dockerfiles')
+                } // steps
+              } // stage('Setup')
+              stage('Execute') {
+                agent {
+                  dockerfile {
+                    filename "Dockerfile.${COMPILER}"
+                    args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+                    reuseNode true
+                  } // dockerfile
+                } // agent
+                stages {
+                  stage('Build') {
+                    when {
+                      expression { params.DO_BUILD == true }
+                    } // when
+                    steps {
+                      unstash(name: 'source_code')
+                      sh("""mkdir -p build/Analysis/CompilerOutput/${COMPILER}/""")
+                      cmakeBuild( buildType: "${CONFIGURATION}",
+                                  generator: 'Ninja',
+                                  buildDir: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/",
+                                  cleanBuild: params.DO_CLEAN_BUILD,
+                                  cmakeArgs: "-DDISABLE_PCH=${DISABLE_PCH}",
+                                  installation: 'cmake-latest')
+                      sh("""set +o pipefail ; \
+                            ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
+                            | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""")
+                    } // steps
+                  } // stage('Build')
+                  stage('Test') {
+                    when {
+                      expression { params.RUN_TESTS == true}
+                    } // when
+                    steps {
+                      sh("""build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests \
+                          --gtest_output=xml:build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/""")
+                    } // steps
+                    post {
+                      always {
+                        xunit (
+                          thresholds: [ skipped(failureThreshold: '0'),
+                                        failed(failureThreshold: '0') ],
+                          tools: [ GoogleTest(pattern: """build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/*.xml""") ]
+                        )
+                      } // always
+                    } // post
+                  } // stage('Test')
+                  stage('Valgrind') {
+                    when {
+                      expression { params.DO_ANALYSIS == true && params.RUN_VALGRIND == true}
+                    } // when
+                    steps {
+                      sh('mkdir -p build/Analysis/Valgrind')
+                      sh("""valgrind \
+                            --log-file=build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-%p.log \
+                            -s \
+                            --leak-check=full \
+                            --show-leak-kinds=all \
+                            build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests""")
+                    } // steps
+                  } // stage('Valgrind')
+                  stage('Coverage') {
+                    when {
+                      expression { params.RUN_COVERAGE == true }
+                    } // when
+                    steps {
+                      sh('mkdir -p build/Analysis/Coverage')
+                      sh("""gcovr -r . -x \
+                            --object-directory=build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/ \
+                            > build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml""")
+                    } // steps
+                  } // stage('Coverage')
+                } // stages
+              } // stage('Execute')
+            } // stages
+          } // stage('SetupAndExecute')
         } // stages
       } // matrix
       post {
