@@ -1,6 +1,7 @@
 FROM debian:experimental
 EXPOSE 22
-RUN echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list && \
+RUN echo 'deb http://deb.debian.org/debian sid main nonfree contrib' > /etc/apt/sources.list.d/sid.list && \
+    echo 'deb http://deb.debian.org/debian bullseye main nonfree contrib' > /etc/apt/sources.list.d/buster.list && \
     apt-get update && \
     apt-get install -t experimental -y --no-install-recommends \
     clang libc++1 libc++-dev clang-tidy lld \
