@@ -110,7 +110,7 @@ pipeline {
           } // axis
           axis {
             name 'CONFIGURATION'
-            values 'Debug', 'Release', 'RelWithDebInfo', 'MinSizeRel', 'Coverage'
+            values 'Debug', 'Release', 'RelWithDebInfo', 'Coverage'
           } // axis
           axis {
             name 'DISABLE_PCH'
@@ -140,7 +140,8 @@ pipeline {
                           cleanBuild: params.DO_CLEAN_BUILD,
                           cmakeArgs: "-DDISABLE_PCH=${DISABLE_PCH}",
                           installation: 'cmake-latest')
-              sh("""ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
+              sh("""set +o pipefail ; \
+                    ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
                     | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""")
             } // steps
           } // stage('Build')
@@ -234,7 +235,8 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
+            sh("""set +o pipefail ; \
+                  cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
@@ -256,7 +258,8 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
+            sh("""set +o pipefail ; \
+                  cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
@@ -277,7 +280,8 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
-            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
+            sh("""set +o pipefail ; \
+                  cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
@@ -381,7 +385,8 @@ pipeline {
           } // when
           steps {
             sh('mkdir -p build/Analysis/VeraPlusPlus')
-            sh('''find ${SOURCE_DIRECTORIES} \
+            sh('''set +o pipefail ; \
+                  find ${SOURCE_DIRECTORIES} \
                     -type f             \
                     -name "*.cpp" -o    \
                     -name "*.cxx" -o    \
