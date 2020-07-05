@@ -4,13 +4,15 @@ RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.
     echo 'deb http://deb.debian.org/debian bullseye main contrib' > /etc/apt/sources.list.d/buster.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-    clang libc++1 libc++-dev clang-tidy lld \
-    llvm python cmake doxygen ninja-build \
+    python cmake doxygen ninja-build \
     libfreetype-dev libfreetype6 libglm-dev \
     libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
     libsdl2-mixer-dev libboost-all-dev freeglut3-dev \
-    libglew-dev openssh-client openssh-server git libc++abi-dev \
-    ca-certificates gcc lcov libstdc++-10-dev
+    libglew-dev openssh-client openssh-server git  \
+    ca-certificates gcc lcov libstdc++-10-dev && \
+    apt-get install -y --no-install-recommends -t experimental \
+    clang libc++1 libc++-dev clang-tidy lld \
+    llvm libc++abi-dev
 RUN mv /usr/bin/ld /usr/bin/ld.gold
 RUN mv /usr/bin/lld /usr/bin/ld.lld
 RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.lld 100
