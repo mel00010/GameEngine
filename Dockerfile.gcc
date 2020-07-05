@@ -10,4 +10,4 @@ RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.
     libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
     libsdl2-mixer-dev libboost-all-dev freeglut3-dev \
     libglew-dev openssh-client openssh-server git \
-    ca-certificates gcc g++ lcov libstdc++-10-dev gcovr
+    ca-certificates gcc g++ lcov libstdc++-10-dev gcovr zsh

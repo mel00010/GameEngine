@@ -99,8 +99,34 @@ pipeline {
           submoduleCfg: [],
           userRemoteConfigs: scm.userRemoteConfigs
         ]) // checkout
+        stash(name: 'source_code',
+              includes: '*')
       } // steps
     } // stage('Checkout')
+    stage('Setup') {
+      matrix {
+        axes {
+          axis {
+            name 'COMPILER'
+            values 'gcc', 'clang'
+          } // axis
+        } // axes
+        agent {
+          dockerfile {
+            filename "Dockerfile.${COMPILER}"
+            args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+            reuseNode true
+          } // dockerfile
+        } // agent
+        stages {
+          stage('CompileDockerFile') {
+            steps {
+              sh("echo \"Compiling ${COMPILER}\"")
+            } // steps
+          } // stage('CompileDockerFile')
+        } // stages
+      } // matrix
+    } // stage('Setup')
     stage('Build and Test') {
       matrix {
         axes {
@@ -121,7 +147,6 @@ pipeline {
           dockerfile {
             filename "Dockerfile.${COMPILER}"
             args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
-            reuseNode true
           } // dockerfile
         } // agent
         when {
