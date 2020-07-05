@@ -158,6 +158,7 @@ pipeline {
               expression { params.DO_BUILD == true }
             } // when
             steps {
+              unstash(name: 'source_code')
               sh("""mkdir -p build/Analysis/CompilerOutput/${COMPILER}/""")
               cmakeBuild( buildType: "${CONFIGURATION}",
                           generator: 'Ninja',
