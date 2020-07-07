@@ -2,21 +2,13 @@ pipeline {
   agent any
 
   triggers {
-    cron('H */8 * * *')  // Run every 8 hours
+    cron('H */16 * * *')  // Run every 16 hours
   } // triggers
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     skipDefaultCheckout()
     ansiColor('xterm')
-    throttleJobProperty(
-      categories: [],
-      limitOneJobWithMatchingParams: false,
-      maxConcurrentPerNode: 1,
-      maxConcurrentTotal: 1,
-      paramsToUseForLimit: '',
-      throttleEnabled: true,
-      throttleOption: 'project')
   } // options
   parameters {
     booleanParam( name: 'DO_CHECKOUT',
@@ -114,7 +106,7 @@ pipeline {
           } // axis
         } // axes
         stages {
-          stage('CompileDockerFile') {
+          stage('BuildDockerFile') {
             agent any
             stages {
               stage('Setup') {
@@ -122,7 +114,7 @@ pipeline {
                   unstash(name: 'dockerfiles')
                 } // steps
               } // stage('Setup')
-              stage('Compile') {
+              stage('Build') {
                 agent {
                   dockerfile {
                     filename "Dockerfile.${COMPILER}"
@@ -131,7 +123,7 @@ pipeline {
                   } // dockerfile
                 } // agent
                 steps {
-                  sh("echo \"Compiling ${COMPILER}\"")
+                  echo "Building Docker image for ${COMPILER}"
                 } // steps
               } // stage('Compile')
             } // stages
@@ -182,16 +174,17 @@ pipeline {
                     } // when
                     steps {
                       unstash(name: 'source_code')
-                      sh("""mkdir -p build/Analysis/CompilerOutput/${COMPILER}/""")
+                      sh(script: """mkdir -p build/Analysis/CompilerOutput/${COMPILER}/""", label: 'Create build directory')
                       cmakeBuild( buildType: "${CONFIGURATION}",
                                   generator: 'Ninja',
                                   buildDir: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/",
                                   cleanBuild: params.DO_CLEAN_BUILD,
                                   cmakeArgs: "-DDISABLE_PCH=${DISABLE_PCH}",
                                   installation: 'cmake-latest')
-                      sh("""set +o pipefail ; \
+                      sh(script: """set +o pipefail ; \
                             ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
-                            | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""")
+                            | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""",
+                            label: 'Compile')
                     } // steps
                   } // stage('Build')
                   stage('Test') {
@@ -199,8 +192,9 @@ pipeline {
                       expression { params.RUN_TESTS == true}
                     } // when
                     steps {
-                      sh("""build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests \
-                          --gtest_output=xml:build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/""")
+                      sh(script: """build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests \
+                          --gtest_output=xml:build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/""",
+                          label: 'Run Tests')
                     } // steps
                     post {
                       always {
@@ -214,27 +208,29 @@ pipeline {
                   } // stage('Test')
                   stage('Valgrind') {
                     when {
-                      expression { params.DO_ANALYSIS == true && params.RUN_VALGRIND == true}
+                      expression { params.RUN_ANALYSIS == true && params.RUN_VALGRIND == true}
                     } // when
                     steps {
-                      sh('mkdir -p build/Analysis/Valgrind')
-                      sh("""valgrind \
+                      sh(script: 'mkdir -p build/Analysis/Valgrind', label: 'Create Analysis Directory')
+                      sh(script: """valgrind \
                             --log-file=build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-%p.log \
                             -s \
                             --leak-check=full \
                             --show-leak-kinds=all \
-                            build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests""")
+                            build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests""",
+                            label: 'Run Valgrind')
                     } // steps
                   } // stage('Valgrind')
                   stage('Coverage') {
                     when {
-                      expression { params.RUN_COVERAGE == true }
+                      expression { params.RUN_COVERAGE == true && CONFIGURATION == 'Coverage' }
                     } // when
                     steps {
-                      sh('mkdir -p build/Analysis/Coverage')
-                      sh("""gcovr -r . -x \
+                      sh(script: 'mkdir -p build/Analysis/Coverage', label: 'Create Analysis Directory')
+                      sh(script: """gcovr -r . -x \
                             --object-directory=build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/ \
-                            > build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml""")
+                            > build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml""",
+                            label: 'Run GCovR')
                     } // steps
                   } // stage('Coverage')
                 } // stages
@@ -272,12 +268,14 @@ pipeline {
                         installation: 'cmake-latest')
             stash(name: 'DebugNoPCHCompDBase',
                   includes: 'build/DebugNoPCH/compile_commands.json')
-            sh('''curl --create-dirs -sSLo .sonar/build-wrapper-linux-x86.zip \
-                  https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip''')
-            sh('unzip -o .sonar/build-wrapper-linux-x86.zip -d .sonar/')
-            sh('''.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 \
+            sh(script: '''curl --create-dirs -sSLo .sonar/build-wrapper-linux-x86.zip \
+                  https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip''',
+                  label: 'Fetch Sonar Build Wrapper')
+            sh(script: 'unzip -o .sonar/build-wrapper-linux-x86.zip -d .sonar/', label: 'Unzip Sonar Build Wrapper')
+            sh(script: '''.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 \
                   --out-dir build/BuildWrapper \
-                  ninja -j6 -C build/DebugNoPCH all''')
+                  ninja -j6 -C build/DebugNoPCH all''',
+                  label: 'Build with Sonar Build Wrapper')
           } // steps
         } // stage('Setup')
         stage('CodeChecker ClangSA CTU') {
@@ -287,11 +285,11 @@ pipeline {
 
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""set +o pipefail ; \
+            sh(script: 'mkdir -p build/Analysis/CodeChecker/ClangSA', label: 'Create Analysis Directory')
+            sh(script: """set +o pipefail ; \
                   cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
-            sh("""${CODECHECKER_PATH} analyze \
+            sh(script: """${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j2 \
                   --analyzers clangsa \
@@ -299,7 +297,7 @@ pipeline {
                   --enable alpha \
                   --ctu \
                   -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
-                  --output build/Analysis/CodeChecker/ClangSA/""")
+                  --output build/Analysis/CodeChecker/ClangSA/""", label: 'Run ClangSA')
             stash(name: 'CodeCheckerClangSA_CTUResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
           } // steps
@@ -310,18 +308,18 @@ pipeline {
           } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""set +o pipefail ; \
+            sh(script: 'mkdir -p build/Analysis/CodeChecker/ClangSA', label: 'Create Analysis Directory')
+            sh(script: """set +o pipefail ; \
                   cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
-            sh("""${CODECHECKER_PATH} analyze \
+            sh(script: """${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j6 \
                   --analyzers clangsa \
                   --enable-all \
                   --enable alpha \
                   -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
-                  --output build/Analysis/CodeChecker/ClangSA/""")
+                  --output build/Analysis/CodeChecker/ClangSA/""", label: 'Run ClangSA')
             stash(name: 'CodeCheckerClangSAResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
           } // steps
@@ -332,17 +330,17 @@ pipeline {
           } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
-            sh("""set +o pipefail ; \
+            sh(script: 'mkdir -p build/Analysis/CodeChecker/ClangTidy', label: 'Create Analysis Directory')
+            sh(script: """set +o pipefail ; \
                   cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
-            sh("""${CODECHECKER_PATH} analyze \
+            sh(script: """${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j6 \
                   --analyzers clang-tidy \
                   --enable-all \
                   -i build/Analysis/CodeChecker/ClangTidy/.codechecker_skip \
-                  --output build/Analysis/CodeChecker/ClangTidy/""")
+                  --output build/Analysis/CodeChecker/ClangTidy/""", label: 'Run ClangTidy')
             stash(name: 'CodeCheckerClangTidyResults',
                   includes: 'build/Analysis/CodeChecker/ClangTidy/*.plist')
            } // steps
@@ -353,15 +351,15 @@ pipeline {
           } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CppCheck')
-            sh("""cppcheck \
+            sh(script: 'mkdir -p build/Analysis/CppCheck')
+            sh(script: """cppcheck \
                   -j6 \
                   --project=build/DebugNoPCH/compile_commands.json \
                   -i"${WORKSPACE}/build" \
                   --xml \
                   --xml-version=2 \
                   --enable=all \
-                  --language=c++ 2> build/Analysis/CppCheck/cppcheck.xml""")
+                  --language=c++ 2> build/Analysis/CppCheck/cppcheck.xml""", label: 'Run CppCheck')
             stash(name: 'CppCheckResults',
                   includes: 'build/Analysis/CppCheck/cppcheck.xml')
           } // steps
@@ -372,8 +370,8 @@ pipeline {
           } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/Infer')
-            sh('''infer run \
+            sh(script: 'mkdir -p build/Analysis/Infer', label: 'Create Analysis Directory')
+            sh(script: '''infer run \
                   --compilation-database build/DebugNoPCH/compile_commands.json \
                   --keep-going \
                   --skip-analysis-in-path build/ \
@@ -427,7 +425,7 @@ pipeline {
                   --uninit-interproc \
                   --no-hoisting-report-only-expensive \
                   --pmd-xml \
-                  --results-dir build/Analysis/Infer''')
+                  --results-dir build/Analysis/Infer''', label: 'Run FBInfer')
             stash(name: 'InferResults',
                   includes: 'build/Analysis/Infer/report.json')
           } // steps
@@ -437,8 +435,8 @@ pipeline {
             expression { params.RUN_VERA == true }
           } // when
           steps {
-            sh('mkdir -p build/Analysis/VeraPlusPlus')
-            sh('''set +o pipefail ; \
+            sh(script: 'mkdir -p build/Analysis/VeraPlusPlus', label: 'Create Analysis Directory')
+            sh(script: '''set +o pipefail ; \
                   find ${SOURCE_DIRECTORIES} \
                     -type f             \
                     -name "*.cpp" -o    \
@@ -453,7 +451,8 @@ pipeline {
                     -name "*.txx" -o    \
                     -name "*.t"   -o    \
                     -name "*.tt"        \
-                | vera++ --xml-report build/Analysis/VeraPlusPlus/report.xml''')
+                | vera++ --xml-report build/Analysis/VeraPlusPlus/report.xml''',
+              label: 'Run Vera++')
             stash(name: 'VeraResults',
                   includes: 'build/Analysis/VeraPlusPlus/report.xml')
           } // steps
@@ -463,9 +462,9 @@ pipeline {
             expression { params.RUN_RATS == true }
           } // when
           steps {
-            sh('mkdir -p build/Analysis/RATS')
-            sh("""rats ${SOURCE_DIRECTORIES} --xml \
-                  1> build/Analysis/RATS/report.xml""")
+            sh(script: 'mkdir -p build/Analysis/RATS', label: 'Create Analysis Directory')
+            sh(script: """rats ${SOURCE_DIRECTORIES} --xml \
+                  1> build/Analysis/RATS/report.xml""", label: 'Run RATS')
             stash(name: 'RATSResults',
                   includes: 'build/Analysis/RATS/report.xml')
           } // steps
@@ -491,7 +490,7 @@ pipeline {
             script {
               def scannerHome = tool 'sonar-scanner';
               withSonarQubeEnv('SonarQube') {
-                sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonarqube.properties"
+                sh(script: "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonarqube.properties", label: 'Run SonarScanner')
               } // withSonarQubeEnv
             } // script
           } // steps
@@ -507,7 +506,7 @@ pipeline {
             script {
               def scannerHome = tool 'sonar-scanner';
               withSonarQubeEnv('SonarCloud') {
-                sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonarcloud.properties"
+                sh(script: "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonarcloud.properties", label: 'Run SonarScanner')
               } // withSonarQubeEnv
             } // script
           } // steps
@@ -538,4 +537,9 @@ pipeline {
       } // post
     } // stage('Analysis')
   } // stages
+  post {
+    cleanup {
+      cleanWs()
+    } // cleanup
+  } // post
 } // pipeline
