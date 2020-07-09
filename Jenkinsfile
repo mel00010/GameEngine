@@ -185,6 +185,11 @@ pipeline {
                             ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
                             | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""",
                             label: 'Compile')
+                      stash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests")
+                      stash(name: "CompilerOutput_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log",
+                            allowEmpty: true)
                     } // steps
                   } // stage('Build')
                   stage('Test') {
@@ -192,12 +197,18 @@ pipeline {
                       expression { params.RUN_TESTS == true}
                     } // when
                     steps {
+                      unstash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
                       sh(script: """build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests \
                           --gtest_output=xml:build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/""",
                           label: 'Run Tests')
+                      stash(name: "TestReports_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/*")
+                      stash(name: "TestCoverageData_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/")
                     } // steps
                     post {
                       always {
+                        unstash(name: "TestReports_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
                         xunit (
                           thresholds: [ skipped(failureThreshold: '0'),
                                         failed(failureThreshold: '0') ],
@@ -211,6 +222,7 @@ pipeline {
                       expression { params.RUN_ANALYSIS == true && params.RUN_VALGRIND == true}
                     } // when
                     steps {
+                      unstash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
                       sh(script: 'mkdir -p build/Analysis/Valgrind', label: 'Create Analysis Directory')
                       sh(script: """valgrind \
                             --log-file=build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-%p.log \
@@ -219,6 +231,9 @@ pipeline {
                             --show-leak-kinds=all \
                             build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests""",
                             label: 'Run Valgrind')
+                      stash(name: "ValgrindResults_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-*.log",
+                            allowEmpty: true)
                     } // steps
                   } // stage('Valgrind')
                   stage('Coverage') {
@@ -226,11 +241,15 @@ pipeline {
                       expression { params.RUN_COVERAGE == true && CONFIGURATION == 'Coverage' }
                     } // when
                     steps {
+                      unstash(name: "TestCoverageData_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
                       sh(script: 'mkdir -p build/Analysis/Coverage', label: 'Create Analysis Directory')
                       sh(script: """gcovr -r . -x \
                             --object-directory=build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/ \
                             > build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml""",
                             label: 'Run GCovR')
+                      stash(name: "CoverageResults_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml",
+                            allowEmpty: true)
                     } // steps
                   } // stage('Coverage')
                 } // stages
@@ -241,14 +260,83 @@ pipeline {
       } // matrix
       post {
         success {
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Debug_True")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Debug_False")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Release_True")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Release_False")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_RelWithDebInfo_True")     }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_RelWithDebInfo_False")    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Coverage_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Coverage_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Debug_True")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Debug_False")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Release_True")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Release_False")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_RelWithDebInfo_True")   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_RelWithDebInfo_False")  }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_True")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_False")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_True")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_False")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_True")    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_False")   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_True")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_False")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_True")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_False")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_True")  }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_False") }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_True")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_False")       }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Debug_True")                 }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Debug_False")                }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Release_True")               }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Release_False")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_RelWithDebInfo_True")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_RelWithDebInfo_False")       }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Coverage_True")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Coverage_False")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Debug_True")               }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Debug_False")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Release_True")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Release_False")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_RelWithDebInfo_True")      }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_RelWithDebInfo_False")     }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Coverage_True")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Coverage_False")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Debug_True")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Debug_False")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Release_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Release_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_RelWithDebInfo_True")    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_RelWithDebInfo_False")   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Coverage_True")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Coverage_False")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Debug_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Debug_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Release_True")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Release_False")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_RelWithDebInfo_True")  }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_RelWithDebInfo_False") }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Coverage_True")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Coverage_False")       }
+
           stash(name: 'CompilerOutput',
-                includes: 'build/Analysis/CompilerOutput/**/*.log')
+                includes: 'build/Analysis/CompilerOutput/**/*.log',
+                allowEmpty: true)
           stash(name: 'CoverageResults',
-                includes: 'build/Analysis/Coverage/*.xml')
+                includes: 'build/Analysis/Coverage/*.xml',
+                allowEmpty: true)
           stash(name: 'ValgrindResults',
-                includes: 'build/Analysis/Valgrind/*.log')
+                includes: 'build/Analysis/Valgrind/*.log',
+                allowEmpty: true)
           stash(name: 'TestReports',
-                includes: 'build/TestReports/**/*.xml')
+                includes: 'build/TestReports/**/*.xml',
+                allowEmpty: true)
         } // success
       } // post
     } // stage('Build and Test')
