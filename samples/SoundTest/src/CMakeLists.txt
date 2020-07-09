@@ -17,7 +17,7 @@ target_link_libraries(SoundTest
 )
 include(CMakeRC)
 
-if(NOT DEFINED DISABLE_PCH)
+if(NOT DISABLE_PCH)
   if(NOT CMAKE_POSITION_INDEPENDENT_CODE)
     target_precompile_headers(SoundTest REUSE_FROM GameEngine::GameEngine)
   endif()

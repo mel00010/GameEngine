@@ -38,7 +38,7 @@ target_link_libraries(GameEngine_GameEngine
     absl::flags_parse
     absl::strings
 )
-if(NOT DEFINED DISABLE_PCH)
+if(NOT DISABLE_PCH)
     target_precompile_headers(GameEngine_GameEngine
       PUBLIC
         CallbackHandler.hpp

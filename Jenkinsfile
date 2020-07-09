@@ -57,7 +57,7 @@ pipeline {
                   defaultValue: true,
                   description: 'Run SonarQube scanner?')
     booleanParam( name: 'RUN_SONARCLOUD',
-                  defaultValue: true,
+                  defaultValue: false,
                   description: 'Run SonarCloud scanner?')
     string( name: 'CODECHECKER_PATH',
             defaultValue: '/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker',
@@ -182,7 +182,7 @@ pipeline {
                                   cmakeArgs: "-DDISABLE_PCH=${DISABLE_PCH}",
                                   installation: 'cmake-latest')
                       sh(script: """set +o pipefail ; \
-                            ninja -j6 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
+                            ninja -j4 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
                             | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""",
                             label: 'Compile')
                       stash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
@@ -362,7 +362,7 @@ pipeline {
             sh(script: 'unzip -o .sonar/build-wrapper-linux-x86.zip -d .sonar/', label: 'Unzip Sonar Build Wrapper')
             sh(script: '''.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 \
                   --out-dir build/BuildWrapper \
-                  ninja -j6 -C build/DebugNoPCH all''',
+                  ninja -j4 -C build/DebugNoPCH all''',
                   label: 'Build with Sonar Build Wrapper')
           } // steps
         } // stage('Setup')
@@ -574,6 +574,7 @@ pipeline {
             catchError(buildResult: null, stageResult: null) { unstash(name: 'VeraResults')                   }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'RATSResults')                   }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
+            unstash(name: 'source_code')
 
             script {
               def scannerHome = tool 'sonar-scanner';
@@ -591,6 +592,8 @@ pipeline {
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
+            unstash(name: 'source_code')
+
             script {
               def scannerHome = tool 'sonar-scanner';
               withSonarQubeEnv('SonarCloud') {

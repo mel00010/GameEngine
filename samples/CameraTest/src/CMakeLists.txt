@@ -7,7 +7,7 @@ target_sources(CameraTest
     ${CMAKE_CURRENT_SOURCE_DIR}/CameraTest.hpp
 )
 #set_target_properties(CameraTest PROPERTIES INTERPROCEDURAL_OPTIMIZATION FALSE)
-if(NOT DEFINED DISABLE_PCH)
+if(NOT DISABLE_PCH)
   if(NOT CMAKE_POSITION_INDEPENDENT_CODE)
     target_precompile_headers(CameraTest REUSE_FROM GameEngine::GameEngine)
   endif()

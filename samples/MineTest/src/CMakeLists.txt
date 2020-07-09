@@ -7,7 +7,7 @@ target_sources(MineTest
     ${CMAKE_CURRENT_SOURCE_DIR}/MineTest.hpp
 )
 #set_target_properties(MineTest PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
-if(NOT DEFINED DISABLE_PCH)
+if(NOT DISABLE_PCH)
   if(NOT CMAKE_POSITION_INDEPENDENT_CODE)
     target_precompile_headers(MineTest REUSE_FROM GameEngine::GameEngine)
   endif()

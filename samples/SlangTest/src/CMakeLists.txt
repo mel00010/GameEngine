@@ -7,7 +7,7 @@ target_sources(SlangTest
     ${CMAKE_CURRENT_SOURCE_DIR}/SlangTest.hpp
 )
 #set_target_properties(SlangTest PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
-if(NOT DEFINED DISABLE_PCH)
+if(NOT DISABLE_PCH)
   if(NOT CMAKE_POSITION_INDEPENDENT_CODE)
     target_precompile_headers(SlangTest REUSE_FROM GameEngine::GameEngine)
   endif()

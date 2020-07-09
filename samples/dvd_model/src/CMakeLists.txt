@@ -9,7 +9,7 @@ target_sources(DVD_model
     ${CMAKE_CURRENT_SOURCE_DIR}/DvdCore.hpp
 )
 #set_target_properties(DVD_model PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
-if(NOT DEFINED DISABLE_PCH)
+if(NOT DISABLE_PCH)
   if(NOT CMAKE_POSITION_INDEPENDENT_CODE)
     target_precompile_headers(DVD_model REUSE_FROM GameEngine::GameEngine)
   endif()
