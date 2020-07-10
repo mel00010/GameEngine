@@ -27,7 +27,7 @@ pipeline {
                   defaultValue: true,
                   description: 'Run analysis?')
     booleanParam( name: 'RUN_CLANGSA_CTU',
-                  defaultValue: false,
+                  defaultValue: true,
                   description: 'Run Clang Static Analysis with Cross Translation Unit Analysis?')
     booleanParam( name: 'RUN_CLANGSA',
                   defaultValue: true,
