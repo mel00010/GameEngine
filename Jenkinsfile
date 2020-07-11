@@ -92,7 +92,7 @@ pipeline {
           userRemoteConfigs: scm.userRemoteConfigs
         ]) // checkout
         stash(name: 'source_code',
-              includes: '*')
+              includes: '**/*')
         stash(name: 'dockerfiles',
               includes: 'Dockerfile.*')
       } // steps
