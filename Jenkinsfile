@@ -151,7 +151,6 @@ pipeline {
       } // matrix
     } // stage('Setup')
     stage('Build and Test') {
-      agent none
       matrix {
         axes {
           axis {
@@ -292,7 +291,7 @@ pipeline {
       } // matrix
       post {
         success {
-          node {
+          node(null) {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
             catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Debug_True")              }
             catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Debug_False")             }
@@ -372,13 +371,12 @@ pipeline {
                   includes: 'build/TestReports/**/*.xml',
                   allowEmpty: true)
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-          } // node
+          } // node(null)
         } // success
       } // post
     } // stage('Build and Test')
 
     stage('Analysis') {
-      agent none
       when {
         expression { params.RUN_ANALYSIS == true }
       }
@@ -708,7 +706,7 @@ pipeline {
       } // stages
       post {
         always {
-          node {
+          node(null) {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSAResults')     }
@@ -730,7 +728,7 @@ pipeline {
               ] // tools
             ) // recordIssues
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-          } // node
+          } // node(null)
         } // always
       } // post
     } // stage('Analysis')
