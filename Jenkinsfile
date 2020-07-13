@@ -139,9 +139,9 @@ pipeline {
                                 installation: 'cmake-latest')
                   } // ansiColor('xterm')
                   stash(name: "DebugNoPCHCompDBase_${COMPILER}",
-                        includes: 'build/${COMPILER}/DebugNoPCH/compile_commands.json')
+                        includes: "build/${COMPILER}/DebugNoPCH/compile_commands.json")
                   stash(name: "DebugNoPCH_${COMPILER}",
-                        includes: 'build/${COMPILER}/DebugNoPCH/*')
+                        includes: "build/${COMPILER}/DebugNoPCH/*")
                 } // steps
                 post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
               } // stage('Compile')
