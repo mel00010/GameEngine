@@ -306,7 +306,13 @@ pipeline {
       }
       parallel {
         stage('CodeChecker ClangSA CTU') {
-          agent any
+          agent {
+            dockerfile {
+              filename "Dockerfile.clang"
+              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+              reuseNode true
+            } // dockerfile
+          } // agent
           when {
             expression { params.RUN_CLANGSA_CTU == true && params.DO_BUILD == true}
           } // when
@@ -326,7 +332,13 @@ pipeline {
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('CodeChecker ClangSA CTU')
         stage('CodeChecker ClangSA') {
-          agent any
+          agent {
+            dockerfile {
+              filename "Dockerfile.clang"
+              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+              reuseNode true
+            } // dockerfile
+          } // agent
           when {
             expression { params.RUN_CLANGSA == true && params.DO_BUILD == true}
           } // when
@@ -346,7 +358,13 @@ pipeline {
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('CodeChecker ClangSA')
         stage('CodeChecker ClangTidy') {
-          agent any
+          agent {
+            dockerfile {
+              filename "Dockerfile.clang"
+              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+              reuseNode true
+            } // dockerfile
+          } // agent
           when {
             expression { params.RUN_CLANGTIDY == true && params.DO_BUILD == true}
           } // when
@@ -562,20 +580,8 @@ void collateBuildOutput() {
   catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_RelWithDebInfo_False")  }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_True")         }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_False")        }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_True")             }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_False")            }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_True")           }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_False")          }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_True")    }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_False")   }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_True")          }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_False")         }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_True")           }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_False")          }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_True")         }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_False")        }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_True")  }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_False") }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_True")        }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_False")       }
   catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Debug_True")                 }
