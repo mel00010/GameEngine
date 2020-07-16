@@ -7,7 +7,7 @@ RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.
     libfreetype-dev libfreetype6 libglm-dev \
     libsdl2-dev libsdl2-gfx-dev libsdl2-image-dev \
     libsdl2-mixer-dev libboost-all-dev freeglut3-dev \
-    libglew-dev openssh-client openssh-server git  \
+    libglew-dev openssh-client openssh-server git python-lxml \
     ca-certificates gcc lcov libstdc++-10-dev libtinfo5 && \
     apt-get install -y --no-install-recommends -t experimental \
     clang libc++1 libc++-dev clang-tidy lld \
